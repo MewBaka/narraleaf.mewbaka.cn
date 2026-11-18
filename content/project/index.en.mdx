@@ -1,9 +1,9 @@
 ---
 title: Project
-description: Overview of the NarraLeaf Project ecosystem for visual novel creation, application delivery, and React embedding.
+description: Overview of the NarraLeaf Project ecosystem for visual novel production, team collaboration, and React embedding.
 ---
 
-NarraLeaf Project is an ecosystem for building visual novel experiences with a clear path from authoring to delivery. It brings together a zero-code studio, a desktop application toolchain, and a lightweight React player so teams can choose the right starting point without leaving the broader NarraLeaf Project model.
+NarraLeaf Project is an ecosystem for building visual novel experiences with a clear path from authoring to delivery. It brings together a zero-code Studio editor, a self-hosted Team collaboration server and a lightweight React player so teams can choose the right starting point without leaving the broader NarraLeaf Project model.
 
 The project is designed around lightweight web technologies, structured content, and workflows that can grow from an individual prototype into a maintained software project. Authors can focus on scenes and narrative flow, while developers can keep access to TypeScript, version control, packaging, and application-level customization.
 
@@ -28,11 +28,11 @@ This lets a project begin with a visual workflow, move deeper into desktop deliv
 
 Studio is the best starting point when the primary task is creating and maintaining content before dealing with application internals.
 
-### NarraLeaf Desktop
+### NarraLeaf Team
 
-[NarraLeaf Desktop](/docs/narraleaf/library) is the desktop application toolchain. It covers the runtime, renderer, and CLI used to build and deliver NarraLeaf Desktop applications.
+[NarraLeaf Team](/docs/studio/team) is the collaboration server for projects made by more than one person. It holds the current documents, versions, roles, comments, reviews, to-dos and production record, and serves its own web console.
 
-This path is intended for developers who need control over the full application, including local development, packaging, runtime integration, and delivery workflows.
+Add Team when the project needs a shared source of truth, role-based access or a record of who changed what. Studio remains the authoring client.
 
 ### NarraLeaf-React
 
@@ -40,11 +40,15 @@ This path is intended for developers who need control over the full application,
 
 This path keeps the player close to the React ecosystem, making it useful when the story experience is one part of a larger application.
 
+### Legacy NarraLeaf Desktop
+
+The earlier [NarraLeaf Desktop](/docs/narraleaf/library) toolchain is kept for existing projects. New projects use Studio for authoring, preview and desktop packaging; the Desktop pages are not part of the main documentation tabs.
+
 ## Choosing where to start
 
 Start with [NarraLeaf Studio](/docs/studio) if your first goal is to create story content, manage scenes, and work through a visual production flow.
 
-Start with [NarraLeaf Desktop](/docs/narraleaf/library) if you are building a complete desktop visual novel application and need access to the runtime, renderer, CLI, and delivery workflow.
+Add [NarraLeaf Team](/docs/studio/team) when several people need to work on the same project with roles, reviews and a server-held history.
 
 Start with [NarraLeaf-React](/docs/narraleaf-react) if you already have a React application, need a lightweight player, or want to own the surrounding UI and product experience.
 
@@ -60,6 +64,7 @@ These paths are meant to be compatible parts of the same project ecosystem. A te
 - **October 2025.** The NarraLeaf command line interface is published, covering scaffolding, local development, and builds.
 - **May 2026.** narraleaf.com opens, with documentation for the three paths in one place.
 - **August 2026.** NarraLeaf Studio reaches its first public release, and a project builds for Windows, macOS, Android, iOS, and the web.
+- **November 2026.** NarraLeaf Team 1.0 ships with server-held team documents, project roles, the collaboration record and its own web console. Studio 2.0 adds the matching Team project model.
 
 ### Before 0.1.0
 
@@ -103,6 +108,10 @@ Most of Studio was built in the ten months before the first version, while the p
 - **1.6.1.** AI agents that connect over stdio reach Studio on Windows, the access token in Settings can be copied, / and # start a story command with an input method on, and a blueprint layer opens already framed.
 - **1.6.2.** Agents in Claude Code read scenes, pages and guide chapters in full; the size and colour an agent gives a UI element show on the page; a `.story` file's short `/if` and a speaker named by a nickname work as they do in the editor; Settings has an endpoint port field again, and a port that is taken is reported rather than swapped for another.
 - **1.6.3.** A page plays its own music, set the way a scene's is, and the same music carries on from page to page; Replace File…, a PSD import and an audio import can be undone, and Replace all in the Search panel is taken back in one step; connecting an agent no longer starts Studio; Live2D and Spine characters are drawn at the stage's scale; the Log page shows the face each line was said with.
+- **1.7.0.** Characters gain editable aliases, synchronized PNG frame-sequence poses, and a frame-sequence card beside their pose list; `/page` opens a page over the story and waits for it; the speaker picker groups cast members, and the voice table filters by speaker and searches its lines.
+- **1.8.0.** Choice options can carry `hide if` and `disable if` conditions; save pictures are read back from the compositor where the shell can, and a save screen reads each slot once; a widget write that changes nothing no longer redraws the game.
+- **1.9.0.** The Skeleton Port template starts a port with the working screens but without the sample game, and template parts can be left out; plugins can contribute inline text effects, including the built-in dialogue shake; scenes can carry a `#description` header; characters can be filed by cast group and avatar crops can be framed on a detected head; the story outline pictures a scene's cast, and the character list shows real avatars.
+- **2.0.0-TeamBeta3.** Studio connects to NarraLeaf Team 1.0 as the authority for team documents. The workspace gains a Team history rail, file conflicts, offline replay, a server round-trip status, project roles and editor areas, browser sign-in and title-bar account state. Story work gains a stage timeline, direct stage placement, scene and line history, row comments, rename with references, script document import/export, Dev Mode language selection, agent-held Dev Mode and blueprint text copy/paste.
 
 ## Ecosystem direction
 

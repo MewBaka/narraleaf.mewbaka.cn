@@ -54,7 +54,7 @@ When Studio refuses a call, the agent receives a code, a message and often a nex
 | `writes_disabled` | **Changes not allowed** | **Allow agents to change projects** and **Allow agents full access** are both off | Switch on **Allow agents to change projects** if the agent should edit. Reading still works |
 | `paused` | **Paused** | You paused the agent in this project | **Resume agent** when it may continue |
 | `frozen` | **Project frozen** | The project is not accepting changes: a past version is open, it was frozen by hand, a merge is unfinished, Studio is in recovery mode, or another window took it over | Finish or leave that state; the agent retries |
-| `live_session` | **Live session running** | A Team live session is running in the project | Leave the session, or let the agent work read-only until it ends |
+| `live_session` | **Live session running** | A Team live session is running, or a Team project is held by its server | Leave the live session. For a server-held Team project, let the agent work read-only |
 | `stale_revision` | **Changed since read** | The page or scene changed after the agent read it, usually because you edited it | Nothing. The agent reads it again and redoes its change on your version |
 | `check_failed` | **Check failed** | The text the agent sent did not compile, or the check found an error. Nothing was written | Nothing, unless it repeats. The agent fixes the findings and writes again |
 | `not_found` | **Not found** | A scene, page, element, asset or character the call names does not exist | Nothing, unless it repeats. The agent lists what exists and retries |

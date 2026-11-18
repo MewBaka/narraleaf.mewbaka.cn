@@ -27,6 +27,14 @@ Agent 接入需要 Studio 1.5.0 或更高版本。Agent 工作期间 Studio 必�
 
 全部工具见[工具](/zh/docs/studio/agent/tools)
 
+## Dev Mode 与只读编辑器
+
+Agent 可以接管 Dev Mode 进行试玩。它打开的窗口默认隐藏且只读，并在 Agent 空闲时关闭。点击提示中的**接管**可以自己使用会话，再点击**继续**交还
+
+Agent 持有 Dev Mode 时，作者的调试工具为只读。接管会中断 Agent 的试玩；交还会让 Agent 继续
+
+Agent 也可以在处理剧情或界面时将对应编辑器设为只读，避免作者的修改落在它的读取与写入之间。编辑器顶部会显示一个提示，可以切回读写；同一提示也可以再次设为只读。连续五分钟没有 Agent 调用后锁会自动失效，Agent 被暂停时也会解除
+
 ## Agent 不能做什么
 
 - 编辑由插件管理的数据，除非该插件为这些数据提供了 Agent 工具。见[插件工具](/zh/docs/studio/agent/tools#plugin-tools)

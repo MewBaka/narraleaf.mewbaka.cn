@@ -1,6 +1,6 @@
 {
-  "title": "NarraLeaf Desktop",
-  "description": "Desktop のドキュメント：ランタイム、レンダラー、CLI。",
+  "title": "NarraLeaf Desktop（旧版）",
+  "description": "既存プロジェクト向けに残された旧 Desktop のドキュメント。",
   "pages": [
     "library"
   ]

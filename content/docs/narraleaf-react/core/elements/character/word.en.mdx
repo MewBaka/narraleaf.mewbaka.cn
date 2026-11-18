@@ -144,7 +144,7 @@ The component renders inside the element the engine styles, so the resolved styl
 
 ### Clicks
 
-While the word is still being typed, a click on it advances the line the way a click anywhere else does. Once the word is fully revealed it takes its own clicks, and the line does not advance behind it.
+While the word is still being typed, a click on it advances the line the way a click anywhere else does. Once the word is fully revealed it takes its own clicks, and the line does not advance behind it. This is the right default for an interactive term. A renderer that only changes how the text looks should register with `{interactive: false}` so its words keep letting clicks reach the line.
 
 ### Line breaks
 
@@ -175,9 +175,14 @@ An id nothing is registered under renders as plain text and is reported once per
 
 - `id: string` - The id words refer to
 - `component: React.ComponentType<WordRenderProps<T>>` - The component to draw those words with
+- `options?: WordRendererOptions` - `interactive?: boolean`, default `true`. Set `false` for an effect that only changes appearance.
 - Returns a function that unregisters it.
 
 Registering the same id again replaces the component. Lines already on screen pick the new one up on their next render.
+
+```tsx
+registerWordRenderer("shake", ShakingText, {interactive: false});
+```
 </Step>
 </Steps>
 

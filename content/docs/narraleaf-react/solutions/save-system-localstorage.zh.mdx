@@ -53,7 +53,7 @@ function isSavedGame(value: unknown): value is SavedGame {
 
 ## 保存与读取 Hook
 
-覆盖当前游戏前先检查故事 hash。`deserialize()` 不会自动做这项检查
+让 `deserialize()` 强制检查故事 hash。它会在改变任何状态之前核对，并拒绝由另一个故事写出的存档
 
 ```tsx title="use-save-system.ts"
 import { useLiveGame } from "narraleaf-react";
@@ -72,11 +72,7 @@ export function useSaveSystem() {
         const data = readSave(slot);
         if (!data || !liveGame.story) return false;
 
-        if (data.meta.storyHash !== liveGame.story.hash()) {
-            throw new Error("该存档来自不兼容的故事版本。 ");
-        }
-
-        liveGame.deserialize(data);
+        liveGame.deserialize(data, { requireMatchingStory: true });
         return true;
     }
 
@@ -85,6 +81,8 @@ export function useSaveSystem() {
 ```
 
 修改动作顺序、分支、场景或其他故事结构后，旧存档可能失效。只修改台词通常不会改变非严格模式下的 hash
+
+读取还会经过引擎的恢复值防护。图片地址，以及恢复后的 transform 中每个 `url(...)`，都必须通过 `Utils.isSafeRestoredURL`；`javascript:`、`vbscript:`、`file:`、`filesystem:` 和非图片 `data:` 地址都会被拒绝。上面的结构校验仍然要保留，因为这层防护保护的是引擎实际恢复的内容，并不证明任意上传对象就是合法的 `SavedGame`
 
 ## 存档槽位 UI
 

@@ -53,7 +53,7 @@ This is a minimal guard, not a full schema validator. Use Zod, Valibot, or a sim
 
 ## Save and load hook
 
-Check the story hash before replacing the current game. `deserialize()` does not perform this check for you.
+Ask `deserialize()` to enforce the story hash. It checks before changing any state, and rejects a save written by another story.
 
 ```tsx title="use-save-system.ts"
 import { useLiveGame } from "narraleaf-react";
@@ -72,11 +72,7 @@ export function useSaveSystem() {
         const data = readSave(slot);
         if (!data || !liveGame.story) return false;
 
-        if (data.meta.storyHash !== liveGame.story.hash()) {
-            throw new Error("This save was created by an incompatible story version.");
-        }
-
-        liveGame.deserialize(data);
+        liveGame.deserialize(data, { requireMatchingStory: true });
         return true;
     }
 
@@ -85,6 +81,8 @@ export function useSaveSystem() {
 ```
 
 Changing action order, branches, scenes, or other story structure can invalidate old saves. Text-only edits normally keep the same non-strict hash.
+
+Loading also applies the engine's restored-value guards. Image sources and every `url(...)` in a restored transform must pass `Utils.isSafeRestoredURL`; `javascript:`, `vbscript:`, `file:`, `filesystem:` and non-image `data:` URLs are refused. Keep validating the surrounding structure, as above, because this protects what the engine restores rather than proving that an arbitrary uploaded object is a `SavedGame`.
 
 ## Save slot UI
 

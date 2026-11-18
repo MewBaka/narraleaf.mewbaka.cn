@@ -1,5 +1,5 @@
 {
   "title": "Documentation",
-  "description": "NarraLeaf Project documentation for NarraLeaf Desktop, Studio, and NarraLeaf-React.",
-  "pages": ["narraleaf", "studio", "narraleaf-react"]
+  "description": "NarraLeaf Project documentation for Studio, NarraLeaf Team and NarraLeaf-React.",
+  "pages": ["studio", "narraleaf-react"]
 }

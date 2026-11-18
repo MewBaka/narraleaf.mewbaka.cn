@@ -260,7 +260,7 @@ export default defineRuntimePlugin({
 
 `app` 携带 `app.plugin`、`app.manifest` 和 `app.game`
 
-`app.game` 有六个始终存在的成员（`blueprintNodes`、`widgets`、`storyActions`、`data`、`config`、`log`），以及一组受能力控制的命名空间，它们只在 `contributes.runtimeCapabilities` 声明过之后才存在。未声明的命名空间是 `undefined`，而不是一个会抛错的方法。完整模型见 [Runtime API](/zh/docs/studio/plugin/runtime)
+`app.game` 有七个始终存在的成员（`blueprintNodes`、`widgets`、`storyActions`、`inlineTextEffects`、`data`、`config`、`log`），以及一组受能力控制的命名空间，它们只在 `contributes.runtimeCapabilities` 声明过之后才存在。未声明的命名空间是 `undefined`，而不是一个会抛错的方法。完整模型见 [Runtime API](/zh/docs/studio/plugin/runtime)
 
 ### game.blueprintNodes
 
@@ -301,6 +301,23 @@ execute: async ctx => {
 <Callout type="warn">
 没有 `ctx.hostAdapter` 这个东西。早期版本通过 `ctx.hostAdapter.blueprintRuntime.hostApi` 把宿主完整的内部 API 泄漏了出去——存档、本地化、退出应用——清单里什么都没声明，安装时也什么都没展示给作者。那条路径已经没有了。节点触及的任何东西，都要经由 `ctx.game`，而它恰好就是 `contributes` 声明的那组能力
 </Callout>
+
+### game.inlineTextEffects
+
+```ts
+app.game.inlineTextEffects.register({ id, render, interactive? });
+```
+
+为带行内文字效果的对白片段注册游戏侧渲染器。`id` 必须出现在 `contributes.inlineTextEffects` 中，并由 studio 入口注册。`interactive` 默认 `false`：带效果的文字让点击继续推进对白。需要点击打开术语解释或处理自己的点击时，设为 `true`。
+
+`render` 收到 `RuntimeInlineTextEffectRenderProps`：已排版的 `children`、已显示文字与完整文字、显示状态、是否含注音、作者设置的数值 `params`，以及对白样式。渲染 `children` 才能保留注音、竖排与纵中横。
+
+```tsx
+app.game.inlineTextEffects.register({
+    id: `${PLUGIN_ID}.shake`,
+    render: ShakeText,
+});
+```
 
 ### game.storyActions
 

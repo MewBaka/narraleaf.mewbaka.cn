@@ -24,7 +24,15 @@ The kind is chosen when the character is created. The kinds share no data, and s
 
 A preset character is a flat list of named poses, each backed by one image asset. The story addresses a pose by its name.
 
+A pose can also be a **PNG frame sequence**: several PNG files played in order at a fixed frame rate. The frame-sequence card beside the pose list adds the files, sets the playback speed and loop count, and previews the result. The story still sees one pose.
+
 A layered character stacks image layers on a shared canvas. Layers are grouped on axes, and a pose selects one option per axis, so a single pose can change several layers together.
+
+## Names, aliases, and avatars
+
+A character has one canonical name and any number of **aliases**. Story rows may name either, so an alias can carry a short form, a translated name, or a nickname the cast uses. Renaming the canonical name does not break rows that use an alias.
+
+The dialogue avatar is separate from the stage sprite. It can use its own image, or a portrait cropped from one of the character's poses. **Detect head** places the crop around the detected face; the crop can then be moved and sized by hand. The story outline also draws this avatar beside a scene's cast.
 
 ## Runtime-drawn characters
 
@@ -34,6 +42,6 @@ Runtimes are not bundled with Studio. See [Model Runtimes](/docs/studio/model-ru
 
 ## Groups and deletion
 
-Groups are for organizing the panel and do not affect the game. A character can be moved between groups or left ungrouped.
+Groups organize the Characters panel and the speaker picker. A character can be moved between groups or left ungrouped. The speaker picker can show groups as submenus and remembers which groups are folded.
 
 Deleting a character is recorded in the workspace history and can be undone. Until it is restored, story lines that name that character stop resolving.

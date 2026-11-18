@@ -38,7 +38,7 @@ description: 可视化编程层——什么是蓝图、一份蓝图归属于谁�
 
 **Blueprint Value** 是绑定到单个属性上的 `widgetValue` 蓝图，属性因此由计算得出而非直接填写。当前支持的目标是 `nl.text` → `props.text`、`nl.button` → `props.label`、`nl.image` → `props.imageFill.assetId`、`nl.switch` → `props.checked`、`nl.frame` → `props.params`、`nl.slider` → `props.value`
 
-它的创建浮窗被刻意收窄：`Init` 与 `On Flush` 两个事件头、非 latent 的流程节点、纯 Data 与 Math、本地变量读写、`Element` 字面量，以及纯读取节点。没有改写、没有导航、没有持久变量，除 `Call Fn` 以外也没有 latent 节点（会挂起整张图的节点，例如 `Delay` 或一次存档写入）。一个能改变世界的取值器，会在世界改变的那一刻重新进入自己
+它的创建浮窗被刻意收窄：`Init` 与 `On Flush` 两个事件头、非 latent 的流程节点、纯 Data 与 Math、本地变量读写、`Element` 字面量，以及纯读取节点。持久变量可以用**获取持久变量**读取。没有改写、没有导航，除 `Call Fn` 以外也没有 latent 节点（会挂起整张图的节点，例如 `Delay` 或一次存档写入）。一个能改变世界的取值器，会在世界改变的那一刻重新进入自己
 
 要显示玩家语言中的文字，用 [`Translation Key Text`](/zh/docs/studio/blueprint/nodes/localization#translation-key-text) 取翻译键的文字，再用 [`Format`](/zh/docs/studio/blueprint/nodes/data#format) 把值填进去。读取玩家语言的 Blueprint Value 会在玩家切换语言时更新，无论它是通过 `Translation Key Text` 或按语言区分的资产读取，还是通过它调用的函数里的 `Get Text`、`Get Current Language` 或 `Get Save Metadata` 读取
 
@@ -55,6 +55,11 @@ description: 可视化编程层——什么是蓝图、一份蓝图归属于谁�
         title="变量"
         description="作用域、生命周期，以及什么能挺过一次读档"
         href="/zh/docs/studio/blueprint/variables"
+    />
+    <Card
+        title="蓝图文本"
+        description="把选中的节点复制为文本、粘贴回来，并在工具之间移动图"
+        href="/zh/docs/studio/blueprint/text-format"
     />
     <Card
         title="Surface"

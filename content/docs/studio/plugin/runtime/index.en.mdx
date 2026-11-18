@@ -18,18 +18,21 @@ export default defineRuntimePlugin({
 });
 ```
 
-## Six members are always there
+## Seven members are always there
 
 | Member | What |
 | --- | --- |
 | `game.blueprintNodes` | `register` / `registerMany` the game-side `execute` for your node types. |
 | `game.widgets` | `register` / `registerMany` the game-side renderer and event declaration (`logicApi`) for your widget types. |
 | `game.storyActions` | `register` / `registerMany` what runs when the story reaches a row your story actions inserted. The story waits for it. See [game.storyActions](/docs/studio/plugin/api-reference#gamestoryactions). |
+| `game.inlineTextEffects` | `register` the game-side component that draws a run of dialogue carrying an effect declared in `contributes.inlineTextEffects`. |
 | `game.data` | `readJson(namespace)` — read plugin storage published with the game. |
 | `game.config` | `get(key)` — what the author filled in for your `contributes.buildConfig` fields. Always present for the same reason `game.data` is: declaring a field grants the plugin nothing, so there is no capability to gate on. |
 | `game.log` | `log(level, message)` into the host log. |
 
-Every type you register must be declared in `contributes.blueprintNodes` / `contributes.widgets`, and `game.data` only sees namespaces listed in `contributes.runtimeData`. See the [manifest reference](/docs/studio/plugin/manifest).
+Every type you register must be declared in `contributes.blueprintNodes`, `contributes.widgets` or `contributes.inlineTextEffects`, and `game.data` only sees namespaces listed in `contributes.runtimeData`. See the [manifest reference](/docs/studio/plugin/manifest).
+
+An inline text effect uses the same id in both entries. The studio entry registers its label and numeric parameters; the runtime entry registers a component that receives the laid-out text, revealed state, parameters and click policy. A run whose plugin is missing renders as plain text, and the project check reports the unknown effect.
 
 ## Everything else is capability-gated
 

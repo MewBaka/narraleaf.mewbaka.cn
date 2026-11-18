@@ -1,70 +1,95 @@
 ---
 title: 账号与访问权
-description: 在 NarraLeaf Team 服务器上创建账号、分发访问权并收回它
+description: 创建 Team 账号、授予项目角色或区域模板，并收回访问权
 ---
 
-NarraLeaf Team 服务器上的每个账号都由运维创建。没有注册，也没有邀请
+每个账号都由运维创建，没有公开注册。第一个账号用 `nlteam init` 创建；之后运维可以在 Web 控制台创建账号，或使用 `nlteam user create`。
+
+## 登录
+
+Studio 通常通过浏览器使用 OAuth 与 PKCE 登录。没有浏览器的机器使用设备码流程，在 `/console/device` 输入代码。
+
+服务器可以要求两步验证、要求 SSO、签发 API 令牌并发送密码重置链接。早于浏览器登录的 Studio 版本仍可使用密码登录。
+
+每个登录的 Studio 都是一个设备。账号所有者可以在控制台结束设备，运维可以一次结束某个账号的全部设备。Studio 2.0 会把当前账号显示在标题栏，服务器离线时仍会保留。
 
 ## 创建账号
 
-运维在服务器上的终端里：
+在服务器上：
 
 ```sh
 printf '%s' 'their password' | nlteam user create bob --root /srv/team
 ```
 
-运维在任何一台已登录的机器上：
+在已经以运维身份登录的机器上：
 
 ```sh
 nlteam login team.example.com:41402 ada < password.txt
 printf '%s' 'their password' | nlteam user create bob --server team.example.com:41402
 ```
 
-交给使用者的是服务器地址、用户名和口令。登录时 Studio 会用口令换取令牌
-
-不想发送口令的运维可以改为发送令牌：
+密码从标准输入读取，不放在参数里。运维也可以直接签发登录令牌：
 
 ```sh
 nlteam token mint bob --server team.example.com:41402
 ```
 
-## 运维账号
+## 运维
 
-`admin` 组决定谁可以管理账号、项目和设置，以及把别人加入该组。`nlteam init` 会把第一个账号放进去
+`admin` 组管理账号、项目、设置、签名密钥、存储和备份。`nlteam init` 会把第一个账号放进这个组。
 
 ```sh
 nlteam user grant-admin bob --server team.example.com:41402
 nlteam user revoke-admin bob --server team.example.com:41402
 ```
 
-组成员身份在每次请求时读取，因此把某人移出该组会在他的下一次请求时生效
+控制台可以编辑、锁定和删除账号。最后一名运维不能移除自己的访问权。
+
+## 项目角色与区域
+
+访问权按项目划分。每个成员只有一个角色：
+
+| 角色 | 可以 |
+| --- | --- |
+| 所有者 | 修改项目设置与成员，编辑全部区域，按项目设置保存或恢复版本，并把项目移出列表 |
+| 编辑者 | 编辑获准的区域，并在项目允许时保存或恢复版本 |
+| 审阅者 | 阅读、批注并参与审阅，不能修改项目内容 |
+| 查看者 | 阅读并记录自己账号允许的协作内容，不能修改项目内容 |
+
+所有者或运维可以在控制台的项目设置中修改成员，也可以通过 `projects.members.set` 与 `projects.members.remove` 修改。`nlteam` 目前还没有修改成员的命令。
+
+编辑者可以限制在剧情、角色、资产、界面、本地化或游戏配置。Team 不认识的路径按游戏配置处理，因此新类型的文件默认受保护。恢复版本会改动所有区域，需要全部六项权限。
+
+权限模板提供现成的角色与区域组合：所有者、编辑者、作者、译者、美术、工程、审阅者和查看者。项目也可以接受访问申请，由所有者或运维决定。
+
+## Studio 2.0 显示什么
+
+账号没有角色的项目不会出现。启动器会标记团队项目，并把服务器设置保存在项目之外。角色为只读时 Studio 会明确显示，状态栏也会显示与服务器的往返状态。
+
+## 服务器上的 Studio 设置
+
+Studio 登录 Team 服务器后，**设置 → 传输**会提供**备份到 Team**与**从 Team 恢复**。备份携带与导出的设置文件相同的设置文档。恢复会先检查并预览，确认后才修改。
+
+服务器可以因账号策略、文档过大或版本不支持而拒绝操作；每种拒绝都有对应的说明。
 
 ## 收回访问权
 
-两条命令，它们不是同一件事
+修改项目角色，或移除成员。要停止整个账号，使用：
 
 ```sh
 nlteam user disable ada --server team.example.com:41402
 nlteam user revoke-tokens ada --server team.example.com:41402
 ```
 
-**`disable`** 停用账号。它持有的一切都不再有效，也无法再次登录
-
-**`revoke-tokens`** 拒绝已经签发给该账号的每一个令牌，其余不变。这个人重新登录后会拿到一个可用的令牌。令牌泄露时用这一条
-
-两者都在该账号的下一次请求时生效，而不是等到令牌过期
+**`disable`** 停用账号，并拒绝再次登录。**`revoke-tokens`** 拒绝已经签发的全部令牌，但允许账号用同一密码重新登录。两者都在 Studio 的下一次调用生效。
 
 <Callout type="warning">
-已经在传输项目数据的连接由版本控制服务器核对，而不是由 Team 核对，它可以持续到打开它时使用的令牌过期，也就是十五分钟。要更早地结束它，需要退休签名密钥，而那会拒绝所有账号的令牌
+已经建立的项目数据连接由版本控制服务器检查，直到仓库令牌过期；默认是十五分钟。要更快结束，需要轮换签名密钥，而这会让所有人重新登录。
 </Callout>
 
-## 一个账号能访问什么
+被停用的账号可以用 `nlteam user enable ada` 恢复。控制台也可以临时锁定或删除账号。
 
-服务器上的每个账号都能访问它上面的每一个项目。没有按项目授予或收回的访问权
-
-不希望某个人看到的项目应当放在另一台服务器上。同一条规则也意味着每个账号都能读到服务器上其他账号的用户名、显示名和已登记的邮箱地址
-
-## 查看服务器上有什么
+## 查看现有内容
 
 ```sh
 nlteam user list --server team.example.com:41402
@@ -73,8 +98,4 @@ nlteam status --server team.example.com:41402
 nlteam audit --refused --server team.example.com:41402
 ```
 
-`audit` 读取访问决策的记录，最新的在前。`--refused` 只打印被拒绝的记录，列表为空意味着记录中没有任何一次拒绝
-
-## 完整参考
-
-仓库中的[部署文档](https://github.com/NarraLeaf/NarraLeaf-Team/blob/main/docs/operations.md)覆盖了每一条命令
+`audit` 从新到旧读取访问决定。`--refused` 只显示拒绝记录。控制台用筛选器显示同一份记录，并提供账号与存储管理。

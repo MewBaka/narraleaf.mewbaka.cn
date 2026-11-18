@@ -32,6 +32,30 @@ layer.opacity(0.5, 1000, "linear"); // 更改图层的不透明度，所有链�
     **自 `0.26.0` 起，图层不会把自己的姿态带出声明它的那个场景。** 离开场景现在会把该场景摆上舞台的图层还原到配置的 z-index 与姿态，而不只是还原站在图层上的可显示元素；`newGame()` 同样如此。在此之前，被移开或淡出的图层会在之后的每个场景里都保持那个样子。故事[镜头](/zh/docs/narraleaf-react/core/elements/camera)是刻意的例外：一个故事只拥有一个镜头，而它要跨场景切换地为舞台取景
 </Callout>
 
+## 镜头视差 [#camera-parallax]
+
+图层可以与镜头保持不同距离。`parallax` 表示图层跟随镜头平移与缩放的比例：
+
+```typescript
+const sky = new Layer("sky", {zIndex: -3, parallax: 0});
+const hills = new Layer("hills", {zIndex: -2, parallax: 0.3});
+const branches = new Layer("branches", {zIndex: 5, parallax: 1.4});
+
+const forest = new Scene("forest", {
+    background: "forest.png",
+    backgroundLayerParallax: 0.6,
+    layers: [sky, hills, branches],
+});
+```
+
+- `1` 是默认值，完全跟随镜头
+- `0` 在镜头移动时保持不动
+- `0` 到 `1` 之间看起来更远，大于 `1` 看起来比舞台更近
+
+平移和缩放按距离分配；旋转与缩放变换仍会整体作用于所有图层。图层自身的变换会在它分到的镜头运动之内继续生效
+
+场景的 `backgroundLayerParallax` 对场景创建的背景图层起同样作用。两项均自 `1.4.0` 起可用
+
 ## 链式方法
 
 ### setZIndex

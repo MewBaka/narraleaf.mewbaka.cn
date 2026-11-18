@@ -1,0 +1,26 @@
+---
+title: "ImageCacheStats"
+description: What the player's image cache holds, what is pinned, and the budgets in force.
+---
+```typescript
+type ImageCacheStats = {
+    entries: number;
+    blobBytes: number;
+    decodedEntries: number;
+    decodedBytes: number;
+    pinned: number;
+    budget: {
+        blobBytes: number;
+        decodedBytes: number;
+    };
+};
+```
+
+Returned by `gameState.getImageCache()?.getStats()`. See [Cache budgets and memory](/docs/narraleaf-react/core/game/preload#cache-budgets-and-memory).
+
+- `entries` - sources for which the cache holds a URL
+- `blobBytes` - fetched image bytes held by object URLs the cache minted
+- `decodedEntries` - sources whose decoded bitmap the cache retains
+- `decodedBytes` - estimated bitmap size, at width × height × 4 bytes each
+- `pinned` - entries a mounted image or the current scene prevents from being evicted
+- `budget` - the limits currently read from `imageCacheBudgetBytes` and `decodedImageBudgetBytes`

@@ -2,6 +2,7 @@
   "title": "蓝图",
   "pages": [
     "index",
+    "text-format",
     "variables",
     "affection-endings",
     "surfaces",

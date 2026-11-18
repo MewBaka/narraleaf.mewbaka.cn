@@ -1,13 +1,13 @@
 ---
 title: "预加载"
-description: 播放器分两级预加载场景资源的方式，以及应等待的生命周期信号
+description: 播放器按 gate、soon、idle 分区预加载场景资源的方式、自定义策略、缓存预算与生命周期信号
 ---
 
 <Callout type="info">
-    本页描述的行为自 `0.17.0` 起可用
+    自动预加载自 `0.17.0` 起可用；`preloadGate` 自 `0.42.0` 起可用，缓存预算自 `0.45.0` 起可用，宿主自定义 `PreloadStrategy` 自 `0.46.0` 起可用
 </Callout>
 
-播放器会在场景绘制之前抓取并解码它的资源。自 `0.17.0` 起，这项工作在故事被加载的那一刻就开始，而不是等到进入游戏，并且分两个层级运行，因此首帧只等待它需要的资源
+播放器会在场景绘制之前抓取并解码它的资源。自 `0.17.0` 起，这项工作在故事被加载的那一刻就开始，而不是等到进入游戏。内置策略把工作分成多个分区，因此首帧只等待它需要的资源
 
 <Callout type="warning">
     **`onPreloadComplete` 的时机变了。** 它现在在**进入游戏之前**触发，此时菜单可能还在屏幕上。表示「游戏内容已经上屏」的信号是 `onFirstSceneReady`，参见[该等哪个信号](#该等哪个信号)
@@ -19,28 +19,29 @@ description: 播放器分两级预加载场景资源的方式，以及应等待�
 
 自动注册仅在既没有预加载场景、也没有已挂载场景时才生效，因此已经自行调用 [preloadScene](/zh/docs/narraleaf-react/core/game/game-state#preloadscene) 的宿主保留自己的选择
 
-## 关键层与前瞻层
+## 内置预加载分区
 
-场景的资源清单是传递性的：它携带从该场景可达的每一个场景的完整资源集。预加载分两个层级运行，使首帧不必等待其中的全部
+场景的资源清单是传递性的：它携带从该场景可达的每一个场景的完整资源集。内置策略把工作分成三个分区，使首帧只等待它需要的内容
 
-| 层级 | 内容 | 运行方式 |
+| 分区 | 内容 | 运行方式 |
 | --- | --- | --- |
-| **关键层（critical）** | 即将绘制的场景直接注册的资源：它自己的背景与图片，加上它所跳转到的场景的直接背景 | 不做节流，并且是唯一为 `event:preloaded.complete`（也就是首帧绘制）把关的层级 |
-| **前瞻层（look-ahead）** | 从这里可达的每个场景的完整资源集，减去已经在关键层里的部分 | 在关键层之后运行，由 `preloadDelay` 节流。没有任何东西等待它 |
+| **Gate** | 开场画面。默认是场景自己的背景与图片；设为 `preloadGate: "scene"` 时，是场景注册的全部图片 | 不做节流，并且是唯一会阻塞 `event:preloaded.complete` 与首帧绘制的分区 |
+| **Soon** | 当前场景注册的其余图片，加上它跳转到的场景的直接背景 | 全速开始，不阻塞当前帧 |
+| **Idle** | 可达场景的前瞻集合，去掉前两个分区已有的内容 | 最后运行，由 `preloadDelay` 节流；新的预加载时点会放弃旧任务 |
 
-`preloadDelay` 不计入首帧的开销，它只节流推测性的工作。缓存淘汰在两个层级的并集上执行一次，并对已被取代的那一趟跳过，因此预加载中途切换场景不会丢掉当前场景刚缓存好的图片
+`GameConfig.preloadGate` 默认为 `"firstFrame"`，只等待一张图，其余内容在游戏背后继续抓取。宁可晚一点开场，也不愿注册图片在需要它的画面之后才到达时，设为 `"scene"`
 
-以 `preloadAllImages: false` 运行的游戏保持按动作预测的行为，本节内容对它们不适用
+`preloadDelay` 只节流 idle 分区。以 `preloadAllImages: false` 运行的游戏仍使用按动作预测的旧路径
 
 ## 解码后的位图
 
-关键层持有解码后的元素，直到该源离开缓存为止，因此首个可见帧不会再解码一次
+Gate 与 Soon 分区可以持有解码后的元素，因此图片在揭幕那一帧就能绘制。是否保留解码位图由预加载条目决定
 
-前瞻层不持有它们。一张全分辨率位图要占宽 × 高 × 4 字节
+idle 分区默认不保留解码位图。一张全分辨率位图要占宽 × 高 × 4 字节
 
 ## 声音预加载
 
-关键层同时通过音频管理器的 `preload` 预热当前场景的声音：
+当前场景的声音通过音频管理器的 `preload` 预热：
 
 ```typescript
 <Player
@@ -58,14 +59,82 @@ description: 播放器分两级预加载场景资源的方式，以及应等待�
     **永远不要用这个 Promise 为任何东西把关。** 在浏览器的自动播放策略被一次用户手势满足之前，音频上下文一直是锁住的，因此在一个还没人碰过的页面上，音频预热可能一直挂着不结算。引擎自己的调用是发出去就不管的
 </Callout>
 
-自动预热的只有当前场景的声音，前瞻场景的音频留给那个场景自己的那一趟
+自动预热的只有当前场景的声音；idle 分区到达的场景会在自己的计划接管时预热音频
+
+## 自定义预加载策略 [#custom-preload-strategies]
+
+`GameConfig.preload` 会替换内置的「预热什么、何时预热」决策。宿主能根据编译后的故事知道下一行需要什么，或从本地磁盘直接提供资源、不应再复制进播放器缓存时，适合使用它
+
+```typescript
+new Game({
+    preload: {
+        async plan(moment) {
+            if (moment.kind !== "advance") return null;
+
+            return {
+                entries: [
+                    {type: "image", src: "/art/next.webp", band: "soon", decode: true},
+                ],
+                audio: [nextVoice],
+                video: [nextClip],
+                keep: ["/art/next.webp"],
+                pin: [],
+            };
+        },
+        async acquire(resource, signal) {
+            // 省略 acquire 时，由播放器自行抓取并缓存资源
+            return {url: resource.src, bytes: 0};
+        },
+        onMissing(resource) {
+            console.warn("Not preloaded:", resource);
+        },
+    },
+});
+```
+
+`plan(moment)` 可以返回计划、`null`（保持上一份计划）或二者的 Promise。时点是即将绘制的场景，或故事推进到一个动作
+
+计划包含以下部分：
+
+- `entries` 只包含图片。每项给出 URL、`gate`、`soon`、`idle` 三个分区之一，以及是否在屏幕外解码并保留位图
+- `audio` 要预热的 `Sound` 元素
+- `video` 要按先后顺序预热的 `Video` 元素。视频逐条缓冲；故事自己声明的视频不会被计划释放
+- `keep` 缓存可以保留的全部图片 URL，集合之外的内容在没有元素显示后会释放
+- `pin` 不受两种内存预算约束的 URL，通常是开场画面
+
+`acquire(resource, signal)` 可选择提供元素最终使用的 URL。返回 `{url, bytes, release?}` 让缓存记录占用并在释放时清理，或返回 `null` 表示无需预热。省略 `acquire` 时使用播放器自己的抓取与 object URL 缓存
+
+舞台显示了计划未命名的内容时，`onMissing(resource)` 对每个 URL 最多调用一次。能读取编译结果的宿主可用它指出本应规划该图片或视频的行
+
+完整类型见 [PreloadStrategy](/zh/docs/narraleaf-react/core/types/PreloadStrategy)
+
+## 缓存预算与内存 [#cache-budgets-and-memory]
+
+播放器缓存有上限，限制在运行时从 `GameConfig` 读取：
+
+| 字段 | 默认值 | 保留内容 |
+| --- | --- | --- |
+| `imageCacheBudgetBytes` | `256 MiB` | object URL 持有的已抓取图片字节 |
+| `decodedImageBudgetBytes` | `128 MiB` | 解码后的位图，按 `宽 × 高 × 4` 字节估算 |
+
+两种缓存都会淘汰最近最少使用、且当前没有显示的内容。开场背景和所有已挂载图片不会被淘汰。`Infinity` 取消限制。音频单独管理：没有播放令牌持有、当前场景也不再保留时，音频会被释放
+
+通过 [GameState](/zh/docs/narraleaf-react/core/game/game-state) 读取缓存状态：
+
+```typescript
+const images = liveGame.getGameState()?.getImageCache()?.getStats();
+const audio = liveGame.getGameState()?.audioManager.getCacheStats();
+liveGame.getGameState()?.audioManager.retainOnly(sceneSounds);
+```
+
+[`ImageCacheStats`](/zh/docs/narraleaf-react/core/types/ImageCacheStats) 报告条目数、已抓取字节、解码条目数与字节、固定条目数以及当前预算。`AudioManager.getCacheStats()` 报告解码音频、加载中的音频与 PCM 字节。`retainOnly(sounds)` 保留场景的一组音频并释放其余内容
 
 ## 该等哪个信号
 
 | 信号 | 触发时机 |
 | --- | --- |
 | [onReady](/zh/docs/narraleaf-react/player/player#onready) | `Player` 实例已初始化。`newGame()` 应该写在这里。它既不保证预加载完成，也不保证已经渲染|
-| `onPreloadComplete` | 首次预加载（关键层）已经完成。自 `0.17.0` 起，这发生在**进入游戏之前**：菜单可能还在屏幕上，且没有任何场景被挂载|
+| `onPreloadComplete` | 首次预加载（gate 分区）已经完成。自 `0.17.0` 起，这发生在**进入游戏之前**：菜单可能还在屏幕上，且没有任何场景被挂载|
 | `onFirstSceneReady` | 预加载已完成、第一个场景组件已挂载，**并且**浏览器已经有一帧的时间把它渲染出来。这才是「内容已经上屏」的信号|
 
 后两者既是 `Player` 的 prop，也是 `Game` 的方法，且每个游戏生命周期内最多触发一次：
@@ -117,9 +186,13 @@ gameState.preloadScene(scene);   // 也可以传 Story，将使用它的入口�
 
 以下配置项位于 [GameConfig](/zh/docs/narraleaf-react/core/types/GameConfig)：
 
-- `preloadAllImages`（默认 `true`）- 是否运行两层的场景预加载。设为 `false` 时，播放器改为预测接下来 `maxPreloadActions` 个动作并预加载它们的资源
-- `preloadConcurrency`（默认 `5`）- 同时抓取的图片数量，两个层级都适用
-- `preloadDelay`（默认 `100`）- 前瞻层批次之间的节流间隔。关键层不做节流
-- `waitForPreload`（默认 `true`）- 在关键层完成之前保持播放器不揭幕
+- `preloadAllImages`（默认 `true`）- 是否运行内置的场景预加载。设为 `false` 时，播放器改为预测接下来 `maxPreloadActions` 个动作并预加载它们的资源
+- `preloadConcurrency`（默认 `5`）- 同时抓取的图片数量
+- `preloadDelay`（默认 `100`）- idle 分区批次之间的节流间隔
+- `waitForPreload`（默认 `true`）- 在 gate 分区完成之前保持播放器不揭幕
 - `forceClearCache`（默认 `false`）- 场景切换时清空图片缓存
 - `maxPreloadActions`（默认 `10`）- `preloadAllImages: false` 路径向前预测的动作数量
+- `preloadGate`（默认 `"firstFrame"`）- gate 是等待开场画面，还是等待场景注册的全部图片
+- `preload` - 自定义 `PreloadStrategy`；不设置时使用上面的内置分区
+- `imageCacheBudgetBytes`（默认 `256 MiB`）- 缓存可以保留的已抓取图片字节
+- `decodedImageBudgetBytes`（默认 `128 MiB`）- 缓存可以保留的解码位图字节

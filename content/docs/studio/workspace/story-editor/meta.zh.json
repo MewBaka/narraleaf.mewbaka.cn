@@ -1,4 +1,12 @@
 {
   "title": "故事编辑器",
-  "pages": ["index"]
+  "pages": [
+    "index",
+    "rename-references",
+    "script-documents",
+    "scene-history",
+    "comments",
+    "stage-timeline",
+    "stage-placement"
+  ]
 }

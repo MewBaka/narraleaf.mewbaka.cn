@@ -1,0 +1,14 @@
+---
+title: "DeserializeOptions"
+description: LiveGame.deserialize のオプション。別のストーリーが書いたセーブを拒否するかどうかを含む
+---
+```typescript
+interface DeserializeOptions {
+    requireMatchingStory?: boolean;
+}
+```
+
+## requireMatchingStory
+`true` にすると、セーブの `meta.storyHash` が読み込んだストーリーと異なる場合、[`LiveGame.deserialize`](/ja/docs/narraleaf-react/core/game/live-game#deserialize) は状態を変更する前に例外を投げます。
+
+既定値は `false` です。不一致は警告として記録され、セーブは読み込まれます。リリース後に更新されたゲームでは古いセーブがそのまま遊べることが多いため、通常はこの動作が適しています。別のストーリーを読み込むほうが読込拒否より悪い場合にだけ `true` を使ってください。

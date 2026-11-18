@@ -9,9 +9,9 @@ const localizedTabs = {
       path: 'studio',
     },
     {
-      title: 'NarraLeaf Desktop',
-      description: 'Library and CLI docs for the desktop app toolchain.',
-      path: 'narraleaf/library',
+      title: 'NarraLeaf Team',
+      description: 'Self-hosted projects, roles, reviews and collaboration.',
+      path: 'studio/team',
     },
     {
       title: 'NarraLeaf-React',
@@ -26,9 +26,9 @@ const localizedTabs = {
       path: 'studio',
     },
     {
-      title: 'NarraLeaf Desktop',
-      description: '面向桌面应用工具链的 Library 与 CLI 文档。',
-      path: 'narraleaf/library',
+      title: 'NarraLeaf Team',
+      description: '自托管项目、角色、审阅与协作。',
+      path: 'studio/team',
     },
     {
       title: 'NarraLeaf-React',
@@ -43,9 +43,9 @@ const localizedTabs = {
       path: 'studio',
     },
     {
-      title: 'NarraLeaf Desktop',
-      description: 'デスクトップアプリのツールチェーン向け Library と CLI のドキュメント。',
-      path: 'narraleaf/library',
+      title: 'NarraLeaf Team',
+      description: 'セルフホスト型のプロジェクト、役割、レビュー、共同作業。',
+      path: 'studio/team',
     },
     {
       title: 'NarraLeaf-React',

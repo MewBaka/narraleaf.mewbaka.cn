@@ -1,0 +1,58 @@
+---
+title: "PreloadStrategy"
+description: A host-supplied plan for what the player warms, when it warms it, and where its bytes come from.
+---
+```typescript
+type PreloadBand = "gate" | "soon" | "idle";
+
+type PreloadEntry = {
+    type: "image";
+    src: string;
+    band: PreloadBand;
+    decode?: boolean;
+};
+
+type PreloadPlan = {
+    entries: readonly PreloadEntry[];
+    audio?: readonly Sound[];
+    video?: readonly Video[];
+    keep?: readonly string[];
+    pin?: readonly string[];
+};
+
+type PreloadMoment =
+    | {kind: "scene"; scene: Scene; story: Story | null}
+    | {kind: "advance"; actionId: string | null; scene: Scene | null; story: Story | null};
+
+type PreloadResource = {type: "image" | "video"; src: string};
+
+type PreloadAcquisition = {
+    url: string;
+    bytes?: number;
+    release?: () => void;
+};
+
+interface PreloadStrategy {
+    plan(moment: PreloadMoment): PreloadPlan | null | Promise<PreloadPlan | null>;
+    acquire?(resource: PreloadResource, signal: AbortSignal): Promise<PreloadAcquisition | null>;
+    onMissing?(resource: PreloadResource): void;
+}
+```
+
+Passed as `GameConfig.preload`. See [Custom preload strategies](/docs/narraleaf-react/core/game/preload#custom-preload-strategies) for a complete example.
+
+## plan
+
+Answers what should be warm at one moment. Return `null` to leave the previous plan in force. The plan replaces the previous one; `keep` lists every image URL the cache may retain.
+
+Only the `gate` band blocks the first painted frame. `soon` starts at full speed without blocking, and `idle` is paced by `preloadDelay`. `decode` retains a decoded bitmap; it defaults to true for `gate` and `soon`, and false for `idle`.
+
+`video` names clips in the order they will be wanted. They buffer one at a time and never gate the frame.
+
+## acquire
+
+Optionally supplies the URL an element should use. Return `{url, bytes, release?}` to let the image cache account for the bytes and clean them up, or `null` when the resource needs no warming. Omit `acquire` to use the player's fetch and object-URL cache.
+
+## onMissing
+
+Called at most once per URL when the stage shows an image or video no plan named. A host that compiled the story can identify the row that should have planned it.

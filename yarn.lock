@@ -922,10 +922,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@narraleaf/sound@npm:0.1.0":
-  version: 0.1.0
-  resolution: "@narraleaf/sound@npm:0.1.0"
-  checksum: 10c0/9878c983b222a8dae2a0f7f8560e22c814cced5584f4e4ce52319f8db9f775931d3477239573c1b93332d08c41b4f5db4a6512020291f27eda72170205aa4eee
+"@narraleaf/sound@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@narraleaf/sound@npm:1.0.1"
+  checksum: 10c0/cabf6d4ceac031b159be8121148dd173fc8dea3250e5b69275bbc6aba13c43b7ea38167e19d281d54182d46ffee61191588b2e0db0871392eda27ca37439ab64
   languageName: node
   linkType: hard
 
@@ -5904,11 +5904,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"narraleaf-react@npm:^0.39.2":
-  version: 0.39.2
-  resolution: "narraleaf-react@npm:0.39.2"
+"narraleaf-react@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "narraleaf-react@npm:1.5.0"
   dependencies:
-    "@narraleaf/sound": "npm:0.1.0"
+    "@narraleaf/sound": "npm:^1.0.1"
     "@types/howler": "npm:^2.2.11"
     client-only: "npm:^0.0.1"
     clsx: "npm:^2.1.1"
@@ -5927,7 +5927,7 @@ __metadata:
       optional: false
     react-dom:
       optional: false
-  checksum: 10c0/f4ea37483376adb5a697a9d6f3cad94c3311d64afe66b51fae209ea2f8f99a56ac0cb8fc5db95c9b566bd9519a31c97ad86e7f368ac91302057fc63968ad98da
+  checksum: 10c0/8526f72348682bf72c80e6f7745fb925c210c6e9a13b800f07b63b29ead5c4ac52ec3074b98dc01a989c7de62cd84e9e1defa3002175e1c814b751a0772e05ee
   languageName: node
   linkType: hard
 
@@ -5949,7 +5949,7 @@ __metadata:
     fumadocs-ui: "npm:16.8.7"
     lucide-react: "npm:^1.14.0"
     motion: "npm:11.18.2"
-    narraleaf-react: "npm:^0.39.2"
+    narraleaf-react: "npm:^1.5.0"
     next: "npm:16.2.4"
     postcss: "npm:^8.5.13"
     react: "npm:^19.2.5"

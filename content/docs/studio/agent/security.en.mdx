@@ -38,7 +38,7 @@ Copying a configuration puts the token on the system clipboard, where other prog
 
 **Pausing stops changes in one project.** While an agent is paused, every change it tries there is refused. Reads still work.
 
-**A busy project refuses changes.** No change is accepted while the project is frozen: a past version is open for viewing, the project was frozen by hand, a version-control merge is unfinished, Studio is in recovery mode, or another Studio window has taken the project over. A [Team](/docs/studio/team) live session refuses agent changes for as long as it runs, so they cannot race the people in it.
+**A busy project refuses changes.** No change is accepted while the project is frozen: a past version is open for viewing, the project was frozen by hand, a version-control merge is unfinished, Studio is in recovery mode, or another Studio window has taken the project over. Agent changes are also refused during a [Team](/docs/studio/team) live session, and while a Team project's documents are held by its server, so they cannot race the people or the document authority.
 
 **Changes go through Studio.** An agent has no tool that writes files in the project folder. Each change is made through the same services as an edit by hand, so it appears in the editor, is one step of undo, and is checked the way an edit by hand is. A scene, page or blueprint that does not pass the check is not written.
 
@@ -67,7 +67,7 @@ While it is on:
 - Agents may change projects whatever **Allow agents to change projects** says. That switch shows as on and cannot be switched until full access is off again.
 - Agents may read files in any folder without asking. Nothing is added to **Folders agents may import from**.
 - The folders that are never offered stay closed: Studio's own folders, the home folder as a whole, and drive roots.
-- Pausing, a frozen project, a Team live session and the checks every change passes still apply.
+- Pausing, a frozen project, a Team live session, a server-held Team project and the checks every change passes still apply.
 
 <Callout type="warn">
 Full access is a broad grant. While it is on, any program that holds the access token can read files in any folder your account can open, including the folders inside your home folder that hold private documents and other programs' settings, and can change any open project, without a prompt for you to see. The excluded folders rule out only the widest requests and Studio's own token. An agent also acts on what it reads, so full access extends your trust to everything the agent is given. Turn it on for work you are watching and off when it is done; for everyday use, allowing folders as they are asked for keeps an agent to what it needs.
@@ -81,7 +81,7 @@ Every question agent access asks you opens in a Studio window titled **Agent Acc
 
 A plugin can offer agents tools of its own. See [Plugin tools](/docs/studio/agent/tools#plugin-tools).
 
-**They pass the same checks.** A plugin tool that changes the project is refused while changes are not allowed, while the agent is paused, while the project is frozen and during a live session, exactly as Studio's own tools are. A plugin cannot opt out.
+**They pass the same checks.** A plugin tool that changes the project is refused while changes are not allowed, while the agent is paused, while the project is frozen, during a live session and while a Team project's documents are held by its server, exactly as Studio's own tools are. A plugin cannot opt out.
 
 **A reading tool cannot write.** While a tool the plugin registered as reading runs, the plugin's stored data refuses every write. What a writing tool changes in it is recorded as one step of undo.
 

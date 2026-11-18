@@ -68,7 +68,7 @@ const storable = game.getLiveGame().getStorable();
 
 调用此方法后，当前游戏状态将丢失，舞台将触发强制重置
 
-> **注意：**即使只更改一行脚本，保存的游戏也可能与新版本不兼容
+默认会把存档的 `meta.storyHash` 与当前故事比较，不一致时只记录警告，因此游戏更新后仍可读取旧存档。传入 `{ requireMatchingStory: true }` 会在改变任何状态之前直接拒绝
 
 示例：
 
@@ -82,9 +82,13 @@ const game = useGame();
 
 // 将保存的游戏数据传递给游戏实例
 game.getLiveGame().deserialize(savedGame);
+
+// 或拒绝由另一个故事写出的存档
+game.getLiveGame().deserialize(savedGame, { requireMatchingStory: true });
 ```
 
 - `savedGame: SavedGame` - [SavedGame](/zh/docs/narraleaf-react/core/types/SavedGame)
+- `options?: DeserializeOptions` - `requireMatchingStory?: boolean`
 </Step>
 </Steps>
 
@@ -97,7 +101,7 @@ game.getLiveGame().deserialize(savedGame);
 
 你可以使用此方法将游戏状态保存到文件或数据库中
 
-> **注意：**即使只更改一行脚本，保存的游戏也可能与新版本不兼容
+存档会记录故事 hash。游戏仍可读取旧故事写出的存档；需要严格一致时，可以比较 `save.meta.storyHash` 与 `liveGame.story.hash()`，或在读取时使用上面的选项
 
 - `return: SavedGame` - 参见 [SavedGame](/zh/docs/narraleaf-react/core/types/SavedGame)
 </Step>
@@ -207,6 +211,31 @@ function handleButtonClick() {
 返回 PNG 图像的 Blob
 
 - 返回 `Promise<Blob | null>`
+</Step>
+</Steps>
+
+### captureImage
+
+<Steps>
+<Step>
+
+按所需尺寸与编码捕获游戏截图，并且只绘制一次
+
+`maxEdge` 限制最长边像素数。`type` 可以是 `image/png`、`image/jpeg` 或 `image/webp`；`quality` 对 JPEG 与 WebP 生效。编码需要不透明背景时传入 `backgroundColor`。不传选项时，结果与 `capturePng` 相同
+
+```typescript
+const thumbnail = await liveGame.captureImage({
+    maxEdge: 960,
+    type: "image/webp",
+    quality: 0.85,
+    backgroundColor: "#000",
+});
+```
+
+浏览器无法编码指定类型时会回退为 PNG，与 `HTMLCanvasElement.toDataURL` 的行为相同。编码结果重要时，请检查数据 URL 的前缀
+
+- `options?: CaptureImageOptions` - `maxEdge`、`type`、`quality`、`backgroundColor`
+- 返回 `Promise<string>`
 </Step>
 </Steps>
 

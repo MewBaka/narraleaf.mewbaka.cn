@@ -1,0 +1,36 @@
+---
+title: The web console
+description: Team's browser interface for projects, files, versions, reviews, to-dos and administration.
+---
+
+`https://<server>:41402/console/` is Team's own interface. It uses the same account and certificate as Studio and is available in English, Chinese and Japanese on a desktop or a phone.
+
+The console is a beta. It reads project content and records the work around it; it is not a second editor for scenes, pages or Blueprints.
+
+## Sign-in and setup
+
+A new server is set up at `/console/setup` with the code printed by `nlteam up`. After setup, the console uses the account password and an `HttpOnly` session cookie for up to thirty days, seven days unused.
+
+Each account can list its signed-in Studio devices and end any one of them. An operator can end every device of an account. Two-step sign-in, SSO, API tokens and password-reset links are managed here.
+
+## What the console shows
+
+| Area | Reads or changes |
+| --- | --- |
+| Projects | Every project the account has a role in, its members, files and versions |
+| Workbench | Files and versions as the server holds them, with comments beside lines |
+| Comments and reviews | Threads, suggested edits, review verdicts and approvals |
+| To-dos | Project to-dos, priorities, labels and the version that finished them |
+| Notifications | Mentions, reviews, watches, reactions and build results |
+| Production | Builds, share links, statistics, localization, glossary, voice, roadmap, templates and webhooks |
+| Administration | Accounts, policies, signing keys, storage, backups, archive and audit filters |
+
+## Project settings
+
+A project owner changes members and roles, editor areas, access requests, share links, webhooks, save and restore permissions, archive and removal from the console.
+
+An operator sees the same project settings across the server and manages accounts, storage quotas, backups and the audit record.
+
+## What it does not do
+
+The console does not edit project content, run Studio, or apply document operations. Content changes in Studio through the Team document kernel. This is deliberate: one writer for project content keeps version history and conflict handling trustworthy.

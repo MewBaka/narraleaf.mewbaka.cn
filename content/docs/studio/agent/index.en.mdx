@@ -27,6 +27,14 @@ Agent access needs Studio 1.5.0 or newer. Studio must be open while the agent wo
 
 Every tool is listed in [Tools](/docs/studio/agent/tools).
 
+## Dev Mode and read-only editors
+
+An agent can take over Dev Mode for a play-test. The window it opens stays hidden and read-only, and closes when the agent becomes idle. Select **Take over** on the notice to use the session yourself, then **Continue** to hand it back.
+
+While an agent holds Dev Mode, your debug tools are read-only. Taking over interrupts its play-test; handing the session back lets it continue.
+
+An agent can also set the Story or Interface editor read-only while it works, so your edits do not land between its read and write. The editor shows a notice with a switch back to read-write. The same notice can return it to read-only. The lock expires after five minutes without agent calls, and lifts when the agent is paused.
+
 ## What it cannot do
 
 - Edit data a plugin owns, unless the plugin offers agent tools for it. See [Plugin tools](/docs/studio/agent/tools#plugin-tools).

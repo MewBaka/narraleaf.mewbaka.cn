@@ -1,13 +1,13 @@
 ---
 title: "Preloading"
-description: How the player preloads scene assets in critical and look-ahead tiers, and which lifecycle signal to wait on.
+description: How the player preloads scene assets in gate, soon and idle bands, with custom strategies, cache budgets and lifecycle signals.
 ---
 
 <Callout type="info">
-    The behaviour described on this page is available since `0.17.0`.
+    The automatic preload pass is available since `0.17.0`; `preloadGate` since `0.42.0`, the cache budgets since `0.45.0`, and custom `PreloadStrategy` hosts since `0.46.0`.
 </Callout>
 
-The player fetches and decodes a scene's assets before that scene paints. Since `0.17.0` that work starts as soon as the story is loaded, rather than when the game is entered, and it runs in two tiers, so the first frame waits only on the assets it needs.
+The player fetches and decodes a scene's assets before that scene paints. Since `0.17.0` that work starts as soon as the story is loaded, rather than when the game is entered. The built-in strategy divides the work into bands, so the first frame waits only on the assets it needs.
 
 <Callout type="warning">
     **`onPreloadComplete` moved.** It now fires *before* the game is entered, while a menu may still be on screen. For the "the game has content on screen" signal, use `onFirstSceneReady`. See [Which signal to wait on](#which-signal-to-wait-on).
@@ -19,28 +19,29 @@ The player fetches and decodes a scene's assets before that scene paints. Since 
 
 The automatic registration applies only when there is neither a preloading scene nor a mounted scene, so a host that calls [preloadScene](/docs/narraleaf-react/core/game/game-state#preloadscene) itself keeps its own choice.
 
-## Critical and look-ahead tiers
+## Built-in preload bands
 
-A scene's asset list is transitive: it carries the asset set of every scene reachable from it. The pass runs in two tiers so the first frame does not wait for all of them.
+A scene's asset list is transitive: it carries the asset set of every scene reachable from it. The built-in strategy divides that work into three bands so the first frame waits only for what it needs.
 
-| Tier | What it holds | How it runs |
+| Band | What it holds | How it runs |
 | --- | --- | --- |
-| **Critical** | What the scene about to paint registers directly: its own backgrounds and images, plus the immediate background of any scene it jumps to | Unpaced, and the only tier that gates `event:preloaded.complete`, and therefore the first painted frame |
-| **Look-ahead** | The full asset set of every scene reachable from here, minus anything already in the critical tier | Runs after the critical tier, paced by `preloadDelay`. Nothing waits for it |
+| **Gate** | The opening frame. By default this is the scene's own background and images; with `preloadGate: "scene"`, it is every image the scene registers | Unpaced, and the only band that gates `event:preloaded.complete` and the first painted frame |
+| **Soon** | The rest of the current scene's registered images, plus the immediate background of a scene it jumps to | Starts at full speed without blocking the frame |
+| **Idle** | The reachable scene's look-ahead set, minus what the other bands hold | Runs last, paced by `preloadDelay`; abandoned when a newer moment replaces it |
 
-`preloadDelay` does not charge the first frame: it paces speculative work only. The cache-eviction pass runs once over the union of both tiers, and is skipped for a superseded pass, so switching scenes mid-preload keeps the images the current scene just cached.
+`GameConfig.preloadGate` is `"firstFrame"` by default. It waits for one picture, then keeps fetching behind the game. Set it to `"scene"` when the game would rather open late than risk any registered image arriving after the frame that wanted it.
 
-Games running with `preloadAllImages: false` keep the predict-by-action behaviour, and none of this applies to them.
+`preloadDelay` paces only the idle band. Games running with `preloadAllImages: false` keep the older predict-by-action path instead.
 
 ## Decoded bitmaps
 
-The critical tier holds its decoded elements until the source leaves the cache, so the first visible frame does not decode again.
+Gate and soon entries may hold their decoded elements until the source leaves the cache, so the first visible frame does not decode again.
 
-The look-ahead tier does not hold them. A full-resolution bitmap costs width × height × 4 bytes.
+Idle entries do not retain decoded bitmaps by default. A full-resolution bitmap costs width × height × 4 bytes.
 
 ## Sound preloading
 
-The critical tier also warms the current scene's sounds, through `preload` on the audio manager:
+The current scene's sounds are warmed through `preload` on the audio manager:
 
 ```typescript
 <Player
@@ -58,14 +59,82 @@ The critical tier also warms the current scene's sounds, through `preload` on th
     **Never gate anything on this promise.** The audio context stays locked until the browser's autoplay policy is satisfied by a user gesture, so an audio warm-up can sit pending on a page nobody has touched yet. The engine's own call is fire-and-forget.
 </Callout>
 
-Only the current scene's sounds are warmed automatically. A look-ahead scene's audio is left to that scene's own pass.
+Only the current scene's sounds are warmed automatically. A scene reached by the idle band is warmed when that scene's own plan takes over.
+
+## Custom preload strategies
+
+`GameConfig.preload` replaces the built-in decision of what to warm and when. It is useful to a host that knows the next row from compiled story data, or that serves assets from local disk and should not copy them into the player's cache.
+
+```typescript
+new Game({
+    preload: {
+        async plan(moment) {
+            if (moment.kind !== "advance") return null;
+
+            return {
+                entries: [
+                    {type: "image", src: "/art/next.webp", band: "soon", decode: true},
+                ],
+                audio: [nextVoice],
+                video: [nextClip],
+                keep: ["/art/next.webp"],
+                pin: [],
+            };
+        },
+        async acquire(resource, signal) {
+            // Omit acquire to let the player fetch and cache the resource itself.
+            return {url: resource.src, bytes: 0};
+        },
+        onMissing(resource) {
+            console.warn("Not preloaded:", resource);
+        },
+    },
+});
+```
+
+`plan(moment)` may return a plan, `null` to leave the previous plan in force, or a promise of either. The moment is either a scene about to paint or a story advance naming the action.
+
+A plan has these parts:
+
+- `entries` contains images only. Each entry names its URL, one of the `gate`, `soon` or `idle` bands, and whether to decode it off-screen and retain the bitmap.
+- `audio` names `Sound` elements to keep warm.
+- `video` names `Video` elements in the order they will be wanted. Clips buffer one at a time behind the story, and a plan cannot release a clip the story declared itself.
+- `keep` names every image URL the cache may retain. Anything outside it is released once nothing is showing it.
+- `pin` protects URLs from either memory budget, normally the opening frame.
+
+`acquire(resource, signal)` optionally supplies the URL an element should use. Return `{url, bytes, release?}` to let the cache account for the bytes and clean up, or `null` when the resource needs no warming. Omit `acquire` to use the player's fetch and object-URL cache.
+
+`onMissing(resource)` is called at most once per URL when the stage shows something no plan named. A compiled host can use it to identify the row that should have planned the image or clip.
+
+See [PreloadStrategy](/docs/narraleaf-react/core/types/PreloadStrategy) for the complete type.
+
+## Cache budgets and memory
+
+The player's caches are bounded, and the limits are read from `GameConfig` at run time:
+
+| Field | Default | Holds |
+| --- | --- | --- |
+| `imageCacheBudgetBytes` | `256 MiB` | Fetched image bytes kept alive by object URLs |
+| `decodedImageBudgetBytes` | `128 MiB` | Decoded bitmaps, estimated at `width × height × 4` bytes each |
+
+Both caches evict least-recently-used entries that nothing on stage is showing. The opening background and every image currently mounted are pinned. `Infinity` removes a limit. Audio is managed separately: a clip is released when no token is playing it and the current scene no longer keeps it warm.
+
+Read what the caches hold through [GameState](/docs/narraleaf-react/core/game/game-state):
+
+```typescript
+const images = liveGame.getGameState()?.getImageCache()?.getStats();
+const audio = liveGame.getGameState()?.audioManager.getCacheStats();
+liveGame.getGameState()?.audioManager.retainOnly(sceneSounds);
+```
+
+[`ImageCacheStats`](/docs/narraleaf-react/core/types/ImageCacheStats) reports entries, fetched bytes, decoded entries and bytes, pinned entries and the budgets in force. `AudioManager.getCacheStats()` reports decoded clips, clips in flight and decoded PCM bytes. `retainOnly(sounds)` keeps the scene's set warm and releases the rest.
 
 ## Which signal to wait on
 
 | Signal | Fires when |
 | --- | --- |
 | [onReady](/docs/narraleaf-react/player/player#onready) | The `Player` instance is initialized. This is where `newGame()` belongs. It is not a preload or a first-render guarantee. |
-| `onPreloadComplete` | The initial preload pass (the critical tier) has finished. Since `0.17.0` this is **before the game is entered**: a menu may still be on screen and no scene is mounted. |
+| `onPreloadComplete` | The initial preload pass (the gate band) has finished. Since `0.17.0` this is **before the game is entered**: a menu may still be on screen and no scene is mounted. |
 | `onFirstSceneReady` | The preload pass has finished, the first scene component has mounted, **and** the browser has had a frame to render it. This is the "there is content on screen" signal. |
 
 The latter two exist as a `Player` prop and as a `Game` method, and each fires at most once per game lifecycle:
@@ -117,9 +186,13 @@ Calling this before the Player registers the entry scene prevents the automatic 
 
 These live on [GameConfig](/docs/narraleaf-react/core/types/GameConfig):
 
-- `preloadAllImages` (default `true`) - Run the two-tier scene pass. With `false`, the player predicts the next `maxPreloadActions` actions and preloads their sources instead.
-- `preloadConcurrency` (default `5`) - How many images are fetched at once, in both tiers.
-- `preloadDelay` (default `100`) - Pacing between look-ahead batches. The critical tier is not paced.
-- `waitForPreload` (default `true`) - Hold the player's reveal until the critical tier is done.
+- `preloadAllImages` (default `true`) - Run the built-in scene pass. With `false`, the player predicts the next `maxPreloadActions` actions and preloads their sources instead.
+- `preloadConcurrency` (default `5`) - How many images are fetched at once.
+- `preloadDelay` (default `100`) - Pacing between idle-band batches.
+- `waitForPreload` (default `true`) - Hold the player's reveal until the gate band is done.
 - `forceClearCache` (default `false`) - Clear the image cache when the scene changes.
 - `maxPreloadActions` (default `10`) - How many actions ahead the `preloadAllImages: false` path predicts.
+- `preloadGate` (default `"firstFrame"`) - Whether the gate waits for the opening frame or the scene's whole registered set.
+- `preload` - A custom `PreloadStrategy`; unset uses the built-in bands above.
+- `imageCacheBudgetBytes` (default `256 MiB`) - Fetched image bytes the cache may retain.
+- `decodedImageBudgetBytes` (default `128 MiB`) - Decoded bitmap bytes the cache may retain.

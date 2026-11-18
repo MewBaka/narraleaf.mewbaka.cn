@@ -148,7 +148,7 @@ Return the ids a later call needs, and say in the description which tool lists t
 
 ## What Studio does around a call
 
-**The gate.** A plugin tool passes the same checks as Studio's own. A `write: true` tool is refused unless the author allowed agents to make changes, and while the agent is paused, the project is frozen or a live session runs. The author can also switch off all of one plugin's tools in **Settings → Agent access → Plugin tools**. The plugin cannot opt out of any of it.
+**The gate.** A plugin tool passes the same checks as Studio's own. A `write: true` tool is refused unless the author allowed agents to make changes, and while the agent is paused, the project is frozen, a live session runs, or a Team project's documents are held by its server. The author can also switch off all of one plugin's tools in **Settings → Agent access → Plugin tools**. The plugin cannot opt out of any of it.
 
 **Reading tools cannot write.** While a `write: false` tool runs, `storage.writeJson` throws.
 

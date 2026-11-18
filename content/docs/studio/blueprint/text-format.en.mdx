@@ -1,0 +1,27 @@
+---
+title: Blueprint text
+description: Copy selected nodes as blueprint text and paste blueprint text back onto the canvas.
+---
+
+Studio can exchange part of a blueprint as text in the `.bp` format. The same format is used by the blueprint command-line tool and by agents that inspect or write graphs.
+
+## Copy as Text
+
+Select one or more nodes, open the right-click menu and choose **Copy as Text**. The selection is placed on the clipboard in blueprint text, including its nodes and the edges between them.
+
+## Paste blueprint text
+
+Copy blueprint text from a file, a chat message or another Studio window and paste it onto the canvas. Studio validates the text before placing it:
+
+- every node type must exist in this Studio
+- every plugin node must have its plugin loaded
+- pins and edges must match the current node declarations
+- references to project items must resolve
+
+A refused paste reports why and writes nothing. An accepted paste adds the nodes as one undo step.
+
+## What travels
+
+Blueprint text carries the graph structure, node arguments and literal pin values. It does not carry project documents, assets or plugin code. A graph that names an asset, character, page or plugin needs the same project item to exist where it is pasted.
+
+For the complete grammar, start from the Studio's `project/app/blueprint.md` tool documentation or ask an agent to read the blueprint format chapter.

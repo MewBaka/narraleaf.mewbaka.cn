@@ -1,6 +1,6 @@
 ---
 title: "GameElementHistory"
-description: 一条历史记录的形状，可以是含文本、语音与角色的对白，也可以是含提示与选择的菜单
+description: 一条历史记录的形状，可以是含文本、语音、角色与头像的对白，也可以是含提示与选择的菜单
 ---
 ```typescript
 type GameElementHistory =
@@ -10,6 +10,7 @@ type GameElementHistory =
         voice: string | null;
         voiceId?: string | number | null;
         character: string | null;
+        avatar: string | null;
     }
     | {
         type: "menu";
@@ -25,6 +26,7 @@ type GameElementHistory =
    - `voice`：已解析的语音 URL，未使用语音时为 `null`
    - `voiceId`：该行归档时所用的 `voiceId`，未使用语音映射时为 `null`。自 0.24.0 起提供
    - `character`：角色名称，旁白时为 `null`
+   - `avatar`：这一行在对话框中显示的头像 URL，没有头像时为 `null`。自 1.5.0 起提供
 
 2. `"menu"` 元素：
    - `text`：菜单提示文本，没有提示时为 `null`
@@ -45,3 +47,15 @@ for (const entry of liveGame.getHistory()) {
 
 若该行的语音是通过行内 `voice` 选项而非场景语音映射给出的，`voiceId` 为 null；
 0.24.0 之前记录的条目则根本没有这个字段——旧存档照常读取，不受影响
+
+## 读取说这句话时的脸
+
+`avatar` 在记录这一行时解析：先取句子自己的头像，再取说话人当前立绘对应的头像，最后取角色头像。这一行没有显示头像时为 `null`；1.5.0 之前写出的条目没有这个字段。事后再解析一次头像，得到的是说话人此时的样子，而不是这一行当时显示的脸
+
+```ts
+for (const entry of liveGame.getHistory()) {
+    if (entry.element.type === "say") {
+        showBacklogFace(entry.element.avatar ?? entry.element.character);
+    }
+}
+```

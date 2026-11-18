@@ -260,7 +260,7 @@ export default defineRuntimePlugin({
 
 `app` は `app.plugin`、`app.manifest`、`app.game` を持ちます。
 
-`app.game` には常に存在する 6 つのメンバー(`blueprintNodes`、`widgets`、`storyActions`、`data`、`config`、`log`)と、`contributes.runtimeCapabilities` が宣言した場合にのみ存在する、能力によってゲートされた名前空間の集合があります。宣言されていない名前空間は `undefined` であり、エラーを投げるメソッドではありません。完全なモデルは[Runtime API](/ja/docs/studio/plugin/runtime)を参照してください。
+`app.game` には常に存在する 7 つのメンバー(`blueprintNodes`、`widgets`、`storyActions`、`inlineTextEffects`、`data`、`config`、`log`)と、`contributes.runtimeCapabilities` が宣言した場合にのみ存在する、能力によってゲートされた名前空間の集合があります。宣言されていない名前空間は `undefined` であり、エラーを投げるメソッドではありません。完全なモデルは[Runtime API](/ja/docs/studio/plugin/runtime)を参照してください。
 
 ### game.blueprintNodes
 
@@ -301,6 +301,23 @@ execute: async ctx => {
 <Callout type="warn">
 `ctx.hostAdapter` というものは存在しません。以前のビルドでは `ctx.hostAdapter.blueprintRuntime.hostApi` を通じてホストの内部 API 全体――セーブ、ローカライゼーション、アプリの終了――が漏れ出しており、マニフェストには何も宣言されておらず、インストール時に作者へ示されるものも何もありませんでした。その経路はもうありません。ノードが触れるものは何であれ `ctx.game` を経由し、それはまさに `contributes` が宣言した能力の集合そのものです。
 </Callout>
+
+### game.inlineTextEffects
+
+```ts
+app.game.inlineTextEffects.register({ id, render, interactive? });
+```
+
+インライン文字効果を持つ対話部分のゲーム側レンダラーを登録します。`id` は `contributes.inlineTextEffects` に宣言され、studio エントリでも登録されている必要があります。`interactive` の既定値は `false` で、効果付きの文字をクリックするとセリフが進みます。用語のポップアップを開くなど、その文字自身がクリックを扱う場合は `true` にします。
+
+`render` は `RuntimeInlineTextEffectRenderProps` を受け取ります。レイアウト済みの `children`、表示済み文字と全文、表示状態、ルビの有無、作者が設定した数値 `params`、周囲の対話スタイルが含まれます。ルビ、縦書き、縦中横を保つには `children` を描画してください。
+
+```tsx
+app.game.inlineTextEffects.register({
+    id: `${PLUGIN_ID}.shake`,
+    render: ShakeText,
+});
+```
 
 ### game.storyActions
 

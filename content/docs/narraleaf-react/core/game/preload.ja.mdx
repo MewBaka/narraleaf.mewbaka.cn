@@ -1,15 +1,15 @@
 ---
 title: "プリロード"
-description: プレイヤーがシーンの資産をクリティカル層と先読み層の2段階でプリロードする方法、および待つべきライフサイクル信号
+description: プレイヤーが gate、soon、idle の帯でシーン資産をプリロードする方法、カスタム戦略、キャッシュ予算、待つべきライフサイクル信号
 ---
 
 <Callout type="info">
-    このページで説明する挙動は `0.17.0` 以降で利用可能です。
+    自動プリロードは `0.17.0` から、`preloadGate` は `0.42.0` から、キャッシュ予算は `0.45.0` から、ホスト独自の `PreloadStrategy` は `0.46.0` から利用できます。
 </Callout>
 
 プレイヤーは、シーンが描画される前にその資産をフェッチしてデコードします。`0.17.0` 以降、この処理は
-ゲームに入ったときではなく、ストーリーが読み込まれた時点で始まるようになり、2 段階で実行されるため、
-最初のフレームはそれが必要とする資産だけを待ちます。
+ゲームに入ったときではなく、ストーリーが読み込まれた時点で始まるようになりました。組み込み戦略は作業を
+複数の帯に分けるため、最初のフレームはそれが必要とする資産だけを待ちます。
 
 <Callout type="warning">
     **`onPreloadComplete` の発火位置が変わりました。** 現在はゲームに入る**前**に発火し、その時点では
@@ -27,37 +27,28 @@ description: プレイヤーがシーンの資産をクリティカル層と先�
 そのため、自ら [preloadScene](/ja/docs/narraleaf-react/core/game/game-state#preloadscene) を呼び出す
 ホストは、自分の選択を保持できます。
 
-## クリティカル層と先読み層
+## 組み込みのプリロード帯
 
-シーンの資産リストは推移的です。つまり、そのシーンから到達可能なすべてのシーンの資産セットを含みます。
-このパスは 2 段階で実行されるため、最初のフレームがそのすべてを待つ必要はありません。
+シーンの資産リストは推移的で、そのシーンから到達可能なすべてのシーンの資産セットを含みます。組み込み戦略は作業を 3 つの帯に分け、最初のフレームが必要なものだけを待ちます。
 
-| 層 | 保持する内容 | 実行方法 |
+| 帯 | 内容 | 実行方法 |
 | --- | --- | --- |
-| **クリティカル層（critical）** | これから描画されるシーンが直接登録するもの。自身の背景と画像、それに
-自身が遷移する先のシーンの直接の背景 | ペーシングなしで実行され、`event:preloaded.complete`、
-つまり最初の描画フレームを制御する唯一の層 |
-| **先読み層（look-ahead）** | ここから到達可能なすべてのシーンの完全な資産セットから、すでにクリティカル
-層に含まれるものを除いたもの | クリティカル層の後に実行され、`preloadDelay` によってペーシングされる。
-何もこれを待たない |
+| **Gate** | 開始フレーム。既定ではシーン自身の背景と画像。`preloadGate: "scene"` ではシーンが登録するすべての画像 | ペーシングなし。`event:preloaded.complete` と最初の描画フレームを制御する唯一の帯 |
+| **Soon** | 現在のシーンが登録する残りの画像と、遷移先シーンの直接の背景 | 全速で開始し、フレームをブロックしない |
+| **Idle** | 到達可能なシーンの先読みセットから、ほかの帯に含まれるものを除いたもの | 最後に実行され、`preloadDelay` でペーシング。新しい時点が来ると破棄 |
 
-`preloadDelay` は最初のフレームのコストには計上されません。投機的な作業だけをペーシングします。
-キャッシュ退避パスは両方の層の和集合に対して 1 回だけ実行され、置き換えられたパスに対してはスキップ
-されるため、プリロードの途中でシーンを切り替えても、現在のシーンがちょうどキャッシュした画像は
-失われません。
+`GameConfig.preloadGate` の既定値は `"firstFrame"` で、1 枚の画像だけを待ち、残りはゲームの背後で取得し続けます。登録画像が必要なフレームより後に届くより、開始が遅いほうがよい場合は `"scene"` にします。
 
-`preloadAllImages: false` で動作するゲームは、アクションによる予測方式の挙動を維持しており、
-このページの内容はそれらには当てはまりません。
+`preloadDelay` は idle 帯だけをペーシングします。`preloadAllImages: false` のゲームは従来のアクション予測経路を使います。
 
 ## デコード済みビットマップ
 
-クリティカル層は、ソースがキャッシュから外れるまでデコード済みの要素を保持するため、最初に表示される
-フレームは再度デコードされることがありません。
+Gate と Soon の帯は、画像を表示フレームで描けるようデコード済み要素を保持できます。デコード済みビットマップを保持するかは各プリロード項目が決めます。
 
-先読み層はそれらを保持しません。フル解像度のビットマップは 幅 × 高さ × 4 バイトのコストがかかります。
+idle 帯は既定ではデコード済みビットマップを保持しません。フル解像度のビットマップは 幅 × 高さ × 4 バイトのコストがかかります。
 
 ## サウンドのプリロード [#sound-preloading]
-クリティカル層は、オーディオマネージャーの `preload` を通じて、現在のシーンのサウンドも温めます。
+現在のシーンのサウンドは、オーディオマネージャーの `preload` を通じて温めます。
 
 ```typescript
 <Player
@@ -83,12 +74,80 @@ description: プレイヤーがシーンの資産をクリティカル層と先�
 自動的に温められるのは現在のシーンのサウンドだけです。先読み対象のシーンの音声は、そのシーン自身の
 パスに委ねられます。
 
+## カスタムプリロード戦略 [#custom-preload-strategies]
+
+`GameConfig.preload` は、何をいつ温めるかという組み込みの判断を置き換えます。コンパイル済みのストーリーから次の行を知るホストや、ローカルディスクから資産を配信し、プレイヤーのキャッシュへ複製すべきでないホストに向いています。
+
+```typescript
+new Game({
+    preload: {
+        async plan(moment) {
+            if (moment.kind !== "advance") return null;
+
+            return {
+                entries: [
+                    {type: "image", src: "/art/next.webp", band: "soon", decode: true},
+                ],
+                audio: [nextVoice],
+                video: [nextClip],
+                keep: ["/art/next.webp"],
+                pin: [],
+            };
+        },
+        async acquire(resource, signal) {
+            // acquire を省略すると、プレイヤーが取得とキャッシュを行う
+            return {url: resource.src, bytes: 0};
+        },
+        onMissing(resource) {
+            console.warn("Not preloaded:", resource);
+        },
+    },
+});
+```
+
+`plan(moment)` は計画、以前の計画を維持する `null`、またはその Promise を返せます。時点は描画直前のシーンか、ストーリーがアクションへ進んだ瞬間です。
+
+計画の内容:
+
+- `entries` は画像だけを含みます。URL、`gate`、`soon`、`idle` のいずれかの帯、画面外でデコードしてビットマップを保持するかを持ちます。
+- `audio` は温める `Sound` 要素です。
+- `video` は必要になる順の `Video` 要素です。クリップは 1 本ずつバッファリングされ、ストーリー自身が宣言したクリップを計画から解放することはできません。
+- `keep` はキャッシュが保持してよい画像 URL の全体です。外側の URL は表示がなくなると解放されます。
+- `pin` はメモリ予算から保護する URL で、通常は開始フレームです。
+
+`acquire(resource, signal)` は要素が使う URL を任意で提供します。`{url, bytes, release?}` を返すとキャッシュがバイト数と解放処理を管理し、`null` は温める必要がないことを示します。省略するとプレイヤーの取得と object URL キャッシュを使います。
+
+計画にない内容をステージが表示したとき、`onMissing(resource)` が URL ごとに最大 1 回呼ばれます。コンパイル結果を持つホストは、その画像やクリップを計画すべき行を特定できます。
+
+完全な型は [PreloadStrategy](/ja/docs/narraleaf-react/core/types/PreloadStrategy) を参照してください。
+
+## キャッシュ予算とメモリ [#cache-budgets-and-memory]
+
+プレイヤーのキャッシュには上限があり、`GameConfig` から実行時に読み取られます。
+
+| フィールド | 既定値 | 保持する内容 |
+| --- | --- | --- |
+| `imageCacheBudgetBytes` | `256 MiB` | object URL が保持する取得済み画像バイト |
+| `decodedImageBudgetBytes` | `128 MiB` | デコード済みビットマップ。`幅 × 高さ × 4` バイトで見積もる |
+
+どちらも、現在表示されていない最近使用の少ない項目から破棄します。開始背景とマウント中の画像は固定されます。`Infinity` で上限を外せます。音声は別管理で、再生トークンも現在のシーンも保持していないクリップが解放されます。
+
+[GameState](/ja/docs/narraleaf-react/core/game/game-state) から状態を読めます。
+
+```typescript
+const images = liveGame.getGameState()?.getImageCache()?.getStats();
+const audio = liveGame.getGameState()?.audioManager.getCacheStats();
+liveGame.getGameState()?.audioManager.retainOnly(sceneSounds);
+```
+
+[`ImageCacheStats`](/ja/docs/narraleaf-react/core/types/ImageCacheStats) は項目数、取得済みバイト、デコード済み項目数とバイト、固定項目数、現在の予算を返します。`AudioManager.getCacheStats()` はデコード済み音声、読み込み中の音声、PCM バイトを返します。`retainOnly(sounds)` はシーンの音声だけを保持し、残りを解放します。
+
 ## どの信号を待つべきか [#which-signal-to-wait-on]
 | 信号 | 発火するタイミング |
 | --- | --- |
 | [onReady](/ja/docs/narraleaf-react/player/player#onready) | `Player` インスタンスが初期化された
 とき。`newGame()` はここに置くべきです。これはプリロードや初回レンダリングの保証ではありません。 |
-| `onPreloadComplete` | 初回のプリロードパス（クリティカル層）が終わったとき。`0.17.0` 以降、これは
+| `onPreloadComplete` | 初回のプリロードパス（gate 帯）が終わったとき。`0.17.0` 以降、これは
 **ゲームに入る前**です。メニューがまだ画面にあり、どのシーンもマウントされていない可能性があります。 |
 | `onFirstSceneReady` | プリロードパスが終わり、最初のシーンコンポーネントがマウントされ、**さらに**
 ブラウザがそれを描画するフレームを 1 回消化した状態。これが「内容が画面上にある」という信号です。 |
@@ -154,11 +213,15 @@ Player が入口シーンを登録する前にこれを呼び出すと、自動�
 
 以下は [GameConfig](/ja/docs/narraleaf-react/core/types/GameConfig) 上にあります。
 
-- `preloadAllImages`（デフォルト `true`）- 2 段階のシーンパスを実行するかどうか。`false` の場合、
+- `preloadAllImages`（デフォルト `true`）- 組み込みのシーンプリロードを実行するかどうか。`false` の場合、
   プレイヤーは次の `maxPreloadActions` 個のアクションを予測し、代わりにそのソースをプリロードします。
-- `preloadConcurrency`（デフォルト `5`）- 両方の層で同時にフェッチする画像の数。
-- `preloadDelay`（デフォルト `100`）- 先読みバッチ間のペーシング。クリティカル層はペーシングされません。
-- `waitForPreload`（デフォルト `true`）- クリティカル層が終わるまでプレイヤーの表示を保留する。
+- `preloadConcurrency`（デフォルト `5`）- 同時にフェッチする画像の数。
+- `preloadDelay`（デフォルト `100`）- idle 帯のバッチ間のペーシング。
+- `waitForPreload`（デフォルト `true`）- gate 帯が終わるまでプレイヤーの表示を保留する。
 - `forceClearCache`（デフォルト `false`）- シーンが変わったときに画像キャッシュをクリアする。
 - `maxPreloadActions`（デフォルト `10`）- `preloadAllImages: false` の経路が何アクション先まで
   予測するか。
+- `preloadGate`（デフォルト `"firstFrame"`）- gate が開始フレームを待つか、シーンが登録するすべての画像を待つか。
+- `preload` - カスタム `PreloadStrategy`。未設定なら上記の組み込み帯を使います。
+- `imageCacheBudgetBytes`（デフォルト `256 MiB`）- キャッシュが保持できる取得済み画像バイト。
+- `decodedImageBudgetBytes`（デフォルト `128 MiB`）- キャッシュが保持できるデコード済みビットマップバイト。

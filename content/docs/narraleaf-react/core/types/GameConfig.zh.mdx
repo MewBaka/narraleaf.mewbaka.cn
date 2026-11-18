@@ -55,6 +55,11 @@ type GameConfig = {
      */
     ratioUpdateInterval: number;
     /**
+     * 决定播放器预热什么、何时预热以及字节从何而来。
+     * 不设置时使用内置策略。
+     */
+    preload?: PreloadStrategy;
+    /**
      * 游戏预加载图像时，每个预加载任务之间的延迟时间
      *
      * 单个预加载任务可能包含 {@link GameConfig.preloadConcurrency} 张图片
@@ -71,6 +76,21 @@ type GameConfig = {
      * @default true
      */
     waitForPreload: boolean;
+    /**
+     * gate 等待开场画面，还是等待场景注册的全部图片。
+     * @default "firstFrame"
+     */
+    preloadGate: "firstFrame" | "scene";
+    /**
+     * 缓存可以保留的已抓取图片字节数。
+     * @default 256 * 1024 * 1024
+     */
+    imageCacheBudgetBytes: number;
+    /**
+     * 缓存可以保留的解码位图字节数。
+     * @default 128 * 1024 * 1024
+     */
+    decodedImageBudgetBytes: number;
     /**
      * 预加载场景中所有可能的图片
      *
@@ -311,3 +331,4 @@ type GameConfig = {
 ```
 
 - 有关 `AudioBusDeclaration`，请参见 [AudioBusDeclaration](/zh/docs/narraleaf-react/core/types/AudioBusDeclaration) 和[音频总线](/zh/docs/narraleaf-react/core/game/audio-buses)
+- 预加载接缝、缓存与预算见[预加载](/zh/docs/narraleaf-react/core/game/preload)与 [PreloadStrategy](/zh/docs/narraleaf-react/core/types/PreloadStrategy)

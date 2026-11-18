@@ -57,7 +57,7 @@ description: 一个值存在哪里、能活多久，以及该选哪个作用域
 
 值存放在宿主管理的存储中，以条目的`storageKey`为键，且绝不在项目目录内。作者时它们位于 Studio 自己的用户数据下，按项目分键；在发布的游戏中它们位于游戏自己的用户数据下。把项目复制到另一台机器不会带走它们
 
-`Get Persistent（获取持久变量）`和`Set Persistent（设置持久变量）`是 latent 的，因为宿主的读写是异步的，这同样是 Blueprint Value、内联故事值和分支条件都不提供它们的原因。当某个键从未被存过任何值时，`Get Persistent`回退到编写的默认值，并且交给你的是它的深拷贝，所以改动读到的东西不会波及定义本身
+`Get Persistent（获取持久变量）`和`Set Persistent（设置持久变量）`是 latent 的，因为宿主的读写是异步的。Blueprint Value 允许使用 `Get Persistent`：取值运行时会像 `Call Fn` 一样等待它，并记录这次读取；变量被写入后绑定会重新求值。`Set Persistent`仍不能用于 Blueprint Value、内联故事值和分支条件。当某个键从未被存过任何值时，`Get Persistent`回退到编写的默认值，并且交给你的是它的深拷贝，所以改动读到的东西不会波及定义本身
 
 <Callout type="warn">
 `storageKey`只在创建时铸造一次，重命名变量不会改变它——正是这一点让玩家已存的值在重命名之后依然解析得到。反过来说：删除一个持久变量**不会**删除该键下已经存好的值，而用同一个名字重新建一个会得到一个*新*键，读到的是默认值。要改名就改名，别删了重建
@@ -128,7 +128,7 @@ description: 一个值存在哪里、能活多久，以及该选哪个作用域
 [Blueprint Value](/zh/docs/studio/blueprint) 是绑定到单个控件属性上的`widgetValue`蓝图，它的创建浮窗被刻意限制为安全的取值类节点。对变量而言有四条后果：
 
 - **它不能声明`Var`。** 该节点不在它的创建浮窗里，声明变量的扫描也会直接跳过`widgetValue`宿主
-- **它不能读写持久变量。** `Get Persistent`和`Set Persistent`是 latent 的，而值绑定必须在被询问的那一拍里给出值——没有地方安放一个待定的 promise
+- **它不能写入持久变量。** `Set Persistent`是 latent 的，值绑定不允许使用。`Get Persistent`可以使用：取值运行时会等待这次 latent 读取，并在变量被写入后重新求值
 - **它照样能读写自己看得见的变量。** `Get Var`和`Set Var`在白名单上，它们解析到页面蓝图和应用逻辑——那就是全部可访问集合，因为值蓝图自己一个变量也不声明
 - **它能读取存档变量。** `Get Saved Var`在白名单上，`Set Saved Var`不在。变量每次被写入，绑定都重新求值：写入可以来自故事中的行、其它蓝图，或读取存档。[示例：好感度与多结局](/zh/docs/studio/blueprint/affection-endings)用这种方式在对话框上显示存档变量
 

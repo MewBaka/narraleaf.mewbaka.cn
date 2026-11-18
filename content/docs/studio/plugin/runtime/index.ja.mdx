@@ -18,22 +18,25 @@ export default defineRuntimePlugin({
 });
 ```
 
-## 常に存在する六つのメンバー
+## 常に存在する七つのメンバー
 
 | メンバー | 内容 |
 | --- | --- |
 | `game.blueprintNodes` | あなたのノード種別のゲーム側 `execute` を `register` / `registerMany` する。 |
 | `game.widgets` | あなたのウィジェット種別のゲーム側レンダラーとイベント宣言(`logicApi`)を `register` / `registerMany` する。 |
 | `game.storyActions` | あなたのストーリーアクションが挿入した行にストーリーが来たときに実行する処理を `register` / `registerMany` する。ストーリーはその終了を待ちます。[game.storyActions](/ja/docs/studio/plugin/api-reference#gamestoryactions)を参照してください。 |
+| `game.inlineTextEffects` | `contributes.inlineTextEffects` で宣言した効果を持つ対話部分を描画するゲーム側コンポーネントを `register` する。 |
 | `game.data` | `readJson(namespace)` — ゲームとともに公開されたプラグインのストレージを読む。 |
 | `game.config` | `get(key)` — あなたの `contributes.buildConfig` フィールドに作者が入力した値。`game.data` と同じ理由で常に存在します。フィールドを宣言してもプラグインに何かが付与されるわけではないため、そこには制御すべき機能フラグがありません。 |
 | `game.log` | ホストのログに `log(level, message)` を書き込む。 |
 
-登録するすべての種別は `contributes.blueprintNodes` / `contributes.widgets` に宣言されていなければならず、`game.data` は `contributes.runtimeData` に列挙された名前空間しか見えません。[マニフェストのリファレンス](/ja/docs/studio/plugin/manifest)を参照してください。
+登録するすべての種別は `contributes.blueprintNodes`、`contributes.widgets`、`contributes.inlineTextEffects` のいずれかに宣言されていなければならず、`game.data` は `contributes.runtimeData` に列挙された名前空間しか見えません。[マニフェストのリファレンス](/ja/docs/studio/plugin/manifest)を参照してください。
+
+インライン文字効果は両方のエントリで同じ id を使います。studio エントリが名称と数値パラメータを登録し、runtime エントリが描画コンポーネントを登録します。コンポーネントはレイアウト済みの文字、表示状態、パラメータ、クリック方針を受け取ります。プラグインがない場合、その部分は通常の文字として表示され、プロジェクト検査が未知の効果を報告します。
 
 ## それ以外はすべて機能フラグで制御される
 
-上記の六つを除き、`app.game` 上の各名前空間は、**マニフェストが `contributes.runtimeCapabilities` でそれを宣言した場合に限って**存在します。
+上記の七つを除き、`app.game` 上の各名前空間は、**マニフェストが `contributes.runtimeCapabilities` でそれを宣言した場合に限って**存在します。
 
 ```json
 {

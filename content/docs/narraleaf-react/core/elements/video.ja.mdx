@@ -1,11 +1,7 @@
 ﻿---
 title: "動画"
-description: 全画面での動画再生を行う `Video` 要素。プリロード、表示・非表示、再生制御、シークを扱う
+description: 全画面での動画再生を行う `Video` 要素。プリロード、フェード、再生制御、シークを扱う
 ---
-<Callout type="warning">
-    このページは作成中です。
-</Callout>
-
 <Callout type="warning">
     ベータ機能であり、変更される可能性があります。
 </Callout>
@@ -65,11 +61,14 @@ video.preload();
 <Steps>
 <Step>
 
-動画を表示します。
+動画を表示します。`VideoFadeOptions` を渡すとフェードインし、アクションはフェードの完了を待ちます。フェードは動画がフレームを表示できるようになってから始まります。
 
 ```typescript
 video.show();
+video.show({duration: 500, easing: "easeOut"});
 ```
+
+- `options?: VideoFadeOptions` - ミリ秒単位の `duration` と省略可能な `easing`。正の duration がなければ即座に表示します。
 </Step>
 </Steps>
 
@@ -78,7 +77,15 @@ video.show();
 <Steps>
 <Step>
 
-動画を非表示にします。
+動画を非表示にします。`VideoFadeOptions` を渡すと現在のフレームをフェードアウトしてからステージから外し、アクションはフェードの完了を待ちます。
+
+```typescript
+video.hide({duration: 600});
+```
+
+- `options?: VideoFadeOptions` - ミリ秒単位の `duration` と省略可能な `easing`。正の duration がなければ即座に非表示にします。
+
+スキップまたは早送りではフェードの終了状態へ進みます。フェードをまたいで巻き戻すとフェードは破棄され、戻り先の行が記録した動画状態に戻ります。`1.1.0` から利用できます。
 </Step>
 </Steps>
 

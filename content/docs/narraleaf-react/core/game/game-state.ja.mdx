@@ -3,10 +3,6 @@ title: "GameState"
 description: GameState のプロパティとメソッド。オーディオマネージャー、シーンのプリロード、行の進行の一時停止を含む
 ---
 <Callout type="warning">
-    このページは作成中です。
-</Callout>
-
-<Callout type="warning">
     ベータ機能であり、変更される可能性があります。
 </Callout>
 
@@ -34,8 +30,27 @@ void gameState.audioManager.preload(bgm);
   ユーザー操作によって満たされるまでオーディオコンテキストはロックされたままなので、正当に保留し続ける
   ことがあります。詳細は[プリロード](/ja/docs/narraleaf-react/core/game/preload#sound-preloading)を参照
   してください。
+- `retainOnly(sounds: Sound[]): void` - この音声集合だけを温めた状態に保ち、ほかのキャッシュ参照を解放します。再生中のクリップは終了まで再生トークンが保持します。`0.45.0` から利用できます。
+- `getCacheStats()` - 現在保持しているデコード済み音声、読み込み中の音声、デコード済み PCM バイトを返します。`0.45.0` から利用できます。
 
 ## 公開メソッド
+
+### getImageCache
+
+<Steps>
+<Step>
+
+プレイヤーの画像キャッシュを返します。マウント前は `null` です。
+
+```typescript
+const stats = gameState.getImageCache()?.getStats();
+```
+
+`getStats()` は取得済み画像バイト、デコード済みビットマップバイト、固定された項目、適用中の予算を返します。[ImageCacheStats](/ja/docs/narraleaf-react/core/types/ImageCacheStats) を参照してください。
+
+- 返り値: `ImageCacheManager | null`
+</Step>
+</Steps>
 
 ### preloadScene
 

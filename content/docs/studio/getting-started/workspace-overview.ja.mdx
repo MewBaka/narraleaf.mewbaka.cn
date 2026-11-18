@@ -18,7 +18,7 @@ description: アクティビティバー、エディタ、Properties パネル�
 | 左サイドバー | 現在のツールのコンテンツを閲覧・作成する |
 | 中央のエディタ領域 | ページ、シーン、アセットのプレビュー、ブループリントをタブで開く |
 | 右サイドバー | Properties で、選択したページ、ウィジェット、アセット、ストーリーアクションを編集する。同じレールの Properties の下に Variables と Dictionary が並ぶ |
-| ボトムバー | コンソール、ビルド出力、**Problems**（問題）パネル、モーションツール、アセットパネルを表示する |
+| ボトムバー | コンソール、ビルド出力、**Problems**（問題）パネル、**Comments**、**Stage Timeline**、モーションツール、アセットパネルを表示する |
 | トップバー | ファイル操作、バージョン管理、実行・ビルドの操作 |
 
 ## 左側のレール
@@ -58,6 +58,10 @@ description: アクティビティバー、エディタ、Properties パネル�
 **Minor warning** は優先度の低い問題のためのレベルです。**Missing translation**（翻訳の欠落）、**Missing voice**（ボイスの欠落）、**Unused asset**（使われていないアセット）、**Unused variable**（使われていない変数）、**Unreachable page**（到達できないページ）は、プロジェクトで別のレベルを設定しない限りこのレベルで報告されます。[コマンドラインの検査](/ja/docs/studio/command-line-builds#project-check)は軽微な警告では失敗しません。
 
 Studio 1.4.5 以前には **Minor warning** がありません。これらのバージョンは、**Minor warning** に設定されたルールをそのルールの既定のレベルで報告し、プロジェクトの検査の設定をどれか 1 つでも変更すると、その設定をプロジェクトから削除します。
+
+## レビューとステージ表示
+
+ボトムバーには **Comments** パネルと **Stage Timeline** もあります。Comments はレビューのスレッドをシーン別にまとめ、Stage Timeline は各行の実行後のオブジェクト状態を表示して対応する行へ戻れます。どちらも 2.0 のストーリーワークフローに含まれます。[ストーリー行のコメント](/ja/docs/studio/workspace/story-editor/comments)と[ステージタイムライン](/ja/docs/studio/workspace/story-editor/stage-timeline)を参照してください。
 
 ## 選択と Properties
 

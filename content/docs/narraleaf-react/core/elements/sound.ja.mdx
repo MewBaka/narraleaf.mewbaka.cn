@@ -3,10 +3,6 @@ title: "サウンド"
 description: 音声、音楽、効果音の再生を扱う `Sound` クラス。音量、ミュート、再生速度、シーク、フェードを扱う
 ---
 <Callout type="warning">
-    このページは作成中です。
-</Callout>
-
-<Callout type="warning">
     ベータ機能であり、変更される可能性があります。
 </Callout>
 
@@ -93,14 +89,15 @@ BGM サウンドを作成します。`type` はデフォルトで `bgm` にな�
 <Steps>
 <Step>
 
-サウンドを再生し、終了するまで待機します
+サウンドの再生を開始します。既定ではクリップが再生されるとアクションが完了し、次の行へ進みます。クリップの終了までストーリーを待たせたい場合は `{waitForEnd: true}` を渡します。
 
 ```ts
 const sound = new Sound({
     src: 'sound.mp3',
 });
 scene.action([
-    sound.play(1000), // 再生して1秒かけてフェードイン
+    sound.play(1000),                                  // 1 秒かけてフェードインして続行
+    sound.play(0, {waitForEnd: true}),                 // クリップの終了まで待つ
 ]);
 ```
 
@@ -116,6 +113,7 @@ scene.action([
 </Callout>
 
 - `duration?: number` - フェードの長さ（ミリ秒）
+- `options.waitForEnd?: boolean` - クリップが終わるまでストーリーを待たせます。ループするクリップでは無視されます。`0.42.0` から利用できます。それ以前はすべての `play()` が待機していました。
 </Step>
 </Steps>
 

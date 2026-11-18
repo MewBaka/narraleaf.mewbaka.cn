@@ -1,0 +1,14 @@
+---
+title: "DeserializeOptions"
+description: Options for LiveGame.deserialize, including whether a save from another story is refused.
+---
+```typescript
+interface DeserializeOptions {
+    requireMatchingStory?: boolean;
+}
+```
+
+## requireMatchingStory
+When `true`, [`LiveGame.deserialize`](/docs/narraleaf-react/core/game/live-game#deserialize) throws before changing any state if the save's `meta.storyHash` differs from the loaded story's hash.
+
+The default is `false`: the mismatch is logged as a warning and the save is applied. That is usually what a game updated after release wants, because old saves often remain playable. Use `true` when resuming the wrong story would be worse than refusing the load.

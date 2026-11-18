@@ -143,7 +143,7 @@ character.say([
 
 ### クリック
 
-単語がまだタイプ中の間は、それをクリックすると他の場所と同じように行が進みます。単語が完全に表示されると、その単語自身がクリックを受け取るようになり、行はその裏で進まなくなります。
+単語がまだタイプ中の間は、それをクリックすると他の場所と同じように行が進みます。単語が完全に表示されると、その単語自身がクリックを受け取るようになり、行はその裏で進まなくなります。これは用語をクリックできるようにする場合の適切な既定値です。見た目だけを変えるレンダラーは `{interactive: false}` で登録し、クリックがセリフまで届くようにしてください。
 
 ### 改行
 
@@ -173,9 +173,14 @@ new Word("エーテル濃度", {render: "glossary", data: {entry: "aether"}});
 
 - `id: string` - 単語が参照するid
 - `component: React.ComponentType<WordRenderProps<T>>` - それらの単語を描画するコンポーネント
+- `options?: WordRendererOptions` - `interactive?: boolean`、既定値は `true`。見た目だけを変える効果では `false` にします。
 - 登録を解除する関数を返します。
 
 同じidを再度登録すると、コンポーネントは置き換えられます。すでに画面上にある行は、次回のレンダリング時に新しいコンポーネントを使うようになります。
+
+```tsx
+registerWordRenderer("shake", ShakingText, {interactive: false});
+```
 </Step>
 </Steps>
 

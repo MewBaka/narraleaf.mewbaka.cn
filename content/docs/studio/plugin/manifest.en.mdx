@@ -46,6 +46,7 @@ Entry paths cannot be absolute or contain `..`, `.`, null bytes, `?`, or `#`.
 | --- | --- | --- |
 | `blueprintNodes` | `string[]` | Blueprint node types this plugin provides. |
 | `widgets` | `string[]` | Widget element types this plugin provides. |
+| `inlineTextEffects` | `string[]` | Inline text effect ids this plugin provides for a run of dialogue. |
 | `widgetText` | object | The props of each contributed widget that hold words a player reads. |
 | `locales` | object[] | Studio language packs — locales the plugin adds or fills. |
 | `runtimeData` | `string[]` | Plugin storage namespaces to publish with the game. |
@@ -66,6 +67,22 @@ Every node type, widget type, storage namespace, sidecar id, build-dependency id
 ### blueprintNodes and widgets
 
 Registering a type you did not declare throws at load time, on both entries. The declaration is what lets Studio tell an author *before* a build that a node their project uses has no runtime provider — instead of shipping a game with a node that does nothing.
+
+### inlineTextEffects
+
+An inline text effect is an appearance applied to a selected run of dialogue, such as shaking or waving. The studio entry registers the toolbar entry; the runtime entry registers the component that draws the run. Both use the same id, and both must appear in `contributes.inlineTextEffects`.
+
+```json
+{
+  "contributes": {
+    "inlineTextEffects": ["acme.fx.shake"]
+  }
+}
+```
+
+Studio adds an **Effects** control to the dialogue text toolbar whenever a loaded plugin offers an effect. The author selects text, chooses an effect and sets its numeric parameters. The effect is saved on that text run, survives export and import, and is drawn only in the game; the editor shows a dotted underline while the run is selected.
+
+An undeclared id throws when either entry registers it. A missing plugin renders the run as plain text, while the project check reports the unknown effect and the dependency table keeps the plugin in the build.
 
 ### widgetText
 

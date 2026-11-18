@@ -260,7 +260,7 @@ export default defineRuntimePlugin({
 
 `app` carries `app.plugin`, `app.manifest`, and `app.game`.
 
-`app.game` has six members that are always present (`blueprintNodes`, `widgets`, `storyActions`, `data`, `config`, `log`) and a set of capability-gated namespaces that exist only when `contributes.runtimeCapabilities` declared them. An undeclared namespace is `undefined`, not a thrower. See the [Runtime API](/docs/studio/plugin/runtime) for the full model.
+`app.game` has seven members that are always present (`blueprintNodes`, `widgets`, `storyActions`, `inlineTextEffects`, `data`, `config`, `log`) and a set of capability-gated namespaces that exist only when `contributes.runtimeCapabilities` declared them. An undeclared namespace is `undefined`, not a thrower. See the [Runtime API](/docs/studio/plugin/runtime) for the full model.
 
 ### game.blueprintNodes
 
@@ -301,6 +301,23 @@ execute: async ctx => {
 <Callout type="warn">
 There is no `ctx.hostAdapter`. Earlier builds leaked the host's full internal API through `ctx.hostAdapter.blueprintRuntime.hostApi` — saves, localization, quitting the app — with nothing declared in the manifest and nothing shown to the author at install. That path is gone. Whatever a node touches, it touches through `ctx.game`, which is exactly the capability set `contributes` declared.
 </Callout>
+
+### game.inlineTextEffects
+
+```ts
+app.game.inlineTextEffects.register({ id, render, interactive? });
+```
+
+Registers the game-side renderer for a run of dialogue carrying an inline text effect. `id` must be one declared in `contributes.inlineTextEffects` and registered by the studio entry. `interactive` defaults to `false`: a word carrying the effect lets clicks advance the line. Set it to `true` for an effect that opens a glossary entry or handles another click of its own.
+
+`render` receives `RuntimeInlineTextEffectRenderProps`: the laid-out `children`, revealed and full text, reveal state, whether the run has ruby, the author's numeric `params`, and the style of the containing dialogue. Render `children` to keep ruby, vertical writing and tate-chu-yoko.
+
+```tsx
+app.game.inlineTextEffects.register({
+    id: `${PLUGIN_ID}.shake`,
+    render: ShakeText,
+});
+```
 
 ### game.storyActions
 

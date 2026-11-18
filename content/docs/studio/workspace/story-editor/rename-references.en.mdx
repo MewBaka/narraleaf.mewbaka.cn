@@ -1,0 +1,32 @@
+---
+title: Rename and find references
+description: Rename a variable, label, scene or character with every place that names it, and find where a variable is read or written.
+---
+
+Rename works on a variable, a label, a scene or a character. It rewrites the places that name the old value, shows every change first, and writes the accepted changes as one undo step.
+
+Open it from the right-click menu on:
+
+- a row in the **Variables** panel
+- a story row that names a variable, label, scene or character
+- a scene in the **Story** panel
+- a character in the **Characters** panel
+
+## Preview
+
+The preview groups changes by scene and shows the text before and after. Untick a change to leave it unchanged. **Rename** writes every ticked change at once, and one undo takes them all back.
+
+The preview rewrites:
+
+- the declaration, label, scene or character name
+- names inside expressions: assignments, conditions, loop conditions, option conditions and inline values
+- `goto` rows that target a renamed label
+- for a character, lines that speak as its old name without being linked to it
+
+Rows and blueprint nodes that point at a variable, scene or character by id follow the rename automatically and are listed separately. Translations do not change. A name already in use, or one reserved by the expression language, cannot be chosen.
+
+## Find references
+
+The arrow beside a variable in the Variables panel expands its reads and writes. Each entry names the scene and row, and selecting one opens that place.
+
+Find references works with the same refactoring model as rename. A reference that points through an id continues to resolve after the declaration is renamed.

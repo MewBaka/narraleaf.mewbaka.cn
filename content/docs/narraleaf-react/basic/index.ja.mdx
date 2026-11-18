@@ -6,7 +6,7 @@ description: シーン、アクション、対話、選択肢、メディア、�
 基礎ガイドは、NarraLeaf-React プロジェクトが動く状態になった後に最初に読むページです。シーンの定義、アクションの追加、対話や画像の表示、シーン同士の接続という物語制作の流れを一通り解説したうえで、インタラクション、音声、データ、ボイス、プレイヤー設定を順に重ねていきます。
 
 <Callout type="info">
-    これらのサンプルは NarraLeaf React 0.39.2 および React 19 を対象としています。古いプロジェクトには、`Sound.sync` や `GameConfig` の対話フォントのデフォルト値など、すでに削除されたオプションが残っている場合があります。
+    これらのサンプルは NarraLeaf React 1.5.x および React 19 を対象としています。古いプロジェクトには、`Sound.sync` や `GameConfig` の対話フォントのデフォルト値など、すでに削除されたオプションが残っている場合があります。
 </Callout>
 
 ## 前提条件
@@ -130,4 +130,4 @@ description: シーン、アクション、対話、選択肢、メディア、�
 
 基礎ガイドを終えたら、完成されたパターンについては[ソリューション](/ja/docs/narraleaf-react/solutions)を、基盤となるストーリー API については[コア](/ja/docs/narraleaf-react/core)を、体験を描画する React コンポーネントとフックについては[プレイヤー](/ja/docs/narraleaf-react/player)を参照してください。
 
-0.13 系のプロジェクトについては、[画像を表示する](/ja/docs/narraleaf-react/basic/show-image)のページでレイヤー化されたスプライトを、[サウンド](/ja/docs/narraleaf-react/basic/sound)のページで `Control.doAsync()` を使った現在の非ブロッキングな音声パターンを扱っています。
+0.13 系のプロジェクトについては、[画像を表示する](/ja/docs/narraleaf-react/basic/show-image)のページでレイヤー化されたスプライトを、[サウンド](/ja/docs/narraleaf-react/basic/sound)のページで現在の再生方法を扱っています。`play()` は既定でストーリーと並行して進み、`{waitForEnd: true}` を渡すと終了まで待ちます。

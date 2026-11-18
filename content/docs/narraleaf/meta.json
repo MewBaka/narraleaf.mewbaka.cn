@@ -1,5 +1,5 @@
 {
-  "title": "NarraLeaf Desktop",
-  "description": "Desktop documentation: runtime, renderer, and CLI.",
+  "title": "NarraLeaf Desktop (legacy)",
+  "description": "Legacy Desktop documentation, kept for existing projects.",
   "pages": ["library"]
 }

@@ -42,6 +42,8 @@ interface SavedGameMetaData {
 >
 > 例えば、アニメーションの順序を変更するとストーリーハッシュに反映されますが、文の内容を変更しても反映されません。
 
+ロード時には、このフィールドを読み込んだストーリーのハッシュと比較します。既定では警告だけを記録し、`{requireMatchingStory: true}` を渡すと状態を変更する前に [`LiveGame.deserialize`](/ja/docs/narraleaf-react/core/game/live-game#deserialize) が拒否します。
+
 ## version
 
 セーブフォーマットのバージョンで、現在は `3` です。

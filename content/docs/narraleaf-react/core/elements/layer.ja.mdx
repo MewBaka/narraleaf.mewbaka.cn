@@ -37,6 +37,30 @@ layer.opacity(0.5, 1000, "linear"); // レイヤーの不透明度を変更す�
     シーンが切り替わってもステージを映し続けるためです。
 </Callout>
 
+## カメラ視差 [#camera-parallax]
+
+レイヤーはカメラから異なる距離に置けます。`parallax` は、カメラのパンとズームのうちレイヤーが追従する割合です。
+
+```typescript
+const sky = new Layer("sky", {zIndex: -3, parallax: 0});
+const hills = new Layer("hills", {zIndex: -2, parallax: 0.3});
+const branches = new Layer("branches", {zIndex: 5, parallax: 1.4});
+
+const forest = new Scene("forest", {
+    background: "forest.png",
+    backgroundLayerParallax: 0.6,
+    layers: [sky, hills, branches],
+});
+```
+
+- `1` が既定値で、カメラに完全に追従します。
+- `0` ではカメラが動いても止まったままです。
+- `0` から `1` の間は遠く、`1` より大きい値はステージより近く見えます。
+
+パンとズームは距離に応じて分配されます。回転とスケールは引き続きすべてのレイヤーをまとめて変形します。レイヤー自身のトランスフォームは、割り当てられたカメラ運動の内側でそのまま適用されます。
+
+シーンの `backgroundLayerParallax` は、シーンが作る背景レイヤーに同じ働きをします。どちらも `1.4.0` から利用できます。
+
 ## チェーン可能なメソッド
 
 ### setZIndex

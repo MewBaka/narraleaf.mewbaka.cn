@@ -1,6 +1,6 @@
 ---
 title: "ILayerUserConfig"
-description: The user-facing configuration for a `Layer`, extending the common displayable options with a stacking `zIndex`.
+description: The user-facing configuration for a `Layer`, extending the common displayable options with a stacking `zIndex` and camera parallax.
 ---
 ```typescript
 interface ILayerUserConfig extends CommonDisplayableConfig {
@@ -10,7 +10,16 @@ interface ILayerUserConfig extends CommonDisplayableConfig {
      * **Note**: the default background layer has a z-index of -1, and the default displayable layer has a z-index of 0.
      */
     zIndex: number;
+    /**
+     * How much of the camera's pan and zoom this layer follows.
+     *
+     * `1` follows the camera exactly, `0` stays still, and values above `1` move more than the stage.
+     * @default 1
+     */
+    parallax: number;
 }
 ```
 
 For CommonDisplayableConfig, see [CommonDisplayableConfig](/docs/narraleaf-react/core/types/CommonDisplayableConfig)
+
+`parallax` is available since `1.4.0`. See [Layer parallax](/docs/narraleaf-react/core/elements/layer#camera-parallax).

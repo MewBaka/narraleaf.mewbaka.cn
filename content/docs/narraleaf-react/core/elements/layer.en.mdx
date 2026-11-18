@@ -37,6 +37,30 @@ layer.opacity(0.5, 1000, "linear"); // change the opacity of the layer, all elem
     one and it frames the stage across scene changes.
 </Callout>
 
+## Camera parallax [#camera-parallax]
+
+A layer can sit at a different distance from the camera. Its `parallax` is the share of the camera's pan and zoom the layer follows:
+
+```typescript
+const sky = new Layer("sky", {zIndex: -3, parallax: 0});
+const hills = new Layer("hills", {zIndex: -2, parallax: 0.3});
+const branches = new Layer("branches", {zIndex: 5, parallax: 1.4});
+
+const forest = new Scene("forest", {
+    background: "forest.png",
+    backgroundLayerParallax: 0.6,
+    layers: [sky, hills, branches],
+});
+```
+
+- `1` is the default and follows the camera exactly.
+- `0` stays still while the camera moves.
+- Values between `0` and `1` read as farther away; values above `1` read as nearer than the stage.
+
+Pans and zooms are shared out by distance. Rotation and scale transforms still turn or stretch every layer together. A layer's own transform continues to apply inside its share of the camera movement.
+
+`backgroundLayerParallax` on a scene does the same for the background layer the scene creates. Available since `1.4.0`.
+
 ## Chainable Methods
 
 ### setZIndex

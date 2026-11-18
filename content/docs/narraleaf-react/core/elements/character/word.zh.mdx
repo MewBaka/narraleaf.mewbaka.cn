@@ -145,7 +145,7 @@ character.say([
 
 ### 点击
 
-词还在打字时，点击它与点击其他任何地方一样推进当前行。词完全显示之后，它接管自己的点击，行不会在它背后推进
+词还在打字时，点击它与点击其他任何地方一样推进当前行。词完全显示之后，它接管自己的点击，行不会在它背后推进。这是可交互词条的合适默认值。只改变文字外观的渲染器应使用 `{interactive: false}` 注册，让点击继续落到台词上
 
 ### 换行
 
@@ -176,9 +176,14 @@ new Word("以太浓度", {render: "glossary", data: {entry: "aether"}});
 
 - `id: string` - 词所引用的 id
 - `component: React.ComponentType<WordRenderProps<T>>` - 用来绘制这些词的组件
+- `options?: WordRendererOptions` - `interactive?: boolean`，默认 `true`。只改变外观的效果应设为 `false`
 - 返回一个用于取消注册的函数
 
 重复注册同一个 id 会替换掉原组件，屏幕上已有的行会在下一次渲染时用上新组件
+
+```tsx
+registerWordRenderer("shake", ShakingText, {interactive: false});
+```
 </Step>
 </Steps>
 

@@ -42,6 +42,8 @@ The hash of the story is used to check whether the stories are compatible
 >
 > For example, changing the order of the animations will be reflected in the story hash, but changing the content of the sentences will not.
 
+Loading compares this field with the loaded story's hash. A mismatch is a warning by default; pass `{requireMatchingStory: true}` to [`LiveGame.deserialize`](/docs/narraleaf-react/core/game/live-game#deserialize) to refuse it before any state changes.
+
 ## version
 
 The save format version, currently `3`.

@@ -1,0 +1,43 @@
+---
+title: Dev Mode
+description: Run the project in the real runtime, choose its language, follow live reloads, and use the debug tools.
+---
+
+Dev Mode runs a project from disk in a separate window. It uses the same game runtime as the built project, so page navigation, story execution, Blueprint execution, saves and player input are checked here rather than on the editor canvas.
+
+<Figure
+    src="/static/img/docs/studio/en/dev-mode-debug.webp"
+    alt="The Dev Mode window running the game, with the debug menu open over it"
+/>
+
+## Start and stop
+
+Start Dev Mode from:
+
+- the play button in the upper-right corner of the UI editor
+- the **Run** button in the top bar with **Dev Mode** selected
+- the **Develop** menu
+
+Choose **Dev Mode** again to stop the session. Different projects can run at the same time; each project has one Dev Mode session.
+
+## Language
+
+When the project has more than one language, the Run menu has a **Language** row. **Automatic** uses the language a player would see. Choosing another language runs this session in that language without changing the player's saved language.
+
+If the chosen language is removed from the project, the next run reports the missing language and refuses to start. Choose another language or **Automatic**.
+
+## Reload
+
+Dev Mode watches the project's story, interfaces, characters, localization, scripts, Blueprint data and assets. A change reloads the run and keeps the running scene's and saved variables where it can.
+
+The editor canvas does not execute the complete game. Check page navigation, story progression, widget events and saves here.
+
+## Debug tools
+
+The Dev Mode debug panel can start a story from the scene's beginning, a selected row or a saved variable snapshot. It shows the running story, Blueprint execution and issues reported by this run. A row can be opened in Studio from the issue that names it.
+
+## Agent-held sessions
+
+An agent can open Dev Mode to play-test a project. That window starts hidden, read-only and closes when the agent is idle. The author can select **Take over** on the notice to use the session, then **Continue** to hand it back.
+
+While an agent holds Dev Mode, the author's debug tools are read-only. Taking over interrupts the agent's play-test; handing it back lets the agent continue.

@@ -1,6 +1,6 @@
 ---
 title: "声音"
-description: 用 Sound 播放音效、背景音乐与语音片段，并用 Control.doAsync 让播放与剧情并行推进
+description: 用 Sound 播放音效、背景音乐与语音片段，并控制播放是与剧情并行还是让剧情等待
 ---
 
 使用 [Sound](/zh/docs/narraleaf-react/core/elements/sound) 播放音效、背景音乐和语音。静态构造方法会为声音设置正确类型
@@ -22,28 +22,26 @@ const theme = Sound.bgm({
 
 ## 音效
 
-`play()` 返回一个动作。默认情况下，剧情会等到音频播放结束
+`play()` 返回一个动作，但默认在音频开始播放后就继续剧情。下一行需要等到音频结束时，传入 `{waitForEnd: true}`
 
 ```ts
 scene.action([
-    door.play(),
+    door.play(0, {waitForEnd: true}),
     alice.say("有人来了。"),
 ]);
 ```
 
-如果剧情需要在声音播放时继续执行，可把声音放到异步控制栈
+不传这个选项时，下一行会在声音继续播放时执行，这也是音效通常需要的行为
 
 ```ts
-import { Control } from "narraleaf-react";
-
 scene.action([
-    Control.doAsync([door.play()]),
+    door.play(),
     alice.say("门在你身后关上了。"),
 ]);
 ```
 
 <Callout type="warning">
-    旧版的 `sync` 配置已经移除。非阻塞音频请使用 `Control.doAsync()` 或 `Control.allAsync()`
+    旧版的 `sync` 配置已经移除。`play()` 默认不再阻塞；需要音频按住剧情时使用 `{waitForEnd: true}`
 </Callout>
 
 ## 背景音乐

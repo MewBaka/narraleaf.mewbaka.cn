@@ -3,10 +3,6 @@ title: "Sound"
 description: The `Sound` class for voice, music, and effect playback, covering volume, muting, rate, seeking, and fading.
 ---
 <Callout type="warning">
-    This page is under construction.
-</Callout>
-
-<Callout type="warning">
     Beta feature, subject to change.
 </Callout>
 
@@ -93,14 +89,15 @@ Create a sound. `type` defaults to `sound` and may name any bus beneath it.
 <Steps>
 <Step>
 
-Play the sound and wait for it to finish
+Start the sound. By default the action resolves as soon as the clip is playing, so the next line runs while it continues. Pass `{waitForEnd: true}` when the story should wait for the clip to finish.
 
 ```ts
 const sound = new Sound({
     src: 'sound.mp3',
 });
 scene.action([
-    sound.play(1000), // play and fade in 1 second
+    sound.play(1000),                                  // fade in for 1 second, then continue
+    sound.play(0, {waitForEnd: true}),                 // hold the story until the clip ends
 ]);
 ```
 
@@ -116,7 +113,8 @@ music slider controls it — and then playing it from an ordinary line is a legi
     time.
 </Callout>
 
-- `duration?: number` - Fade duration in milliseconds
+- `duration?: number` - fade duration in milliseconds
+- `options.waitForEnd?: boolean` - hold the story until the clip finishes. It is ignored for a looping clip. Available since `0.42.0`; before that every `play()` waited.
 </Step>
 </Steps>
 

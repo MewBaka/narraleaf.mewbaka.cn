@@ -1,0 +1,23 @@
+---
+title: "WordRendererOptions"
+description: registerWordRenderer のオプション。描画された単語がプレイヤーのクリックを受け取るかどうかを含む
+---
+```typescript
+type WordRendererOptions = {
+    interactive?: boolean;
+};
+```
+
+[`registerWordRenderer`](/ja/docs/narraleaf-react/core/elements/character/word#registerwordrenderer) の第 3 引数として渡します。
+
+## interactive
+
+このレンダラーで描画された単語が、完全に表示された後にプレイヤーのクリックを受け取るかどうかです。既定値は `true` で、用語のポップアップなど、セリフ内の操作に適しています。
+
+揺れや波打ちなど、見た目だけを変える効果では `false` にしてください。既定値のままだと、その単語が覆っているダイアログ部分でセリフが進まなくなります。
+
+```tsx
+registerWordRenderer("shake", ShakingText, {interactive: false});
+```
+
+`Word.custom` が直接持つコンポーネントは常に自身のクリックを受け取ります。このオプションはレジストリにだけ適用されます。

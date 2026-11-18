@@ -1,0 +1,23 @@
+---
+title: "WordRendererOptions"
+description: Options for registerWordRenderer, including whether a rendered word consumes the player's clicks.
+---
+```typescript
+type WordRendererOptions = {
+    interactive?: boolean;
+};
+```
+
+Passed as the third argument to [`registerWordRenderer`](/docs/narraleaf-react/core/elements/character/word#registerwordrenderer).
+
+## interactive
+
+Whether a word drawn by this renderer takes the player's clicks once revealed. Defaults to `true`, which is right for a glossary term or another control inside dialogue.
+
+Set it to `false` for an effect that only changes how the text looks, such as shaking or waving. With the default, the part of the dialogue box covered by that word would stop advancing the line.
+
+```tsx
+registerWordRenderer("shake", ShakingText, {interactive: false});
+```
+
+A component carried directly by `Word.custom` always takes its own clicks; this option applies to the registry.

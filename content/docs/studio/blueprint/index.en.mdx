@@ -38,7 +38,7 @@ A `widgetMain` blueprint acts on its own widget through **Self nodes**, which ta
 
 A **Blueprint Value** is a `widgetValue` blueprint bound to one property, so the property is computed instead of authored. The current targets are `nl.text` → `props.text`, `nl.button` → `props.label`, `nl.image` → `props.imageFill.assetId`, `nl.switch` → `props.checked`, `nl.frame` → `props.params`, and `nl.slider` → `props.value`.
 
-Its palette is deliberately narrow: the `Init` and `On Flush` heads, non-latent flow, pure Data and Math, local variable access, `Element` literals, and pure reads. No mutations, no navigation, no persistent variables, and no latent nodes (anything that suspends the graph, such as `Delay` or a save write) other than `Call Fn`. A value provider that could change the world would re-enter itself the moment the world changed.
+Its palette is deliberately narrow: the `Init` and `On Flush` heads, non-latent flow, pure Data and Math, local variable access, `Element` literals, and pure reads. Persistent values can be read with **Get Persistent**. There are no mutations, no navigation, and no latent nodes (anything that suspends the graph, such as `Delay` or a save write) other than `Call Fn`. A value provider that could change the world would re-enter itself the moment the world changed.
 
 For words in the player's language, [`Translation Key Text`](/docs/studio/blueprint/nodes/localization#translation-key-text) gives a translation key's words and [`Format`](/docs/studio/blueprint/nodes/data#format) fills values into them. A Blueprint Value that reads the player's language updates when the player switches language, whether it reads it through `Translation Key Text` or a per-language asset, or through `Get Text`, `Get Current Language` or `Get Save Metadata` in a function it calls.
 
@@ -55,6 +55,11 @@ The editor canvas is a layout tool. It resolves enough of a blueprint to preview
         title="Variables"
         description="Scopes, lifetimes, and what survives a save."
         href="/docs/studio/blueprint/variables"
+    />
+    <Card
+        title="Blueprint text"
+        description="Copy selected nodes as text, paste them back, and move a graph between tools."
+        href="/docs/studio/blueprint/text-format"
     />
     <Card
         title="Surfaces"

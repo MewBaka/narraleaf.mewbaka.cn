@@ -1,0 +1,23 @@
+---
+title: "WordRendererOptions"
+description: registerWordRenderer 的选项，包括绘制出的词是否接收玩家点击
+---
+```typescript
+type WordRendererOptions = {
+    interactive?: boolean;
+};
+```
+
+作为 [`registerWordRenderer`](/zh/docs/narraleaf-react/core/elements/character/word#registerwordrenderer) 的第三个参数传入。
+
+## interactive
+
+这个渲染器绘制出的词完全显示后，是否接收玩家的点击。默认 `true`，适合术语弹窗或其他放在对白里的控件。
+
+只改变文字外观的效果——例如抖动、波浪——应设为 `false`。使用默认值时，这个词覆盖的那部分对话框将不再推进台词。
+
+```tsx
+registerWordRenderer("shake", ShakingText, {interactive: false});
+```
+
+由 `Word.custom` 直接携带的组件始终接收自己的点击；这个选项只作用于注册表。

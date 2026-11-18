@@ -1,0 +1,14 @@
+---
+title: "DeserializeOptions"
+description: LiveGame.deserialize 的选项，包括是否拒绝由另一个故事写出的存档
+---
+```typescript
+interface DeserializeOptions {
+    requireMatchingStory?: boolean;
+}
+```
+
+## requireMatchingStory
+设为 `true` 时，如果存档的 `meta.storyHash` 与当前故事不一致，[`LiveGame.deserialize`](/zh/docs/narraleaf-react/core/game/live-game#deserialize) 会在改变任何状态之前抛出异常。
+
+默认值为 `false`：只记录一条警告，然后继续读取。对于发布后更新过的游戏，这通常正是需要的行为，因为旧存档往往仍能继续玩。只有当读错故事的代价高于拒绝读档时，才应设为 `true`。

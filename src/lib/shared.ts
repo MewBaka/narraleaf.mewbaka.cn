@@ -18,7 +18,7 @@ export const siteUrl = 'https://www.narraleaf.com';
 export const appName = 'NarraLeaf Project';
 export const navBrandName = 'NarraLeaf';
 export const appDescription =
-  'NarraLeaf helps visual novel projects move from a Studio workspace to a desktop app or an embedded React player without changing the story model.';
+  'NarraLeaf brings visual novel authoring, team collaboration and embedded React playback into one project model, from the Studio workspace to a shipped game.';
 /** Public URL for the favicon (see `public/narraleaf.ico`). */
 export const siteIconPath = '/narraleaf.ico';
 /**

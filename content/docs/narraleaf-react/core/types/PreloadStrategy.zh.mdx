@@ -1,0 +1,58 @@
+---
+title: "PreloadStrategy"
+description: 由宿主决定预热什么、何时预热以及字节从何而来的预加载策略
+---
+```typescript
+type PreloadBand = "gate" | "soon" | "idle";
+
+type PreloadEntry = {
+    type: "image";
+    src: string;
+    band: PreloadBand;
+    decode?: boolean;
+};
+
+type PreloadPlan = {
+    entries: readonly PreloadEntry[];
+    audio?: readonly Sound[];
+    video?: readonly Video[];
+    keep?: readonly string[];
+    pin?: readonly string[];
+};
+
+type PreloadMoment =
+    | {kind: "scene"; scene: Scene; story: Story | null}
+    | {kind: "advance"; actionId: string | null; scene: Scene | null; story: Story | null};
+
+type PreloadResource = {type: "image" | "video"; src: string};
+
+type PreloadAcquisition = {
+    url: string;
+    bytes?: number;
+    release?: () => void;
+};
+
+interface PreloadStrategy {
+    plan(moment: PreloadMoment): PreloadPlan | null | Promise<PreloadPlan | null>;
+    acquire?(resource: PreloadResource, signal: AbortSignal): Promise<PreloadAcquisition | null>;
+    onMissing?(resource: PreloadResource): void;
+}
+```
+
+作为 `GameConfig.preload` 传入。完整示例见[自定义预加载策略](/zh/docs/narraleaf-react/core/game/preload#custom-preload-strategies)
+
+## plan
+
+决定某个时点应预热的内容。返回 `null` 表示保留上一份计划。新计划会替换旧计划；`keep` 列出缓存可以保留的全部图片 URL
+
+只有 `gate` 分区会阻塞首帧绘制。`soon` 全速开始但不阻塞，`idle` 由 `preloadDelay` 节流。`decode` 决定是否保留解码位图，`gate` 与 `soon` 默认开启，`idle` 默认关闭
+
+`video` 按需要顺序列出视频。视频逐条缓冲，且从不阻塞画面
+
+## acquire
+
+可选择提供元素最终使用的 URL。返回 `{url, bytes, release?}` 让图片缓存记录占用并清理，返回 `null` 表示无需预热。省略 `acquire` 时使用播放器自己的抓取与 object URL 缓存
+
+## onMissing
+
+舞台显示了计划未命名的图片或视频时，对每个 URL 最多调用一次。能读取编译结果的宿主可据此指出本应规划资源的行

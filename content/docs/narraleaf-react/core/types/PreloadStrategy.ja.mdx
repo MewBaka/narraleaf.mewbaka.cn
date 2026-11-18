@@ -1,0 +1,58 @@
+---
+title: "PreloadStrategy"
+description: 何をいつ温め、バイトをどこから取得するかをホストが決めるプリロード戦略
+---
+```typescript
+type PreloadBand = "gate" | "soon" | "idle";
+
+type PreloadEntry = {
+    type: "image";
+    src: string;
+    band: PreloadBand;
+    decode?: boolean;
+};
+
+type PreloadPlan = {
+    entries: readonly PreloadEntry[];
+    audio?: readonly Sound[];
+    video?: readonly Video[];
+    keep?: readonly string[];
+    pin?: readonly string[];
+};
+
+type PreloadMoment =
+    | {kind: "scene"; scene: Scene; story: Story | null}
+    | {kind: "advance"; actionId: string | null; scene: Scene | null; story: Story | null};
+
+type PreloadResource = {type: "image" | "video"; src: string};
+
+type PreloadAcquisition = {
+    url: string;
+    bytes?: number;
+    release?: () => void;
+};
+
+interface PreloadStrategy {
+    plan(moment: PreloadMoment): PreloadPlan | null | Promise<PreloadPlan | null>;
+    acquire?(resource: PreloadResource, signal: AbortSignal): Promise<PreloadAcquisition | null>;
+    onMissing?(resource: PreloadResource): void;
+}
+```
+
+`GameConfig.preload` に渡します。完全な例は[カスタムプリロード戦略](/ja/docs/narraleaf-react/core/game/preload#custom-preload-strategies)を参照してください。
+
+## plan
+
+ある時点で温める内容を返します。`null` は以前の計画を維持します。新しい計画は以前の計画を置き換え、`keep` はキャッシュが保持してよい画像 URL の全体を示します。
+
+最初の描画フレームをブロックするのは `gate` 帯だけです。`soon` は全速で開始してブロックせず、`idle` は `preloadDelay` でペーシングされます。`decode` はデコード済みビットマップを保持するかで、`gate` と `soon` では既定で有効、`idle` では無効です。
+
+`video` は必要になる順の動画です。1 本ずつバッファリングされ、フレームをブロックしません。
+
+## acquire
+
+要素が使う URL を任意で返します。`{url, bytes, release?}` を返すと画像キャッシュがバイト数と解放処理を管理し、`null` は温める必要がないことを示します。省略するとプレイヤーの取得と object URL キャッシュを使います。
+
+## onMissing
+
+計画にない画像や動画をステージが表示したとき、URL ごとに最大 1 回呼ばれます。コンパイル結果を持つホストは、その資源を計画すべき行を特定できます。

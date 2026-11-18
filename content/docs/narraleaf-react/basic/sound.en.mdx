@@ -1,6 +1,6 @@
 ---
 title: "Sound"
-description: Sound effects, background music, and voice clips with Sound, and running playback alongside the story with Control.doAsync.
+description: Sound effects, background music, and voice clips with Sound, including playback that continues beside the story or holds it.
 ---
 
 Use [Sound](/docs/narraleaf-react/core/elements/sound) for sound effects, background music, and voice clips. The static constructors mark each sound with the correct type.
@@ -22,28 +22,26 @@ const theme = Sound.bgm({
 
 ## Sound effects
 
-`play()` is an action. By default, the story waits for the clip to finish.
+`play()` is an action, but by default the story continues as soon as the clip starts. Pass `{waitForEnd: true}` when the next line should wait for the clip to finish.
 
 ```ts
 scene.action([
-    door.play(),
+    door.play(0, {waitForEnd: true}),
     alice.say("Someone is here."),
 ]);
 ```
 
-To let the story continue while a sound plays, run it on an asynchronous control stack.
+Without that option, the next row runs while the clip keeps playing, which is the usual choice for a sound effect.
 
 ```ts
-import { Control } from "narraleaf-react";
-
 scene.action([
-    Control.doAsync([door.play()]),
+    door.play(),
     alice.say("The door closes behind you."),
 ]);
 ```
 
 <Callout type="warning">
-    The old `sync` option no longer exists. Use `Control.doAsync()` or `Control.allAsync()` for non-blocking audio.
+    The old `sync` option no longer exists. `play()` no longer blocks by default; use `{waitForEnd: true}` for audio that must hold the story.
 </Callout>
 
 ## Background music

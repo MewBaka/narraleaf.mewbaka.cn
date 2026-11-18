@@ -1,8 +1,7 @@
 {
   "title": "ドキュメント",
-  "description": "NarraLeaf Desktop、Studio、NarraLeaf-React を対象とした NarraLeaf Project のドキュメント。",
+  "description": "Studio、NarraLeaf Team、NarraLeaf-React を対象とした NarraLeaf Project のドキュメント。",
   "pages": [
-    "narraleaf",
     "studio",
     "narraleaf-react"
   ]

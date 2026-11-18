@@ -3,10 +3,6 @@ title: "GameState"
 description: GameState 的属性与方法，包括音频管理器、场景预加载与暂停推进
 ---
 <Callout type="warning">
-    本页面正在建设中
-</Callout>
-
-<Callout type="warning">
     测试功能，可能会有变动
 </Callout>
 
@@ -28,8 +24,27 @@ void gameState.audioManager.preload(bgm);
 ```
 
 - `preload(sound: Sound): Promise<void>` - 预热一个音源。自 `0.17.0` 起可用。加载失败的音源只会记录一条警告，并改为在首次播放时加载，因此它永远不会 reject。**不要用返回的 Promise 为任何东西把关**：在用户手势满足浏览器自动播放策略之前，音频上下文一直是锁住的，因此它完全可能一直挂着不结算。详见[预加载](/zh/docs/narraleaf-react/core/game/preload#声音预加载)
+- `retainOnly(sounds: Sound[]): void` - 只保留这组音频并释放其余缓存引用。正在播放的音频会由播放令牌持有到结束。自 `0.45.0` 起可用
+- `getCacheStats()` - 返回当前保留的解码音频、正在加载的音频与解码 PCM 字节。自 `0.45.0` 起可用
 
 ## 公共方法
+
+### getImageCache
+
+<Steps>
+<Step>
+
+返回播放器的图片缓存；尚未挂载时返回 `null`
+
+```typescript
+const stats = gameState.getImageCache()?.getStats();
+```
+
+`getStats()` 报告已抓取图片字节、解码位图字节、固定条目与当前预算。见 [ImageCacheStats](/zh/docs/narraleaf-react/core/types/ImageCacheStats)
+
+- `return: ImageCacheManager | null`
+</Step>
+</Steps>
 
 ### preloadScene
 

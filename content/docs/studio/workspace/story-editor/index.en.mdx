@@ -34,6 +34,12 @@ A scene opens as a tab and is edited as a list of rows. A row is either a line o
 - **Find in scene** searches within the open scene, with case, whole word, and regular expression options, and replaces matches.
 - Rows that reference a missing asset, or a name a character's model does not have, are marked in place.
 
+Rename a variable, label, scene or character from a row's context menu and review every name that will change before it is written. See [Rename and find references](/docs/studio/workspace/story-editor/rename-references).
+
+## Scene descriptions
+
+A scene can carry a description shown under its name in Studio. It records what the scene is for, where its assets came from, or what still needs work. The game never shows it. A round-trip script carries the same note in the `#description` header, and `#description none` clears it.
+
 ## Putting something on stage
 
 It takes two directions. **Image**, **Text** and **Ambience** declare an object: the direction names it, gives it a source, and puts it where it starts. Nothing appears until **Show** reveals it, and **Hide** takes it away again. Both address the object by name.
@@ -45,6 +51,8 @@ Declaring an object a few lines before showing it also loads its picture or clip
 **Ambience** belongs to its scene, like everything else on stage. An overlay shown in one scene stops when the story jumps to another, and a scene that should have rain shows its own. Ctrl-click its name on a row to open the direction that declared it.
 
 A **Show** of an ambience overlay can carry its own opacity and speed, which apply to that showing only.
+
+With the cursor on a row that shows or moves a character or an image, drag the object or its corners in the preview to rewrite the row's placement. See [Placing objects on stage](/docs/studio/workspace/story-editor/stage-placement).
 
 The **Project check** reports an object that nothing shows, under **Unshown stage object**.
 
@@ -65,9 +73,27 @@ The video file loads from the start of the scene, so a **Play** row needs nothin
 
 The **Project check** reports, under **Video already finished**, a row that pauses, resumes, seeks or stops a video after a **Play** of it that waits for the video to end.
 
+## Opening a page from the story
+
+An **Open page** row opens one of the project's pages over the stage and holds the story until that page closes itself with **Close This Layer**. The row can write what the page closed with into a scene, saved or persistent variable. The value is converted to the variable's type; a page closed without a result, including with Back, leaves the variable as it was.
+
+The page receives no parameters, so its params use their defaults. Rolling back past the row closes the page. The command spelling is `/page <page> [into=<variable>]`; `/overlay` and `/popup` are accepted aliases.
+
+## Stage timeline
+
+The **Stage Timeline** in the bottom dock shows the stage after every row of the current scene: one lane per object and one column per row. Select a column to jump back to the row, follow another menu branch, or zoom the timeline. See [Stage timeline](/docs/studio/workspace/story-editor/stage-timeline).
+
+## Review and history
+
+Comments belong to a story row and travel with it. A row can carry a thread with replies, a to-do mark and a resolved state; the **Comments** panel lists every thread by scene. See [Story comments](/docs/studio/workspace/story-editor/comments).
+
+Local scene snapshots keep previous scene content outside version control. Compare, restore, or inspect the earlier versions of one row in [Scene and line history](/docs/studio/workspace/story-editor/scene-history).
+
 ## Branching and variables
 
 Choices, conditions, and jumps are written as directions in the scene. Story flow shows the resulting branches between scenes as a graph.
+
+An option can carry one `[hide if <condition>]` clause and one `[disable if <condition>]` clause. A hidden option is not offered; a disabled option is shown but cannot be chosen. They are the option's **Hidden when** and **Disabled when** fields in the inspector. The older `show if` and `enable if` spellings are refused.
 
 Variables are declared and read from the story, and their scope decides how long a value survives. See [Variables](/docs/studio/blueprint/variables).
 
@@ -81,3 +107,5 @@ A scene or a whole story can be written out as a plain text file and read back.
 | **Review** | Reading and diffing. Prose only, and cannot be imported. |
 
 **Import Script…** reads a round-trip file back into the project. Pasting several lines of plain text into a scene offers to split them into rows.
+
+Studio can also import Word, Fountain, CSV, TSV and XLSX scripts as scenes, and export a readable PDF or Word script. See [Script documents](/docs/studio/workspace/story-editor/script-documents).

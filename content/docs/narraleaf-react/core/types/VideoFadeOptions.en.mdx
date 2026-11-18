@@ -1,0 +1,14 @@
+---
+title: "VideoFadeOptions"
+description: Duration and easing for Video.show and Video.hide.
+---
+```typescript
+type VideoFadeOptions = {
+    duration?: number;
+    easing?: TransformDefinitions.EasingDefinition;
+};
+```
+
+Passed to [`Video.show`](/docs/narraleaf-react/core/elements/video#show) or [`Video.hide`](/docs/narraleaf-react/core/elements/video#hide). With no positive `duration`, the clip appears or disappears at once.
+
+`easing` accepts a named easing or a cubic-bezier array. It is linear when omitted. A fade starts when the video can present a frame, and the action waits for the fade to finish. Available since `1.1.0`.

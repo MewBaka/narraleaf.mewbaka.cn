@@ -7,6 +7,8 @@ description: 下载并安装适用于 Windows 或 macOS 的 NarraLeaf Studio
 
 下载链接指向最新发行版本。历史版本见 [releases 页面](https://github.com/NarraLeaf/NarraLeaf-Studio/releases)
 
+2.0 文档对应 `2.0.0-TeamBeta3`。稳定版下载与 Team beta 可能是不同发布；需要确认版本时请查看 releases 页面
+
 若从 GitHub 下载缓慢，请使用 GitCode 镜像下载，文件与 GitHub 上的完全相同
 
 ## 系统需求
@@ -50,6 +52,10 @@ Studio 在启动后不久以及运行期间每隔数小时检查是否有新版�
 ### 升级到 1.4.0 [#upgrading-to-1-4-0]
 
 Studio 1.4.0 以第 14 版格式保存项目的界面，新增了[页面参数](/zh/docs/studio/workspace/ui-editor#page-params)。它第一次打开早期版本建立的项目时，会升级 `editor/ui/uidoc.json`，此后 Studio 1.3.x 及更早的版本会拒绝打开该项目，因此打开它的每台电脑都需要 1.4.0 或更高版本。这次升级不改动页面本身，只在文件里记下新的版本号
+
+### 升级到 2.0 [#upgrading-to-2-0]
+
+Studio 2.0 打开本机工程时不需要额外迁移。连接到 NarraLeaf Team 的工程需要 Studio 与服务器同意同一个文档内核，见[在 Studio 中连接](/zh/docs/studio/team/connect#working-in-studio-20)。团队工程设置保存在项目之外，因此本机副本不会带上服务器地址
 
 ### 升级到 1.3.0 [#upgrading-to-1-3-0]
 

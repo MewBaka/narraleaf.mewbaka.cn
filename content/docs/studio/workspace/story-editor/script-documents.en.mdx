@@ -1,0 +1,36 @@
+---
+title: Script documents
+description: Import scenes from Word, Fountain or a spreadsheet, and export a readable script as PDF or Word.
+---
+
+Studio can exchange a story with tools used outside the editor. Import creates scenes; export produces a readable document for review, voice recording or archiving.
+
+## Import
+
+**Import Script…** accepts:
+
+| Format | Extensions |
+| --- | --- |
+| Word | `.docx` |
+| Fountain | `.fountain`, `.spmd` |
+| Spreadsheet | `.csv`, `.tsv`, `.xlsx` |
+
+Studio reads the file and opens the paste wizard to decide who each speaker is. A heading in Word, a scene heading in Fountain or a change in the scene column starts a new scene.
+
+- For a spreadsheet, choose which columns hold the speaker, the line, a note and the scene
+- Rows without a speaker become narration
+- Notes become note rows after their line
+- The new scenes are added to the story and can be removed with one undo
+
+The wizard lists every row it will add, change or remove before writing anything. A scene edited in Studio after the source document was exported loses those edits on import, and the wizard states that first.
+
+## Export
+
+Choose the scenes, speakers and content to print. Filtered to one speaker, the export contains that speaker's lines with the preceding lines as context.
+
+| Format | Use |
+| --- | --- |
+| PDF | Reading, review and printing |
+| Word (`.docx`) | Editing and handing to collaborators |
+
+Line ids in an export are the same ids the voice recording script uses, so an exported script can be matched to recorded takes.

@@ -10,7 +10,7 @@ description: 声明变量、读取变量、写入变量，以及访问 Persisten
 - **`Get Var`和`Set Var`的`value`引脚类型由所选变量投影而来。** 引脚声明成`any`，但在卡片上它会取你在`Variable`里选中的那个变量的类型，编辑器的引脚标签、连线预览和 graph validation 都用这份投影结果
 - **Persistent 与 Saved 两对节点的`value`引脚同样按变量声明的类型投影。** **数字**变量的引脚是`float`，可以连到`+`等数字输入
 - **之后改类型不会动你的连线。** 改掉某个`Var`的 Data type 后，已不再匹配的连线原地保留；graph validation 报告类型不匹配，而不是由编辑器悄悄删掉这条连线。重接哪一根由你决定
-- **Persistent 那一对是 latent（会挂起执行）节点。** `Get Persistent`和`Set Persistent`在读写完成前会挂起整张图，因此进不了 [Blueprint Value](/zh/docs/studio/blueprint)、内联故事值和分支条件
+- **Persistent 那一对是 latent（会挂起执行）节点。** `Get Persistent`和`Set Persistent`在读写完成前会挂起整张图。[Blueprint Value](/zh/docs/studio/blueprint) 可以使用`Get Persistent`，取值运行时会等待它，并在变量写入后重新求值；`Set Persistent`仍不能用于 Blueprint Value、内联故事值和分支条件
 - **Blueprint Value 不能声明变量。** `widgetValue`宿主根本没有`Var`节点，但它仍然可以用`Get Var`和`Set Var`读写自己够得到的变量
 - **Scene 这两个节点属于 Story Action 蓝图。** `Get Scene Var`和`Set Scene Var`在别处都不提供。Saved 这一对提供给所有蓝图：在 Story Action 蓝图里它访问运行中的剧情，在其它地方访问运行中的游戏。Blueprint Value 中可以用`Get Saved Var`，不能用`Set Saved Var`；它显示的值随变量的每次写入更新
 

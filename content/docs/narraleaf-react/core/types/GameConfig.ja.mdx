@@ -55,6 +55,11 @@ type GameConfig = {
      */
     ratioUpdateInterval: number;
     /**
+     * プレイヤーが何をいつ温め、バイトをどこから取得するかを決める。
+     * 未設定なら組み込み戦略を使う。
+     */
+    preload?: PreloadStrategy;
+    /**
      * ゲームが画像をプリロードする際、各プリロードタスクの間に置かれる遅延時間
      *
      * 1 つのプリロードタスクには {@link GameConfig.preloadConcurrency} 枚の画像が含まれることがあります
@@ -71,6 +76,21 @@ type GameConfig = {
      * @default true
      */
     waitForPreload: boolean;
+    /**
+     * gate が開始フレームを待つか、シーンが登録するすべての画像を待つか。
+     * @default "firstFrame"
+     */
+    preloadGate: "firstFrame" | "scene";
+    /**
+     * キャッシュが保持できる取得済み画像バイト数。
+     * @default 256 * 1024 * 1024
+     */
+    imageCacheBudgetBytes: number;
+    /**
+     * キャッシュが保持できるデコード済みビットマップバイト数。
+     * @default 128 * 1024 * 1024
+     */
+    decodedImageBudgetBytes: number;
     /**
      * シーン内で読み込まれる可能性のあるすべての画像をプリロードする
      *
@@ -316,3 +336,4 @@ type GameConfig = {
 ```
 
 - `AudioBusDeclaration` については [AudioBusDeclaration](/ja/docs/narraleaf-react/core/types/AudioBusDeclaration) と [Audio Buses](/ja/docs/narraleaf-react/core/game/audio-buses) を参照してください。
+- プリロードの接続点、キャッシュ、予算については[プリロード](/ja/docs/narraleaf-react/core/game/preload)と [PreloadStrategy](/ja/docs/narraleaf-react/core/types/PreloadStrategy) を参照してください。

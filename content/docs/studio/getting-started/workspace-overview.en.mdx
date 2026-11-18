@@ -18,7 +18,7 @@ The workspace has an activity bar, sidebars, an editor area, a Properties panel,
 | Left sidebar | Browse and create content for the current tool |
 | Center editor area | Open pages, scenes, asset previews, and Blueprints in tabs |
 | Right sidebar | **Properties** edits the selected page, widget, asset, or story action; **Variables** and **Dictionary** sit under it on the same rail |
-| Bottom bar | Show the console, build output, the **Problems** panel, motion tools, and the assets panel |
+| Bottom bar | Show the console, build output, the **Problems** panel, **Comments**, the **Stage Timeline**, motion tools, and the assets panel |
 | Top bar | File actions, version control, and the run and build controls |
 
 ## The left rail
@@ -58,6 +58,10 @@ A production build runs the checks while **Check before building** is on. Both s
 **Minor warning** is for problems of low priority. **Missing translation**, **Missing voice**, **Unused asset**, **Unused variable** and **Unreachable page** report at this level unless the project sets another, and a [command-line check](/docs/studio/command-line-builds#project-check) never fails on it.
 
 Studio 1.4.5 and earlier do not have **Minor warning**. They report a rule set to it at the rule's default level, and remove that setting from the project when any project check setting is changed in them.
+
+## Review and stage views
+
+The bottom bar also holds the **Comments** panel and the **Stage Timeline**. Comments groups review threads by scene; the Stage Timeline shows each object's state after every story row and can jump back to a row. Both are part of the 2.0 story workflow. See [Story comments](/docs/studio/workspace/story-editor/comments) and [Stage timeline](/docs/studio/workspace/story-editor/stage-timeline).
 
 ## Selection and properties
 

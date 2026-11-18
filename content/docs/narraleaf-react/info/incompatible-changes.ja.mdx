@@ -10,6 +10,15 @@ description: NarraLeaf-React の各バージョン間における破壊的変更
 - [`LiveGame.fastForward`](/ja/docs/narraleaf-react/core/game/live-game#fastforward) の `reason` に `"refused"` が加わり、結果に `refusal` が加わりました。これを生むのはサービスが `ctx.skip.refuse()` を呼ぶストーリーだけですが、`reason` を網羅する `switch` はコンパイルを通すためにこの分岐を追加する必要があります
 - [`ServiceHandlerCtx`](/ja/docs/narraleaf-react/core/types/ServiceHandlerCtx) に `signal` と `skip` が加わりました。コンテキストを手で組み立てるコード（ハンドラを直接呼ぶテストなど）は、これらを用意する必要があります。`onAbort` は非推奨となり、`signal` を使ってください。実行がキャンセルされた後に登録したリスナーは、決して呼ばれないのではなく、ただちに呼ばれるようになりました
 
+## 0.44.0
+
+- `textRevealDuration` は `GameConfig` からプレイヤー設定へ移動しました。`new Game({textRevealDuration})` に残した値は無視されます。`game.preference.setPreference("textRevealDuration", value)` で設定してください。
+
+## 0.42.0
+
+- [`Sound.play()`](/ja/docs/narraleaf-react/core/elements/sound#play) はクリップの再生開始時に完了し、終了を待たなくなりました。ストーリーを待たせる場合は第 2 引数に `{waitForEnd: true}` を渡してください。
+- 画像キャッシュは data URL ではなく object URL を返すようになりました。`getImageDataUrl` は `getImageObjectUrl` に置き換えられました。キャッシュ文字列を保存したり `data:` 接頭辞で判定したりするコードは更新が必要です。
+
 ## 0.39.2
 
 - ホストが受け取るスクリプトエラー（`RuntimeScriptError`。[`GameConfig.onError`](/ja/docs/narraleaf-react/core/types/GameConfig) 経由で渡されます）は、`message` に文だけを含むようになりました。以前は問題を起こしたアクションの `id` と `type`、さらにそのアクションの構築スタック全体がその後ろに連結されており、メッセージをパネルに表示するホストでは折り返し線の上がバンドルのスタックフレームで埋め尽くされていました。これらは今後それぞれ別のフィールドに分かれます —— `error.action`（`id` と `type`）、`error.actionStack`、そして一つの文字列としてまとめた `error.composedMessage` です。**メッセージ文字列を解析してこれらを取り出していたホストは、フィールドを直接読むように変更してください。** エラーオブジェクトをそのままログに出しているだけなら何も失われません。`error.stack` には引き続き構築の全体が含まれます

@@ -4,6 +4,7 @@
     "index",
     "workspace-overview",
     "create-first-page",
+    "dev-mode",
     "run-and-package"
   ]
 }

@@ -68,7 +68,7 @@ Load a saved game
 
 After calling this method, the current game state will be lost, and the stage will trigger force reset
 
-> **Note: **Even if you change just a single line of script, the saved game might not be compatible with the new version
+The save's `meta.storyHash` is compared with the loaded story. A mismatch is logged as a warning by default, so a game updated after release can still load an old save. Pass `{ requireMatchingStory: true }` to throw before any state changes instead.
 
 Example:
 
@@ -82,9 +82,13 @@ const game = useGame();
 
 // pass the saved game data to the game instance
 game.getLiveGame().deserialize(savedGame);
+
+// or refuse a save written by another story
+game.getLiveGame().deserialize(savedGame, { requireMatchingStory: true });
 ```
 
 - `savedGame: SavedGame` - [SavedGame](/docs/narraleaf-react/core/types/SavedGame)
+- `options?: DeserializeOptions` - `requireMatchingStory?: boolean`
 </Step>
 </Steps>
 
@@ -97,7 +101,7 @@ Serialize the current game state
 
 You can use this to save the game state to a file or a database
 
-> **Note: **Even if you change just a single line of script, the saved game might not be compatible with the new version
+The save records the story hash. A game may still load a save from an older story, but code that needs an exact match can compare `save.meta.storyHash` with `liveGame.story.hash()` or use the option above when loading.
 
 - `return: SavedGame` - See [SavedGame](/docs/narraleaf-react/core/types/SavedGame)`
 </Step>
@@ -209,6 +213,31 @@ Capture the game screenshot, will only include the player element
 Returns a PNG image blob
 
 - Returns `Promise<Blob | null>`
+</Step>
+</Steps>
+
+### captureImage
+
+<Steps>
+<Step>
+
+Capture the game screenshot at the size and in the encoding it is wanted, and draw it only once.
+
+`maxEdge` limits the longest edge in pixels. `type` accepts `image/png`, `image/jpeg` or `image/webp`; `quality` applies to JPEG and WebP. Pass `backgroundColor` when the encoding needs an opaque background. Without options the result is the picture `capturePng` draws.
+
+```typescript
+const thumbnail = await liveGame.captureImage({
+    maxEdge: 960,
+    type: "image/webp",
+    quality: 0.85,
+    backgroundColor: "#000",
+});
+```
+
+A type the browser cannot encode falls back to PNG, as `HTMLCanvasElement.toDataURL` does. Check the data URL's prefix when the encoding matters.
+
+- `options?: CaptureImageOptions` - `maxEdge`, `type`, `quality`, `backgroundColor`
+- Returns `Promise<string>`
 </Step>
 </Steps>
 

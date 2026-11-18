@@ -1,0 +1,30 @@
+---
+title: "CaptureImageOptions"
+description: LiveGame.captureImage のサイズ、エンコーディング、品質、背景のオプション
+---
+```typescript
+type CaptureImageOptions = {
+    maxEdge?: number;
+    type?: string;
+    quality?: number;
+    backgroundColor?: string;
+};
+```
+
+[`LiveGame.captureImage`](/ja/docs/narraleaf-react/core/game/live-game#captureimage) に渡します。ステージは指定したサイズで直接描画され、一度だけエンコードされます。フルサイズで描いてから結果を縮小する必要はありません。
+
+## maxEdge
+
+長辺の最大ピクセル数です。ステージは `capturePng` より大きく描画されることはありません。省略すると、`capturePng` と同じサイズになります。
+
+## type
+
+既定値は `image/png` で、`image/jpeg` と `image/webp` も使用できます。ブラウザが指定した種類をエンコードできない場合は、`HTMLCanvasElement.toDataURL` と同じく PNG にフォールバックします。
+
+## quality
+
+JPEG と WebP のエンコード品質で、0 から 1 の範囲です。省略時はゲームの `screenshotQuality` を使います。
+
+## backgroundColor
+
+描画前にステージの下へ塗る色です。JPEG には透明度がないため、背景色を指定しないと透明なピクセルは黒になります。

@@ -5,6 +5,8 @@ description: Dev Mode でプロジェクトを確認し、プレイヤーに配�
 
 Studio には 2 つの出力経路があります。制作中の確認に使う Dev Mode と、配布用ファイルを生成するプロダクションビルドです。**Export Project**（プロジェクトをエクスポート）は編集可能な Studio プロジェクトを渡すためのもので、プレイヤー向けのビルドは生成しません。
 
+言語選択、ライブリロード、デバッグツール、Agent が保持するセッションを含む完全な Dev Mode の説明は [Dev Mode](/ja/docs/studio/getting-started/dev-mode) にあります。
+
 ## Dev Mode で実行する
 
 Dev Mode は次のいずれからでも開始できます。
@@ -14,6 +16,8 @@ Dev Mode は次のいずれからでも開始できます。
 - **Develop**（開発）メニュー。
 
 Dev Mode は別ウィンドウで開きます。UI ドキュメントやブループリントを変更した後は、実行中のコンテンツを再読み込みします。ランタイムログとノードのトレースは、デバッグツールとコンソールに表示されます。
+
+プロジェクトに複数の言語がある場合、Run メニューの **Language** 行が今回の実行言語を決めます。**Automatic** はプレイヤーが見る言語に従い、別の言語を選んでもプレイヤーの保存済み言語は変わりません。
 
 <Figure
     src="/static/img/docs/studio/en/dev-mode-debug.webp"

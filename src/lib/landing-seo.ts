@@ -32,9 +32,9 @@ export const landingPaths: Record<LandingPageKey, string> = {
 const landingSeo: Record<LandingPageKey, Record<Locale, LandingPageSeo>> = {
   home: {
     en: {
-      title: 'NarraLeaf: Visual Novel Engine, Editor and React Player',
+      title: 'NarraLeaf: Visual Novel Studio, Team Server and React Player',
       description:
-        'NarraLeaf builds visual novels as software. Write and preview a project in NarraLeaf Studio, ship it as a Windows, macOS, Android, iOS or web build, or embed the story in a React app with narraleaf-react.',
+        'NarraLeaf builds visual novels as software. Author and ship in NarraLeaf Studio, share a project through NarraLeaf Team, or embed the story in a React app with narraleaf-react.',
       keywords: [
         'visual novel',
         'build a visual novel',
@@ -43,15 +43,15 @@ const landingSeo: Record<LandingPageKey, Record<Locale, LandingPageSeo>> = {
       ],
     },
     zh: {
-      title: 'NarraLeaf：视觉小说引擎、编辑器与 React 播放器',
+      title: 'NarraLeaf：视觉小说编辑器、团队服务器与 React 播放器',
       description:
-        'NarraLeaf 用做软件的方式做视觉小说。在 NarraLeaf Studio 里编写与预览项目，构建成 Windows、macOS、Android、iOS 或网页版本，也可以用 narraleaf-react 把剧情嵌进 React 应用。',
+        'NarraLeaf 用做软件的方式做视觉小说。在 NarraLeaf Studio 中编写、预览并交付项目，用 NarraLeaf Team 共享团队项目，也可以用 narraleaf-react 把剧情嵌进 React 应用。',
       keywords: ['视觉小说', '视觉小说开发', '制作视觉小说', '视觉小说游戏引擎'],
     },
     ja: {
-      title: 'NarraLeaf：ビジュアルノベルエンジン、エディタ、React プレイヤー',
+      title: 'NarraLeaf：ビジュアルノベル Studio、Team サーバー、React プレイヤー',
       description:
-        'NarraLeaf はビジュアルノベルをソフトウェアとして作ります。NarraLeaf Studio で執筆とプレビューを行い、Windows、macOS、Android、iOS、Web 向けにビルドし、narraleaf-react を使えば React アプリにそのまま物語を組み込めます。',
+        'NarraLeaf はビジュアルノベルをソフトウェアとして作ります。NarraLeaf Studio で制作と配布を行い、NarraLeaf Team でチームプロジェクトを共有し、narraleaf-react で React アプリに物語を組み込めます。',
       keywords: [
         'ビジュアルノベル',
         'ノベルゲーム開発',
@@ -97,9 +97,9 @@ const landingSeo: Record<LandingPageKey, Record<Locale, LandingPageSeo>> = {
   },
   project: {
     en: {
-      title: 'The NarraLeaf Project: Studio, Desktop and React Player',
+      title: 'The NarraLeaf Project: Studio, Team and React Player',
       description:
-        'An ecosystem for visual novel creation, application delivery and React embedding: a zero-code studio, a desktop application toolchain, and a lightweight React player that share one project model.',
+        'An ecosystem for visual novel production and delivery: a zero-code Studio editor, a self-hosted Team collaboration server, and a lightweight React player that share one project model.',
       keywords: [
         'visual novel toolchain',
         'NarraLeaf Project',
@@ -108,15 +108,15 @@ const landingSeo: Record<LandingPageKey, Record<Locale, LandingPageSeo>> = {
       ],
     },
     zh: {
-      title: 'NarraLeaf Project：Studio、桌面工具链与 React 播放器',
+      title: 'NarraLeaf Project：Studio、Team 与 React 播放器',
       description:
-        'NarraLeaf Project 生态总览：面向视觉小说创作、应用交付与 React 嵌入的零代码 Studio、桌面应用工具链与轻量 React 播放器，三条路径共用同一套项目模型。',
+        'NarraLeaf Project 生态总览：面向视觉小说制作与交付的零代码 Studio、自托管 Team 协作服务器与轻量 React 播放器，三条路径共用同一套项目模型。',
       keywords: ['视觉小说工具链', 'NarraLeaf 项目', 'React 视觉小说播放器', '视觉小说生态'],
     },
     ja: {
-      title: 'NarraLeaf Project：Studio、デスクトップ、React プレイヤー',
+      title: 'NarraLeaf Project：Studio、Team、React プレイヤー',
       description:
-        'ビジュアルノベルの制作、アプリケーションの配信、React への組み込みを扱うエコシステムです。ノーコードのスタジオ、デスクトップアプリのツールチェーン、軽量な React プレイヤーが 1 つのプロジェクトモデルを共有します。',
+        'ビジュアルノベルの制作と配信を扱うエコシステムです。ノーコードの Studio、セルフホスト型の Team コラボレーションサーバー、軽量な React プレイヤーが 1 つのプロジェクトモデルを共有します。',
       keywords: [
         'ビジュアルノベル ツールチェーン',
         'NarraLeaf Project',
@@ -129,19 +129,19 @@ const landingSeo: Record<LandingPageKey, Record<Locale, LandingPageSeo>> = {
     en: {
       title: 'NarraLeaf Blog',
       description:
-        'Release announcements and news from the NarraLeaf Project: NarraLeaf Studio, NarraLeaf Desktop and NarraLeaf-React.',
+        'Release announcements and news from the NarraLeaf Project: NarraLeaf Studio, NarraLeaf Team and NarraLeaf-React.',
       keywords: ['NarraLeaf blog', 'NarraLeaf release', 'narraleaf-react release'],
     },
     zh: {
       title: 'NarraLeaf 博客',
       description:
-        'NarraLeaf Project 的版本发布与动态，涵盖 NarraLeaf Studio、NarraLeaf Desktop 与 NarraLeaf-React。',
+        'NarraLeaf Project 的版本发布与动态，涵盖 NarraLeaf Studio、NarraLeaf Team 与 NarraLeaf-React。',
       keywords: ['NarraLeaf 博客', 'NarraLeaf 版本发布', 'narraleaf-react 更新'],
     },
     ja: {
       title: 'NarraLeaf ブログ',
       description:
-        'NarraLeaf Project のリリース情報とお知らせ。NarraLeaf Studio、NarraLeaf Desktop、NarraLeaf-React の最新情報を掲載しています。',
+        'NarraLeaf Project のリリース情報とお知らせ。NarraLeaf Studio、NarraLeaf Team、NarraLeaf-React の最新情報を掲載しています。',
       keywords: ['NarraLeaf ブログ', 'NarraLeaf リリース', 'narraleaf-react アップデート'],
     },
   },

@@ -1,6 +1,12 @@
 {
   "title": "ストーリーエディタ",
   "pages": [
-    "index"
+    "index",
+    "rename-references",
+    "script-documents",
+    "scene-history",
+    "comments",
+    "stage-timeline",
+    "stage-placement"
   ]
 }

@@ -1,0 +1,27 @@
+---
+title: Scene and line history
+description: Restore a scene snapshot, compare it with the current scene, and inspect the earlier versions of one story row.
+---
+
+The **Scene History** panel keeps content snapshots of the current scene. Snapshots are stored on this computer, outside version control, and are not part of a build.
+
+## Snapshots
+
+| Kind | Created | Removed |
+| --- | --- | --- |
+| Automatic | While editing, once per changed scene at the interval set in Settings | Older entries are thinned to one a day and kept for two weeks |
+| Manual | **Save snapshot** keeps the current content immediately | Never removed automatically |
+
+The list starts with the current content. Selecting a snapshot shows what changed, including added and removed rows.
+
+## Compare and restore
+
+**Compare with current** lists changed, added and removed lines. **Restore this snapshot** first saves the current content as a snapshot, then replaces the scene. The restore is one undo step.
+
+Restoring affects story content only. Assets, characters and interfaces are not rolled back with a scene snapshot.
+
+## Line history
+
+**View line history** in a row's context menu lists the versions that row had across snapshots. Deleted text is shown struck through and added text is highlighted.
+
+The same view can include recent version-control commits. **Restore this version** changes only that row and can be undone. Version-control history and local snapshots remain separate sources; one does not replace the other.

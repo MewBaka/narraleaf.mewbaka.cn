@@ -1,5 +1,5 @@
 {
-  "title": "NarraLeaf Desktop",
-  "description": "Desktop 文档：运行时、渲染器与 CLI。",
+  "title": "NarraLeaf Desktop（旧版）",
+  "description": "为已有项目保留的旧版 Desktop 文档。",
   "pages": ["library"]
 }

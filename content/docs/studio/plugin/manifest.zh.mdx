@@ -46,6 +46,7 @@ description: manifest.json 中的每一个字段——入口、完整的 contrib
 | --- | --- | --- |
 | `blueprintNodes` | `string[]` | 本插件提供的蓝图节点类型|
 | `widgets` | `string[]` | 本插件提供的控件元素类型|
+| `inlineTextEffects` | `string[]` | 本插件提供给一段对白使用的行内文字效果 id|
 | `widgetText` | object | 本插件每种控件中存放玩家读到的文字的属性|
 | `locales` | object[] | Studio 语言包——插件新增或补全的语言|
 | `runtimeData` | `string[]` | 随游戏一并发布的插件存储命名空间|
@@ -66,6 +67,22 @@ description: manifest.json 中的每一个字段——入口、完整的 contrib
 ### blueprintNodes 与 widgets
 
 注册一个你没有声明的类型会在加载时抛错，两个入口都是如此。正是这份声明，让 Studio 能在构建*之前*就告诉作者：项目里用到的某个节点没有 runtime 提供方——而不是发布一个带着无效节点的游戏
+
+### inlineTextEffects
+
+行内文字效果作用在选中的一段对白上，例如抖动或波浪。studio 入口注册文本工具栏中的效果，runtime 入口注册游戏里绘制这段文字的组件。两个入口使用同一个 id，并且都必须出现在 `contributes.inlineTextEffects` 中
+
+```json
+{
+  "contributes": {
+    "inlineTextEffects": ["acme.fx.shake"]
+  }
+}
+```
+
+只要有已加载的插件提供效果，对白文字工具栏就会出现**效果**控件。作者选中文字、选择效果并设置数字参数。效果按文字段保存，导出再导入不会丢失，只在游戏中绘制；编辑器里会在选中该段时显示虚线下划线
+
+任一入口注册未声明的 id 都会抛错。插件缺失时这段文字按普通文字显示，项目检查会报告未知效果，依赖表会把提供它的插件留在构建中
 
 ### widgetText
 

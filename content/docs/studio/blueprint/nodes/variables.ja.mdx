@@ -10,7 +10,7 @@ description: 変数を宣言し、読み取り、書き込み、そして Persis
 - **`Get Var` と `Set Var` は、選択した変数から `value` ピンの型を投影します。** ピン自体は `any` と宣言されていますが、カード上では `Variable` で選んだものの型を取り、エディターはピンのラベル、接続のプレビュー、検証にこの投影された型を使用します。
 - **Persistent と Saved のペアも、変数の宣言から `value` ピンの型を投影します。** **Number**（数値）の変数のピンは `float` になり、`+` などの数値入力に接続できます。
 - **後から型を変更しても、接続されたエッジは保持されます。** `Var` の Data type を変更し、既存のエッジがもう合わなくなっても、そのエッジはそのまま残ります。検証は接続を静かに削除するのではなく、型の不一致として報告します。どのエッジを繋ぎ直すかは作者が決めます。
-- **Persistent のペアは latent です。** `Get Persistent` と `Set Persistent` は読み書きが終わるまでグラフを一時停止させるため、[Blueprint Value](/ja/docs/studio/blueprint)、インラインのストーリー値、分岐条件では提供されません。
+- **Persistent のペアは latent です。** `Get Persistent` と `Set Persistent` は読み書きが終わるまでグラフを一時停止させます。[Blueprint Value](/ja/docs/studio/blueprint) では `Get Persistent` を使用でき、値ランタイムが待機して、変数が書き込まれるとバインディングを再評価します。`Set Persistent` は Blueprint Value、インラインのストーリー値、分岐条件では許可されません。
 - **Blueprint Value は宣言できません。** `widgetValue` の宿主には `Var` ノードが一切ありません。それでも `Get Var` と `Set Var` を通じて、自分がアクセスできる変数を読み書きできます。
 - **Scene のノードは Story Action ブループリントに属します。** `Get Scene Var` と `Set Scene Var` は他のどこにも提供されません。Saved のペアはすべてのブループリントに提供されます。Story Action ブループリントでは実行中のストーリーに、それ以外では実行中のゲームにアクセスします。Blueprint Value では `Get Saved Var` を使え、`Set Saved Var` は使えません。表示する値は変数が書き込まれるたびに更新されます。
 

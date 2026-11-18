@@ -1,0 +1,30 @@
+---
+title: "CaptureImageOptions"
+description: LiveGame.captureImage 的尺寸、编码、质量与背景选项
+---
+```typescript
+type CaptureImageOptions = {
+    maxEdge?: number;
+    type?: string;
+    quality?: number;
+    backgroundColor?: string;
+};
+```
+
+传给 [`LiveGame.captureImage`](/zh/docs/narraleaf-react/core/game/live-game#captureimage)。舞台会按请求的尺寸直接绘制并只编码一次，不再先按完整尺寸绘制再缩放结果。
+
+## maxEdge
+
+最长边的像素数。舞台不会被绘制得比 `capturePng` 更大。省略时，结果与 `capturePng` 的尺寸完全相同。
+
+## type
+
+默认 `image/png`，也接受 `image/jpeg` 与 `image/webp`。浏览器无法编码指定类型时，会按 `HTMLCanvasElement.toDataURL` 的行为回退为 PNG。
+
+## quality
+
+JPEG 与 WebP 的编码质量，范围 0 到 1。默认使用游戏的 `screenshotQuality`。
+
+## backgroundColor
+
+绘制前铺在舞台下方的颜色。JPEG 不支持透明度，没有背景色时透明像素会变成黑色。

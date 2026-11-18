@@ -1,0 +1,26 @@
+---
+title: "ImageCacheStats"
+description: プレイヤーの画像キャッシュが保持する内容、固定された項目、適用中の予算
+---
+```typescript
+type ImageCacheStats = {
+    entries: number;
+    blobBytes: number;
+    decodedEntries: number;
+    decodedBytes: number;
+    pinned: number;
+    budget: {
+        blobBytes: number;
+        decodedBytes: number;
+    };
+};
+```
+
+`gameState.getImageCache()?.getStats()` が返します。[キャッシュ予算とメモリ](/ja/docs/narraleaf-react/core/game/preload#cache-budgets-and-memory)を参照してください。
+
+- `entries` - キャッシュが URL を保持するソース数
+- `blobBytes` - キャッシュが作った object URL が保持する取得済み画像バイト
+- `decodedEntries` - デコード済みビットマップを保持しているソース数
+- `decodedBytes` - ビットマップの推定サイズ。各画像を幅 × 高さ × 4 バイトで計算
+- `pinned` - マウント中の画像または現在のシーンにより破棄されない項目数
+- `budget` - `imageCacheBudgetBytes` と `decodedImageBudgetBytes` から読み取った現在の上限

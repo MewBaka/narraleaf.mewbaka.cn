@@ -2,6 +2,7 @@
   "title": "Blueprint",
   "pages": [
     "index",
+    "text-format",
     "variables",
     "affection-endings",
     "surfaces",

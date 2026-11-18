@@ -71,8 +71,7 @@ const storable = game.getLiveGame().getStorable();
 
 このメソッドを呼び出すと、現在のゲーム状態は失われ、ステージは強制的にリセットされます。
 
-> **注意：** スクリプトを 1 行変更しただけでも、保存されたゲームは新しいバージョンと互換性がない
-> 場合があります。
+既定ではセーブの `meta.storyHash` を読み込んだストーリーと比較し、一致しなければ警告だけを記録します。そのため、リリース後に更新されたゲームでも古いセーブを読み込めます。`{ requireMatchingStory: true }` を渡すと、状態を変更する前に例外で拒否します。
 
 例：
 
@@ -86,9 +85,13 @@ const game = useGame();
 
 // 保存されたゲームデータをゲームインスタンスへ渡す
 game.getLiveGame().deserialize(savedGame);
+
+// 別のストーリーが書いたセーブを拒否する
+game.getLiveGame().deserialize(savedGame, { requireMatchingStory: true });
 ```
 
 - `savedGame: SavedGame` - [SavedGame](/ja/docs/narraleaf-react/core/types/SavedGame)
+- `options?: DeserializeOptions` - `requireMatchingStory?: boolean`
 </Step>
 </Steps>
 
@@ -101,8 +104,7 @@ game.getLiveGame().deserialize(savedGame);
 
 これを使ってゲーム状態をファイルやデータベースに保存できます。
 
-> **注意：** スクリプトを 1 行変更しただけでも、保存されたゲームは新しいバージョンと互換性がない
-> 場合があります。
+セーブにはストーリーのハッシュが記録されます。古いストーリーのセーブも読み込めますが、厳密な一致が必要な場合は `save.meta.storyHash` と `liveGame.story.hash()` を比較するか、読み込み時に上のオプションを使ってください。
 
 - 返り値: `SavedGame` - 参照: [SavedGame](/ja/docs/narraleaf-react/core/types/SavedGame)
 </Step>
@@ -215,6 +217,31 @@ SVG データ URL を返します。
 PNG 画像の Blob を返します。
 
 - 返り値: `Promise<Blob | null>`
+</Step>
+</Steps>
+
+### captureImage
+
+<Steps>
+<Step>
+
+必要なサイズとエンコーディングでゲームのスクリーンショットを取得し、ステージを一度だけ描画します。
+
+`maxEdge` は長辺の最大ピクセル数です。`type` には `image/png`、`image/jpeg`、`image/webp` を指定でき、`quality` は JPEG と WebP に適用されます。不透明な背景が必要なエンコーディングでは `backgroundColor` を渡します。オプションを省略した結果は `capturePng` と同じです。
+
+```typescript
+const thumbnail = await liveGame.captureImage({
+    maxEdge: 960,
+    type: "image/webp",
+    quality: 0.85,
+    backgroundColor: "#000",
+});
+```
+
+ブラウザが指定した種類をエンコードできない場合は、`HTMLCanvasElement.toDataURL` と同じく PNG にフォールバックします。エンコーディングが重要な場合は、データ URL の接頭辞を確認してください。
+
+- `options?: CaptureImageOptions` - `maxEdge`、`type`、`quality`、`backgroundColor`
+- 返り値: `Promise<string>`
 </Step>
 </Steps>
 

@@ -53,7 +53,7 @@ function isSavedGame(value: unknown): value is SavedGame {
 
 ## セーブ・ロード用フック
 
-現在のゲームを置き換える前に、ストーリーの hash を確認します。`deserialize()` はこのチェックを代わりに行いません。
+`deserialize()` にストーリーの hash の確認を任せます。状態を変更する前に照合し、別のストーリーが書いたセーブを拒否します。
 
 ```tsx title="use-save-system.ts"
 import { useLiveGame } from "narraleaf-react";
@@ -72,11 +72,7 @@ export function useSaveSystem() {
         const data = readSave(slot);
         if (!data || !liveGame.story) return false;
 
-        if (data.meta.storyHash !== liveGame.story.hash()) {
-            throw new Error("このセーブデータは互換性のないストーリーバージョンで作成されました。");
-        }
-
-        liveGame.deserialize(data);
+        liveGame.deserialize(data, { requireMatchingStory: true });
         return true;
     }
 
@@ -85,6 +81,8 @@ export function useSaveSystem() {
 ```
 
 アクションの順序、分岐、シーンなど、ストーリーの構造を変更すると、古いセーブが無効になることがあります。テキストのみの編集であれば、通常は非厳密モードの hash が変わりません。
+
+読み込み時にはエンジンの復元値ガードも適用されます。画像のソースと、復元された transform 内のすべての `url(...)` は `Utils.isSafeRestoredURL` を通過する必要があります。`javascript:`、`vbscript:`、`file:`、`filesystem:` と画像以外の `data:` URL は拒否されます。この保護はエンジンが復元する内容に対するもので、任意のアップロードが `SavedGame` であることを証明するものではないため、上記の構造検証は残してください。
 
 ## セーブスロットの UI
 

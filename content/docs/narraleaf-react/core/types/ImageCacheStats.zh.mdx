@@ -1,0 +1,26 @@
+---
+title: "ImageCacheStats"
+description: 播放器图片缓存持有的内容、固定条目与当前预算
+---
+```typescript
+type ImageCacheStats = {
+    entries: number;
+    blobBytes: number;
+    decodedEntries: number;
+    decodedBytes: number;
+    pinned: number;
+    budget: {
+        blobBytes: number;
+        decodedBytes: number;
+    };
+};
+```
+
+由 `gameState.getImageCache()?.getStats()` 返回，参见[缓存预算与内存](/zh/docs/narraleaf-react/core/game/preload#cache-budgets-and-memory)
+
+- `entries` - 缓存持有 URL 的源数量
+- `blobBytes` - 缓存创建的 object URL 持有的已抓取图片字节
+- `decodedEntries` - 缓存保留了解码位图的源数量
+- `decodedBytes` - 位图估算大小，每张按宽 × 高 × 4 字节计算
+- `pinned` - 因已挂载图片或当前场景而无法淘汰的条目数
+- `budget` - 当前从 `imageCacheBudgetBytes` 与 `decodedImageBudgetBytes` 读取的上限

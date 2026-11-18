@@ -1,0 +1,14 @@
+---
+title: "VideoFadeOptions"
+description: Video.show と Video.hide の時間とイージング
+---
+```typescript
+type VideoFadeOptions = {
+    duration?: number;
+    easing?: TransformDefinitions.EasingDefinition;
+};
+```
+
+[`Video.show`](/ja/docs/narraleaf-react/core/elements/video#show) または [`Video.hide`](/ja/docs/narraleaf-react/core/elements/video#hide) に渡します。正の `duration` がなければ、クリップは即座に表示または非表示になります。
+
+`easing` は名前付きイージングまたは cubic-bezier 配列を受け取ります。省略時は linear です。動画がフレームを表示できるようになってからフェードが始まり、アクションはフェードの完了を待ちます。`1.1.0` から利用できます。

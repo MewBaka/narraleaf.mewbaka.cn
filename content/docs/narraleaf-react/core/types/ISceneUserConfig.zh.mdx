@@ -21,6 +21,11 @@ interface ISceneUserConfig {
      */
     background: ImageSrc | Color;
     /**
+     * How much of the camera's pan and zoom the scene's own background layer follows.
+     * @default 1
+     */
+    backgroundLayerParallax: number;
+    /**
      * An array of {@link Layer}s
      */
     layers: Layer[];
@@ -32,3 +37,5 @@ interface ISceneUserConfig {
 - 关于 ImageSrc，参见 [ImageSrc](/zh/docs/narraleaf-react/core/types/ImageSrc)
 - 关于 Color，参见 [Color](/zh/docs/narraleaf-react/core/types/color)
 - 关于 Layer，参见 [Layer](/zh/docs/narraleaf-react/core/elements/layer)
+
+`backgroundLayerParallax` 作用于场景为背景创建的图层。背景与立绘需要处在不同距离时使用它；每个图层自己的距离由 `parallax` 控制。两项均自 `1.4.0` 起可用

@@ -42,6 +42,8 @@ interface SavedGameMetaData {
 >
 > 例如，改变动画的顺序会反映在故事哈希值上，但改变对话内容不会
 
+读档时会将此字段与当前故事的哈希比较。默认只记录警告；传入 `{requireMatchingStory: true}` 可在改变任何状态前让 [`LiveGame.deserialize`](/zh/docs/narraleaf-react/core/game/live-game#deserialize) 拒绝该存档
+
 ## version
 
 存档格式版本，当前为 `3`

@@ -5,6 +5,8 @@
     "deploy",
     "connect",
     "accounts",
+    "collaboration",
+    "console",
     "security"
   ]
 }

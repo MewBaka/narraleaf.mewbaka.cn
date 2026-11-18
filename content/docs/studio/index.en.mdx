@@ -10,9 +10,11 @@ NarraLeaf Studio is a desktop editor for visual novels. One project holds the st
     alt="The Studio workspace: activity bar, Story panel, an open scene, and the Properties panel"
 />
 
-<Callout type="warning">
-Studio is in early development. Interface names and project formats can change between releases. Keep projects under version control or a separate backup.
+<Callout type="info">
+Studio 2.0 is the Team beta line. Keep projects under version control or a separate backup while the beta is in use.
 </Callout>
+
+Studio 2.0 adds the stage timeline, direct placement from the story preview, scene and line history, story-row comments, rename with references, script documents, Dev Mode language selection, agent-held Dev Mode, blueprint text copy and paste, and the Team project model.
 
 ## What a project contains
 
@@ -48,6 +50,23 @@ The canvas shows layout. **Dev Mode** runs the project in the real runtime, and 
     src="/static/img/docs/studio/en/dev-mode.webp"
     alt="Dev Mode running the project's title screen in a separate window"
 />
+
+## Working with a script
+
+The Story editor is more than a row list:
+
+- **Stage timeline** shows each object's state after every row and follows menu branches
+- **Placing objects on stage** drags and resizes a character or image from the preview and writes the row
+- **Rename and find references** updates a variable, label, scene or character with every name that references it
+- **Scene and line history** restores local snapshots or one previous row without changing version control
+- **Story comments** keeps review threads on the rows they discuss
+- **Script documents** imports Word, Fountain and spreadsheets and exports PDF or Word scripts
+
+## Studio and Team
+
+A team project stays connected to its NarraLeaf Team server. The server holds the project's current documents, versions, comments, reviews, to-dos and production record. Studio sends an edit through the server's document kernel, and a Team project shows its connection, role and round trip in the workspace.
+
+See [NarraLeaf Team](/docs/studio/team) for deployment, roles and the web console.
 
 <Cards>
     <Card

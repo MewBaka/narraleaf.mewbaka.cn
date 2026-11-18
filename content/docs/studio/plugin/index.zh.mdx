@@ -3,14 +3,14 @@ title: 插件
 description: 通过可安装的插件扩展 NarraLeaf Studio 及其构建的游戏
 ---
 
-插件是一个包含 `manifest.json` 和一到两个预打包入口文件的文件夹。它可以向 Studio 添加编辑器面板、操作、快捷键、蓝图节点、控件和语言包，并附带在你构建的游戏中运行的游戏侧代码
+插件是一个包含 `manifest.json` 和一到两个预打包入口文件的文件夹。它可以向 Studio 添加编辑器面板、操作、快捷键、蓝图节点、控件、行内文字效果、测试和语言包，并附带在你构建的游戏中运行的游戏侧代码
 
 插件有两个入口目标，一个插件可以声明其中之一或两者：
 
 | 目标 | 运行于 | API | 用途 |
 | --- | --- | --- | --- |
-| `studio` | 编辑器（工作区窗口） | `narraleaf-studio/plugin` | 面板、操作、快捷键、蓝图节点的编辑器元数据、控件、语言包 |
-| `runtime` | 游戏（开发模式、预览、生产环境） | `narraleaf-studio/runtime` | 蓝图节点执行、控件渲染、游戏侧逻辑 |
+| `studio` | 编辑器（工作区窗口） | `narraleaf-studio/plugin` | 面板、操作、快捷键、蓝图节点的编辑器元数据、控件、行内文字效果入口、语言包 |
+| `runtime` | 游戏（开发模式、预览、生产环境） | `narraleaf-studio/runtime` | 蓝图节点执行、控件渲染、行内文字效果绘制、游戏侧逻辑 |
 
 蓝图节点需要**两个**目标才能在发布的游戏中工作：`studio` 入口注册它的编辑器元数据，`runtime` 入口注册游戏运行到它时执行的代码。你只需在一个共享模块中编写一次定义，然后从每个入口分别注册——参见 [创建第一个插件](/zh/docs/studio/plugin/create-first-plugin)
 
@@ -38,7 +38,7 @@ description: 通过可安装的插件扩展 NarraLeaf Studio 及其构建的游�
 yarn add -D narraleaf-studio
 ```
 
-包的版本号就是它所声明的 Studio 版本：`narraleaf-studio@1.3.0` 是 Studio 1.3.0 的 API
+包的版本号就是它所声明的 Studio 版本：`narraleaf-studio@2.0.0-TeamBeta3` 是 Studio 2.0.0-TeamBeta3 的 API
 
 <Callout type="warn">
 插件不在沙箱中运行。已安装的插件拥有与 Studio 本身相同的访问权限，其游戏侧代码运行在玩家的机器上。只安装你信任的插件。对于插件声明的、超出默认接口范围的任何能力，Studio 会在安装时显示权限提示

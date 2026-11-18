@@ -6,7 +6,7 @@ description: 学习 NarraLeaf-React 的核心创作流程：场景、动作、�
 基础教程适合在你已经拥有一个可运行的 NarraLeaf-React 项目后阅读。它会带你完成故事编写的主要流程：定义场景、添加动作、显示对话和图片、连接故事段落，然后逐步加入交互、音频、数据、语音和玩家偏好设置
 
 <Callout type="info">
-    本节示例对应 NarraLeaf React 0.39.2 和 React 19。旧项目中可能仍有已经移除的 `Sound.sync`，或写在 `GameConfig` 中的对话字体默认值
+    本节示例对应 NarraLeaf React 1.5.x 和 React 19。旧项目中可能仍有已经移除的 `Sound.sync`，或写在 `GameConfig` 中的对话字体默认值
 </Callout>
 
 ## 前置准备
@@ -130,4 +130,4 @@ description: 学习 NarraLeaf-React 的核心创作流程：场景、动作、�
 
 完成基础教程后，可以阅读[解决方案](/zh/docs/narraleaf-react/solutions)学习完整模式，阅读[核心](/zh/docs/narraleaf-react/core)了解底层故事 API，或阅读[播放器](/zh/docs/narraleaf-react/player)了解负责渲染体验的 React 组件与 Hook
 
-0.13 项目可以重点查看[显示图片](/zh/docs/narraleaf-react/basic/show-image)中的层叠立绘，以及[声音](/zh/docs/narraleaf-react/basic/sound)中使用 `Control.doAsync()` 实现非阻塞音效的写法
+0.13 项目可以重点查看[显示图片](/zh/docs/narraleaf-react/basic/show-image)中的层叠立绘，以及[声音](/zh/docs/narraleaf-react/basic/sound)中的当前播放方式：`play()` 默认与剧情并行，传入 `{waitForEnd: true}` 才让剧情等待

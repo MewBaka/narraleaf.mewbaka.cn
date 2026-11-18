@@ -1,28 +1,34 @@
 ---
 title: Accounts and access
-description: Creating accounts on a NarraLeaf Team server, handing out access, and taking it back.
+description: Create Team accounts, grant a project role or area template, and take access away.
 ---
 
-Every account on a NarraLeaf Team server is created by an operator. There is no registration and no invitation.
+Every account is made by an operator. There is no public registration. The first account is created with `nlteam init`; after that, operators create accounts in the web console or with `nlteam user create`.
+
+## Signing in
+
+Studio normally signs in through the browser with OAuth and PKCE. A machine without a browser uses the device flow and enters the code at `/console/device`.
+
+The server can require two-step sign-in, require SSO, issue API tokens and send password-reset links. Password sign-in remains for Studio builds that predate browser sign-in.
+
+Every signed-in Studio is a device. Its owner can end it from the console, and an operator can end every device of an account. Studio 2.0 keeps the signed-in account in the title bar, including while the server is away.
 
 ## Creating an account
 
-An operator with a terminal on the server:
+On the server:
 
 ```sh
 printf '%s' 'their password' | nlteam user create bob --root /srv/team
 ```
 
-An operator from any machine they have signed in from:
+From a machine signed in as an operator:
 
 ```sh
 nlteam login team.example.com:41402 ada < password.txt
 printf '%s' 'their password' | nlteam user create bob --server team.example.com:41402
 ```
 
-What reaches the person is the server's address, the username, and the password. Studio exchanges the password for a token when they sign in.
-
-An operator who would rather not send a password sends a token instead:
+Passwords come from standard input, never an argument. An operator can issue a sign-in token instead:
 
 ```sh
 nlteam token mint bob --server team.example.com:41402
@@ -30,39 +36,58 @@ nlteam token mint bob --server team.example.com:41402
 
 ## Operators
 
-The `admin` group is who may manage the accounts, the projects, and the settings, and add somebody else to the group. `nlteam init` puts the first account in it.
+The `admin` group manages accounts, projects, settings, signing keys, storage and backups. `nlteam init` puts the first account in it.
 
 ```sh
 nlteam user grant-admin bob --server team.example.com:41402
 nlteam user revoke-admin bob --server team.example.com:41402
 ```
 
-Membership is read on every request, so removing somebody from the group takes effect on their next one.
+The console can edit, lock and delete accounts. The last operator cannot remove their own access.
+
+## Project roles and areas
+
+Access is per project. Each member has one role:
+
+| Role | May |
+| --- | --- |
+| Owner | Change project settings and members, edit every area, save or restore versions as the project allows, and remove the project from the list. |
+| Editor | Edit the areas granted to them, and save or restore versions where the project allows editors to do so. |
+| Reviewer | Read, comment and take part in review; edit no project content. |
+| Viewer | Read and record the collaboration their account is allowed; edit no project content. |
+
+An owner or operator changes membership in the console's project settings or through `projects.members.set` and `projects.members.remove`. There is no `nlteam` command for membership yet.
+
+Editors can be limited to story, characters, assets, UI, localization or game config. Anything Team does not recognise counts as game config, so a new kind of file is guarded by default. Restoring a version touches every area and needs all six.
+
+Permission templates provide a role and area set: owner, editor, writer, translator, artist, engineer, reviewer or viewer. A project can also accept access requests, decided by its owners or an operator.
+
+## What Studio 2.0 shows
+
+A project the account has no role in is not listed. The launcher marks team projects and keeps their server settings outside the project. Studio tells the author when their role is read-only and shows the server round trip in the status bar.
+
+## Studio settings on the server
+
+When Studio is signed in to a Team server, **Settings → Transfer** offers **Back up to Team** and **Restore from Team**. The backup carries the same settings document as an exported settings file. A restore is checked and previewed before anything changes.
+
+A server can refuse the operation through an account policy, a document that is too large, or a server build that does not support it; each refusal has its own message.
 
 ## Taking access away
 
-Two commands, and they are not the same one.
+Change the project role or remove the member. To stop the account everywhere:
 
 ```sh
 nlteam user disable ada --server team.example.com:41402
 nlteam user revoke-tokens ada --server team.example.com:41402
 ```
 
-**`disable`** stops the account. Nothing it holds works, and it cannot sign in again.
-
-**`revoke-tokens`** refuses every token already issued to the account and changes nothing else. The person signs in again and is given one that works. It is the command for a token that has been exposed.
-
-Both take effect on the account's next request rather than when its token would have expired.
+**`disable`** stops the account and refuses a new sign-in. **`revoke-tokens`** refuses every token already issued but lets the account sign in again with the same password. Both take effect on Studio's next call.
 
 <Callout type="warning">
-A connection that is already transferring project data is checked by the version-control server rather than by Team, and can continue until the token it was opened with expires, which is fifteen minutes. Ending that sooner means retiring the signing key, which refuses every account's tokens.
+A project data connection already open is checked by the version-control server until its repository token expires, fifteen minutes by default. Ending it sooner means rotating the signing key, which signs everyone out.
 </Callout>
 
-## What an account reaches
-
-Every account on a server reaches every project on it. There is no per-project access to grant or remove.
-
-A project one person must not see belongs on a second server. The same rule means every account can read the username, display name, and recorded email address of every other account on the server.
+A disabled account can be enabled again with `nlteam user enable ada`. The console can also lock an account temporarily or delete it.
 
 ## Listing what is there
 
@@ -73,8 +98,4 @@ nlteam status --server team.example.com:41402
 nlteam audit --refused --server team.example.com:41402
 ```
 
-`audit` reads the record of access decisions, newest first. `--refused` prints refusals only, and an empty listing means nothing on record was refused.
-
-## Full reference
-
-The repository's [deployment documentation](https://github.com/NarraLeaf/NarraLeaf-Team/blob/main/docs/operations.md) covers every command.
+`audit` reads access decisions newest first. `--refused` prints refusals only. The console shows the same record with filters, beside account and storage administration.

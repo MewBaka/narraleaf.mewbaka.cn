@@ -2,9 +2,6 @@ import Image, { type StaticImageData } from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, BookOpen, Download, ExternalLink } from 'lucide-react';
 import { studioSlides } from '@/assets/studio-slides';
-import desktopCodeImage from '@/assets/home/desktop-code.webp';
-import desktopGameDialogImage from '@/assets/home/desktop-game-dialog.webp';
-import desktopGameMenuImage from '@/assets/home/desktop-game-menu.webp';
 import studioWorkspaceImage from '@/assets/home/studio-workspace.webp';
 import {
   appName,
@@ -25,7 +22,6 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { UiEditorSlideshow } from './ui-editor-slideshow';
 import { ProjectModelTabs, type ProjectModelTabCopy } from './project-model-tabs';
-import { DesktopDemoShowcase } from './desktop-demo-showcase';
 import {
   HighlightedName,
   ProductLogo,
@@ -77,18 +73,6 @@ type EditorIntroCopy = SectionCopy & {
   };
 };
 
-type DesktopIntroCopy = SectionCopy & {
-  cta: string;
-  href: string;
-  codeImageAlt: string;
-  demoSlideAlts: string[];
-  slideControls: {
-    previous: string;
-    next: string;
-    goToSlide: string;
-  };
-};
-
 type EmbedDemoCopy = SectionCopy & {
   code: string[];
 };
@@ -107,7 +91,6 @@ type HomePageCopy = {
   hero: HeroCopy;
   solutionIntro: SectionCopy;
   editorIntro: EditorIntroCopy;
-  desktopIntro: DesktopIntroCopy;
   projectModelIntro: SectionCopy;
   projectModelTabs: ProjectModelTabCopy[];
   solutions: SolutionCard[];
@@ -133,7 +116,7 @@ const homeCopy = {
       eyebrow: 'Project paths',
       title: 'Choose the path that matches the work in front of you.',
       description:
-        'Use Studio to create freely, NarraLeaf Desktop to scale quickly, or NarraLeaf-React to customize completely.',
+        'Use Studio to create and ship, NarraLeaf Team to work together, or NarraLeaf-React to embed the story in a React product.',
     },
     editorIntro: {
       eyebrow: 'Studio',
@@ -190,29 +173,11 @@ const homeCopy = {
         closePreview: 'Close enlarged Studio preview',
       },
     },
-    desktopIntro: {
-      eyebrow: 'Desktop',
-      title: 'NarraLeaf Desktop connects code and preview seamlessly.',
-      description:
-        'Work in the desktop project where window lifecycle, saves, routes, menus, and packaging are wired into the same NarraLeaf runtime you preview and ship.',
-      cta: 'Explore Desktop',
-      href: '/narraleaf/library/main',
-      codeImageAlt: 'VS Code window with a NarraLeaf Desktop project entry file open',
-      demoSlideAlts: [
-        'NarraLeaf Desktop visual novel demo with a dialogue UI open',
-        'NarraLeaf Desktop visual novel demo showing the load game menu',
-      ],
-      slideControls: {
-        previous: 'Previous Desktop demo preview',
-        next: 'Next Desktop demo preview',
-        goToSlide: 'Show Desktop demo preview',
-      },
-    },
     projectModelIntro: {
       eyebrow: 'Project architecture',
       title: 'A modern project shape, not a traditional editor box.',
       description:
-        'NarraLeaf separates production work, desktop runtime, and embedded playback as first-class routes in the same project. Each route has its own job, but the story never has to become a disconnected export.',
+        'NarraLeaf separates authoring and delivery, team collaboration, and embedded playback as first-class routes in the same project. Each route has its own job, but the story never has to become a disconnected export.',
     },
     projectModelTabs: [
       {
@@ -230,17 +195,17 @@ const homeCopy = {
         ],
       },
       {
-        label: 'NarraLeaf Desktop',
-        name: 'NarraLeaf Desktop',
-        tone: 'electron',
-        logo: 'electron',
-        title: 'NarraLeaf Desktop handles the shipped application.',
+        label: 'NarraLeaf Team',
+        name: 'NarraLeaf Team',
+        tone: 'studio',
+        logo: 'narraleaf',
+        title: 'NarraLeaf Team holds the shared work.',
         description:
-          'Desktop is where the visual novel becomes software players can open: window lifecycle, routes, saves, menus, packaging, and runtime behavior belong here.',
+          'Team is the self-hosted server for a project several people work on: current documents, versions, roles, comments, reviews and the production record.',
         points: [
-          'Build the playable app beside the code that controls it.',
-          'Keep Electron, renderer, and NarraLeaf runtime decisions in one place.',
-          'Use it when the visual novel is the product, not a page inside another app.',
+          'Give every project its own owners, editors, reviewers and viewers.',
+          'Keep documents, versions, comments and reviews on a server the team controls.',
+          'Recover offline work and show conflicts instead of silently replacing it.',
         ],
       },
       {
@@ -270,13 +235,13 @@ const homeCopy = {
         logo: 'narraleaf',
       },
       {
-        title: 'NarraLeaf Desktop',
-        description: 'A desktop application path for runtime, renderer, saves, packaging, and release work.',
-        audience: 'For projects that need to become a standalone visual novel application.',
-        href: '/narraleaf/library/main',
-        cta: 'Explore Desktop',
-        tone: 'electron',
-        logo: 'electron',
+        title: 'NarraLeaf Team',
+        description: 'A self-hosted server for team projects, versions, roles, reviews and production records.',
+        audience: 'For teams that need shared project authority and a controlled collaboration server.',
+        href: '/studio/team',
+        cta: 'Explore Team',
+        tone: 'studio',
+        logo: 'narraleaf',
       },
       {
         title: 'NarraLeaf-React',
@@ -345,7 +310,7 @@ const homeCopy = {
       eyebrow: '项目路径',
       title: '眼前的工作，要从哪条路开始？',
       description:
-        '不同项目形态各有起点，专注创作从 Studio 开始，桌面应用交给 Desktop，嵌入现有 Web 产品使用 NarraLeaf-React',
+        '专注创作与交付从 Studio 开始，团队协作使用 NarraLeaf Team，嵌入现有 Web 产品使用 NarraLeaf-React',
     },
     editorIntro: {
       eyebrow: 'Studio',
@@ -399,29 +364,11 @@ const homeCopy = {
         closePreview: '关闭预览',
       },
     },
-    desktopIntro: {
-      eyebrow: 'Desktop',
-      title: 'NarraLeaf Desktop 让代码与运行中的游戏并排',
-      description:
-        '玩家最终启动的就是 Desktop 构建的应用，其窗口、存档与打包行为都写在项目自身的代码里',
-      cta: '探索 Desktop',
-      href: '/narraleaf/library/main',
-      codeImageAlt: '打开 NarraLeaf Desktop 项目入口文件的 VS Code 窗口',
-      demoSlideAlts: [
-        '打开对白界面的 NarraLeaf Desktop 视觉小说演示',
-        '显示读取存档菜单的 NarraLeaf Desktop 视觉小说演示',
-      ],
-      slideControls: {
-        previous: '上一张 Desktop 演示预览',
-        next: '下一张 Desktop 演示预览',
-        goToSlide: '显示 Desktop 演示预览',
-      },
-    },
     projectModelIntro: {
       eyebrow: '项目结构',
       title: '一部视觉小说不应散落为互不相干的文件',
       description:
-        'NarraLeaf 将项目分为几条并行路径，各司其职，故事本身始终只有一份，不会因路径不同而重写',
+        'NarraLeaf 将创作与交付、团队协作和嵌入式播放分为并行路径，各司其职，故事本身始终只有一份',
     },
     projectModelTabs: [
       {
@@ -439,17 +386,17 @@ const homeCopy = {
         ],
       },
       {
-        label: 'NarraLeaf Desktop',
-        name: 'NarraLeaf Desktop',
-        tone: 'electron',
-        logo: 'electron',
-        title: 'NarraLeaf Desktop 发布交给它',
+        label: 'NarraLeaf Team',
+        name: 'NarraLeaf Team',
+        tone: 'studio',
+        logo: 'narraleaf',
+        title: 'NarraLeaf Team 承担共享协作',
         description:
-          'Desktop 是玩家真正启动的应用，窗口行为与打包流程都由其承担',
+          'Team 是多人共同维护项目时使用的自托管服务器，保存当前文档、版本、角色、批注、审阅与制作记录',
         points: [
-          '可游玩的应用与其控制代码并排构建',
-          'Electron、renderer 与 NarraLeaf 运行时决策集中一处管理',
-          '视觉小说本身即产品时，选择 Desktop',
+          '每个项目都有自己的所有者、编辑者、审阅者与查看者',
+          '文档、版本、批注与审阅保存在团队自己控制的服务器上',
+          '离线修改可以恢复，冲突会显示出来，而不是被悄悄覆盖',
         ],
       },
       {
@@ -478,13 +425,13 @@ const homeCopy = {
         logo: 'narraleaf',
       },
       {
-        title: 'NarraLeaf Desktop',
-        description: '将视觉小说发布为独立的桌面应用',
-        audience: '适合以视觉小说本身作为产品的项目',
-        href: '/narraleaf/library/main',
-        cta: '探索 Desktop',
-        tone: 'electron',
-        logo: 'electron',
+        title: 'NarraLeaf Team',
+        description: '保存团队项目、版本、角色、审阅与制作记录的自托管服务器',
+        audience: '适合需要共享项目权威来源与自控协作服务器的团队',
+        href: '/studio/team',
+        cta: '探索 Team',
+        tone: 'studio',
+        logo: 'narraleaf',
       },
       {
         title: 'NarraLeaf-React',
@@ -553,7 +500,7 @@ const homeCopy = {
       eyebrow: '制作の進め方',
       title: '目の前の作業は、どこから始めますか',
       description:
-        '制作に専念するなら Studio、デスクトップアプリなら NarraLeaf Desktop、既存の Web 製品への組み込みなら NarraLeaf-React です。',
+        '制作と配布なら Studio、チームで進めるなら NarraLeaf Team、既存の Web 製品への組み込みなら NarraLeaf-React です。',
     },
     editorIntro: {
       eyebrow: 'Studio',
@@ -610,29 +557,11 @@ const homeCopy = {
         closePreview: '拡大表示を閉じる',
       },
     },
-    desktopIntro: {
-      eyebrow: 'Desktop',
-      title: 'NarraLeaf Desktop は、コードと動くゲームを並べる',
-      description:
-        'プレイヤーが起動するのは Desktop が作ったアプリです。ウィンドウの扱いも、セーブも、パッケージングも、プロジェクト自身のコードに書かれています。',
-      cta: 'Desktop を見る',
-      href: '/narraleaf/library/main',
-      codeImageAlt: 'NarraLeaf Desktop の入口ファイルを開いた VS Code のウィンドウ',
-      demoSlideAlts: [
-        '対話画面を開いた NarraLeaf Desktop のビジュアルノベルのデモ',
-        '読み込みメニューを表示した NarraLeaf Desktop のビジュアルノベルのデモ',
-      ],
-      slideControls: {
-        previous: '前の Desktop デモプレビュー',
-        next: '次の Desktop デモプレビュー',
-        goToSlide: 'Desktop デモプレビューを表示',
-      },
-    },
     projectModelIntro: {
       eyebrow: 'プロジェクトの構造',
       title: '一つの作品が、ばらばらのファイルに散らばらない',
       description:
-        'NarraLeaf は制作、デスクトップ、組み込みを並行する経路として分けます。役割は違っても物語そのものは一つのままで、経路ごとに書き直す必要はありません。',
+        'NarraLeaf は制作と配布、チームの共同作業、組み込み再生を並行する経路として分けます。役割は違っても物語そのものは一つで、経路ごとに書き直す必要はありません。',
     },
     projectModelTabs: [
       {
@@ -649,17 +578,17 @@ const homeCopy = {
         ],
       },
       {
-        label: 'NarraLeaf Desktop',
-        name: 'NarraLeaf Desktop',
-        tone: 'electron',
-        logo: 'electron',
-        title: 'NarraLeaf Desktop が配布を受け持つ',
+        label: 'NarraLeaf Team',
+        name: 'NarraLeaf Team',
+        tone: 'studio',
+        logo: 'narraleaf',
+        title: 'NarraLeaf Team が共同作業を支える',
         description:
-          'Desktop はプレイヤーが実際に起動するアプリです。ウィンドウの振る舞いもパッケージングも Desktop が担います。',
+          'Team は複数人で同じプロジェクトを扱うためのセルフホスト型サーバーです。現在のドキュメント、バージョン、役割、コメント、レビュー、制作の記録を保持します。',
         points: [
-          '遊べるアプリを、それを制御するコードの隣で構築します。',
-          'Electron、レンダラー、NarraLeaf ランタイムの判断を一箇所にまとめます。',
-          'ビジュアルノベル自体が製品であるときに選びます。',
+          'プロジェクトごとに所有者、編集者、レビュー担当、閲覧者を持ちます。',
+          'ドキュメント、バージョン、コメント、レビューをチームが管理するサーバーに置きます。',
+          'オフラインの作業を復元し、黙って上書きせず競合として示します。',
         ],
       },
       {
@@ -688,13 +617,13 @@ const homeCopy = {
         logo: 'narraleaf',
       },
       {
-        title: 'NarraLeaf Desktop',
-        description: 'ビジュアルノベルを単体のデスクトップアプリとして配布します。',
-        audience: 'ビジュアルノベル自体が製品となるプロジェクトに向いています。',
-        href: '/narraleaf/library/main',
-        cta: 'Desktop を見る',
-        tone: 'electron',
-        logo: 'electron',
+        title: 'NarraLeaf Team',
+        description: 'チームプロジェクト、バージョン、役割、レビュー、制作の記録を保持するセルフホスト型サーバーです。',
+        audience: '共有の正本と、自分たちで管理する共同作業サーバーが必要なチームに向いています。',
+        href: '/studio/team',
+        cta: 'Team を見る',
+        tone: 'studio',
+        logo: 'narraleaf',
       },
       {
         title: 'NarraLeaf-React',
@@ -785,8 +714,6 @@ const studioSlideGroups = {
 } as const satisfies Record<string, readonly StaticImageData[]>;
 
 type StudioSlideGroupId = keyof typeof studioSlideGroups;
-
-const desktopDemoSlideImages = [desktopGameDialogImage, desktopGameMenuImage] as const;
 
 function SectionIntro(props: { title: string; description: string }) {
   const { title, description } = props;
@@ -1046,46 +973,7 @@ export default async function HomePage(props: PageProps<'/[lang]'>) {
         </div>
       </section>
 
-      <section className="border-b border-black/10 dark:border-white/10">
-        <div className="mx-auto w-full max-w-6xl px-6 pt-16 pb-10 sm:pt-20 sm:pb-12">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-3xl space-y-4">
-              <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                <HighlightedName
-                  text={copy.desktopIntro.title}
-                  name="NarraLeaf Desktop"
-                  tone="electron"
-                />
-              </h2>
-              <p className="text-base leading-7 text-fd-muted-foreground sm:text-lg">
-                {copy.desktopIntro.description}
-              </p>
-            </div>
-
-            <Link
-              href={docsUrl(copy.desktopIntro.href)}
-              className="inline-flex w-fit items-center justify-center gap-2 rounded-lg border border-black/10 px-5 py-3 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 hover:bg-fd-card dark:border-white/10"
-            >
-              {copy.desktopIntro.cta}
-              <ArrowRight className="size-4" />
-            </Link>
-          </div>
-
-          <DesktopDemoShowcase
-            codeImage={{
-              src: desktopCodeImage,
-              alt: copy.desktopIntro.codeImageAlt,
-            }}
-            slides={desktopDemoSlideImages.map((src, index) => ({
-              src,
-              alt: copy.desktopIntro.demoSlideAlts[index],
-            }))}
-            labels={copy.desktopIntro.slideControls}
-          />
-        </div>
-      </section>
-
-        <NarraLeafReactDemo copy={copy.embedDemo} locale={locale} />
+      <NarraLeafReactDemo copy={copy.embedDemo} locale={locale} />
 
       <section className="border-b border-black/10 dark:border-white/10">
         <div className="mx-auto w-full max-w-6xl px-6 py-16 sm:py-20">
@@ -1100,25 +988,25 @@ export default async function HomePage(props: PageProps<'/[lang]'>) {
         </div>
       </section>
 
-        <section className="border-t border-b border-black/10 bg-fd-card/45 dark:border-white/10">
-          <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-16 sm:py-20 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-2xl space-y-4">
-              <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                {copy.bottomCta.title}
-              </h2>
-              <p className="text-base leading-7 text-fd-muted-foreground sm:text-lg">
-                {copy.bottomCta.description}
-              </p>
-            </div>
-
-            <CtaLinks
-              primaryUrl={projectUrl}
-              docsUrl={docsUrl()}
-              primaryLabel={copy.bottomCta.primaryCta}
-              secondaryLabel={copy.bottomCta.secondaryCta}
-            />
+      <section className="border-t border-b border-black/10 bg-fd-card/45 dark:border-white/10">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-16 sm:py-20 lg:flex-row lg:items-center lg:justify-between">
+          <div className="max-w-2xl space-y-4">
+            <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              {copy.bottomCta.title}
+            </h2>
+            <p className="text-base leading-7 text-fd-muted-foreground sm:text-lg">
+              {copy.bottomCta.description}
+            </p>
           </div>
-        </section>
+
+          <CtaLinks
+            primaryUrl={projectUrl}
+            docsUrl={docsUrl()}
+            primaryLabel={copy.bottomCta.primaryCta}
+            secondaryLabel={copy.bottomCta.secondaryCta}
+          />
+        </div>
+      </section>
       </main>
 
       <footer className="bg-fd-background">

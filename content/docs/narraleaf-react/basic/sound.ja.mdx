@@ -1,6 +1,6 @@
 ---
 title: "サウンド"
-description: Sound による効果音・BGM・ボイスクリップの再生と、Control.doAsync でストーリーと並行して再生を進める方法
+description: Sound による効果音・BGM・ボイスクリップの再生と、ストーリーを待たせるか並行して進めるかの制御
 ---
 
 効果音、BGM、ボイスクリップには [Sound](/ja/docs/narraleaf-react/core/elements/sound) を使用します。静的なコンストラクターが、それぞれの音声に正しい種類を設定します。
@@ -22,28 +22,26 @@ const theme = Sound.bgm({
 
 ## 効果音
 
-`play()` はアクションです。デフォルトでは、ストーリーはクリップの再生が終わるまで待機します。
+`play()` はアクションですが、既定ではクリップの再生が始まるとストーリーは続行します。次の行でクリップの終了を待つ場合は `{waitForEnd: true}` を渡します。
 
 ```ts
 scene.action([
-    door.play(),
+    door.play(0, {waitForEnd: true}),
     alice.say("誰か来た。"),
 ]);
 ```
 
-音声が再生されている間もストーリーを進めたい場合は、非同期のコントロールスタック上で実行します。
+このオプションがなければ、クリップの再生中に次の行へ進みます。効果音では通常こちらの挙動を使います。
 
 ```ts
-import { Control } from "narraleaf-react";
-
 scene.action([
-    Control.doAsync([door.play()]),
+    door.play(),
     alice.say("扉が背後で閉まった。"),
 ]);
 ```
 
 <Callout type="warning">
-    従来の `sync` オプションはすでに存在しません。非ブロッキングな音声には `Control.doAsync()` または `Control.allAsync()` を使用してください。
+    従来の `sync` オプションはすでに存在しません。`play()` は既定ではブロックしません。ストーリーを待たせる音声には `{waitForEnd: true}` を使用してください。
 </Callout>
 
 ## BGM

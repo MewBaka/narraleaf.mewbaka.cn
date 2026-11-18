@@ -1,6 +1,6 @@
 ---
 title: "GameElementHistory"
-description: The recorded shape of one backlog entry, either a spoken line with its text, voice and character, or a menu with its prompt and selection.
+description: The recorded shape of one backlog entry, either a spoken line with its text, voice, character and avatar, or a menu with its prompt and selection.
 ---
 ```typescript
 type GameElementHistory =
@@ -10,6 +10,7 @@ type GameElementHistory =
         voice: string | null;
         voiceId?: string | number | null;
         character: string | null;
+        avatar: string | null;
     }
     | {
         type: "menu";
@@ -25,6 +26,7 @@ The `GameElementHistory` type represents different types of game elements that c
    - `voice`: The voice src URL or null if no voice was used
    - `voiceId`: The `voiceId` the line was filed under, or null. Available since 0.24.0
    - `character`: The character name or null if the sentence is not spoken by a character
+   - `avatar`: The avatar URL the dialog showed for this line, or null. Available since 1.5.0
 
 2. A "menu" element:
    - `text`: The menu prompt, or null if the menu had none
@@ -46,3 +48,18 @@ for (const entry of liveGame.getHistory()) {
 
 `voiceId` is null on a line voiced through the inline `voice` option rather than the scene's voice
 map, and absent on entries recorded before 0.24.0 — an old save loads unchanged.
+
+## Reading the face a line was said with
+
+`avatar` is resolved when the line is recorded: the sentence's own avatar first, then the portrait
+the speaker is wearing, then the character's avatar. It is `null` when the line showed none, and is
+absent on entries written before 1.5.0. Resolve the avatar again later and it answers with the look
+the speaker has by then, not the face shown at this line.
+
+```ts
+for (const entry of liveGame.getHistory()) {
+    if (entry.element.type === "say") {
+        showBacklogFace(entry.element.avatar ?? entry.element.character);
+    }
+}
+```

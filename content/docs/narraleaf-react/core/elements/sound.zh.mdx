@@ -3,10 +3,6 @@ title: "声音"
 description: 用于人声、音乐与音效播放的 `Sound` 类，涵盖音量、静音、倍速、跳转与淡入淡出
 ---
 <Callout type="warning">
-    本页面正在建设中
-</Callout>
-
-<Callout type="warning">
     测试功能，可能会有变动
 </Callout>
 
@@ -93,14 +89,15 @@ const line = Sound.voice({src: 'alice-01.mp3', type: 'alice'});
 <Steps>
 <Step>
 
-播放声音并等待其结束
+开始播放声音。默认情况下，音频一开始播放动作就会完成，下一行继续执行。需要故事等待音频结束时，传入 `{waitForEnd: true}`
 
 ```ts
 const sound = new Sound({
     src: 'sound.mp3',
 });
 scene.action([
-    sound.play(1000), // 播放并淡入 1 秒
+    sound.play(1000),                                  // 淡入 1 秒，然后继续
+    sound.play(0, {waitForEnd: true}),                 // 等待音频结束后再继续
 ]);
 ```
 
@@ -113,7 +110,8 @@ scene.action([
     `console.warn` 说明这一点；它只是提醒，不是错误。在 `0.22.0` 之前，它会抛出异常并在构建链时使整个故事失败
 </Callout>
 
-- `duration?: number` - 淡入淡出持续时间（以毫秒为单位）
+- `duration?: number` - 淡入淡出持续时间，单位为毫秒
+- `options.waitForEnd?: boolean` - 让故事等待音频播放结束；循环音频会忽略此项。自 `0.42.0` 起可用；在此之前每次 `play()` 都会等待
 </Step>
 </Steps>
 

@@ -1,18 +1,18 @@
 ---
 title: Deploying a server
-description: Running a NarraLeaf Team server in a container or from npm, and the two ports it needs.
+description: Run NarraLeaf Team 1.0 in a container, choose its address and ports, open the console, and back it up.
 ---
 
-A NarraLeaf Team server runs on one machine and keeps everything it owns under one directory. The container image is the shorter path and carries everything it needs.
+A Team server runs on one machine and keeps everything it owns under one directory. The container image carries the version-control server, the document kernel and the web console.
 
 ## With Docker
 
-Write a `compose.yaml`. The one value to change is the name people will reach the server by.
+Write a `compose.yaml`. Change `NLTEAM_HOSTNAME` to the name people use. It goes into the certificate and into every token's audience.
 
 ```yaml
 services:
   team:
-    image: ghcr.io/narraleaf/team:0.1.0
+    image: ghcr.io/narraleaf/team:1.0.0
     restart: unless-stopped
     environment:
       NLTEAM_HOSTNAME: team.example.com
@@ -36,7 +36,7 @@ volumes:
 docker compose up -d
 ```
 
-Nothing is downloaded on first start. The image carries the version-control server already unpacked.
+The image is `linux/amd64`. Nothing is downloaded on first start.
 
 </Step>
 
@@ -44,7 +44,7 @@ Nothing is downloaded on first start. The image carries the version-control serv
 
 ### Create the first account
 
-Write the password to a file first, holding that password and nothing else. It must be ten characters or more.
+Write the password to a file containing that password and nothing else. It must be at least ten characters.
 
 ```sh
 printf '%s' 'a password of your own' > admin-password
@@ -52,31 +52,48 @@ docker compose exec -T team nlteam init ada < admin-password
 rm admin-password
 ```
 
-`init` runs once. It creates the first account, puts it in the `admin` group, and is refused from the moment the server has an account. It reads the password from a file rather than from an argument, which would appear in the process list and in the shell history.
+`init` runs once and puts the first account in the `admin` group. It is refused once the server has an account. The password comes from standard input, so it does not appear in the process list or shell history.
 
 </Step>
 
 <Step>
 
-### Read the address and the fingerprint
+### Read the address and fingerprint
 
 ```sh
 docker compose exec team nlteam status
 ```
 
-The `sign in` line carries the address, and the line below it the server's certificate fingerprint. Each person who connects compares that fingerprint once, so send it over something other than the connection they are about to trust.
+The `sign in` line carries the endpoint address; another line carries the certificate fingerprint. Send the fingerprint over a channel other than the connection it secures.
+
+</Step>
+
+<Step>
+
+### Open the web console
+
+Open `https://<server>:41402/console/`. The browser must trust the certificate. With Team's own authority, install `tls/ca.crt` or run `nlteam trust --install` on the machine holding the storage root. A certificate from an authority the browser already trusts needs no extra step.
 
 </Step>
 
 </Steps>
 
-Three things now reach the people who will use the server: the address, an account, and that fingerprint. Everything else is done from Studio.
+Authors receive the host and port written as `nlteam://team.example.com:41402`. `status` prints an `https://` URL for the sign-in endpoint; Studio's Add Server dialog accepts the `nlteam://` form.
 
-The address is a host and a port, written `nlteam://team.example.com:41402`. `status` prints it as an `https://` URL, which is the endpoint Studio signs in at rather than the address to hand out; Studio does not accept that spelling.
+## Ports
+
+| Port | Reachable from an author's machine | Carries |
+| --- | --- | --- |
+| 41402 | Yes | Sign-in, Studio sessions, the web console and the project API |
+| 41337 | Yes, TCP and UDP | Project data |
+| 41339 | No | The version-control server's health check |
+| 41400 | No | The server's signing keys |
+
+Publish both halves of 41337. QUIC uses UDP, and a deployment that opens TCP alone leaves such a client waiting. The other listeners are bound to loopback.
 
 ## Without Docker
 
-The package is not published yet. Build `nlteam` from a checkout:
+The `nlteam` package is not published yet. Build it from a checkout:
 
 ```sh
 git clone https://github.com/NarraLeaf/NarraLeaf-Team.git
@@ -85,31 +102,18 @@ npm install && npm run build && npm link
 nlteam up --root /srv/team --hostname team.example.com
 ```
 
-`up` installs the version-control server, configures it, starts it, and runs until it is interrupted. Run the rest in a second terminal.
+`up` installs the version-control server, writes its configuration, starts it and runs until interrupted. Run the rest in a second terminal.
 
 ```sh
 printf '%s' 'a password of your own' | nlteam init ada --root /srv/team
 nlteam status --root /srv/team
 ```
 
-Node.js 24 or newer is required, on 64-bit Linux, Windows, or Apple silicon.
-
-## Ports
-
-| Port | Reachable from an author's machine | Carries |
-| --- | --- | --- |
-| 41402 | Yes | Sign-in, and the session Studio holds |
-| 41337 | Yes, TCP and UDP | Project data |
-| 41339 | No | The version-control server's health check |
-| 41400 | No | The server's signing keys |
-
-Publish both halves of 41337. A connection that settles on QUIC uses UDP, and a deployment that opens TCP alone leaves such a client waiting.
-
-The other two listeners are bound to the loopback and are unreachable from another machine whatever a firewall allows.
+Node.js 24 or newer is required, on 64-bit Linux, Windows or Apple silicon.
 
 ## A certificate you already hold
 
-An organization that holds a certificate for the name people use gives it to the server, and nobody compares a fingerprint: the issuer is already trusted on each machine.
+An organization that holds a certificate for the name people use gives it to the server. Nobody compares a fingerprint because the issuer is already trusted on each machine.
 
 ```yaml
     environment:
@@ -121,14 +125,28 @@ An organization that holds a certificate for the name people use gives it to the
       - ./tls:/etc/nlteam/tls:ro
 ```
 
-Both values or neither, and the key without a passphrase. Renewal is a restart.
+Both values or neither. The key must have no passphrase. Renewal is a restart. Team still serves its own certificate to loopback and to names the supplied certificate does not cover.
+
+## Updating
+
+```sh
+docker compose pull
+docker compose up -d
+```
+
+The database migrates on start and the certificate authority is kept, so nobody trusts the server again. Pin the image tag rather than using `latest`; `latest` and `develop` can change under a deployment nobody restarted.
 
 ## Backups
 
-`/var/lib/nlteam`, or the directory `--root` names, holds the accounts, the projects, the signing keys, the certificate authority, and the repository store. Back up that directory and the server is backed up.
+`/var/lib/nlteam`, or the directory `--root` names, holds accounts, projects, the document log, signing keys, the certificate authority and the repository store.
 
-Losing it means every machine that trusted this server has to be told to trust its replacement.
+```sh
+nlteam backup --root /srv/team
+nlteam restore /srv/team/backups/nlteam-backup-YYYYMMDD-HHMMSS.tar.gz --root /srv/team
+```
+
+A backup may be taken while the server runs. `restore` requires the server to be stopped. Scheduled backups are pruned according to the server's settings.
 
 ## Full reference
 
-The repository's [deployment documentation](https://github.com/NarraLeaf/NarraLeaf-Team/blob/main/docs/operations.md) covers every command and every setting.
+The repository's [deployment documentation](https://github.com/NarraLeaf/NarraLeaf-Team/blob/main/docs/operations.md) covers every command, setting and environment variable.

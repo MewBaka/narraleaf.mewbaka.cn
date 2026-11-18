@@ -1,9 +1,9 @@
 ---
 title: Connecting Studio
-description: Adding a NarraLeaf Team server in Studio, trusting its certificate, and getting a project.
+description: Add a Team server in Studio 2.0, trust its certificate, sign in, and work through a team project.
 ---
 
-An author is given three things: the server's address, an account, and the server's certificate fingerprint. Everything else Studio asks the server for.
+An author is given the server's address, an account, and the certificate fingerprint. Everything else is exchanged between Studio and the server.
 
 ## Adding a server
 
@@ -13,7 +13,7 @@ An author is given three things: the server's address, an account, and the serve
 
 ### Open Team in the launcher
 
-**Team** is one of the entries in the launcher. Servers this installation is signed in to are listed there.
+**Team** is one of the launcher entries. Servers this installation has connected to are listed there.
 
 </Step>
 
@@ -21,7 +21,7 @@ An author is given three things: the server's address, an account, and the serve
 
 ### Add a server
 
-**Add a server** opens the dialog. **Server address** takes the address the operator gave, in the form `nlteam://team.example.com:41402`.
+**Add a server** takes an address in the form `nlteam://team.example.com:41402`. A link such as `narraleaf://team/connect?server=https://team.example.com:41402` opens the same dialog with the address filled in. Port `41337` must also be reachable for project data.
 
 </Step>
 
@@ -29,9 +29,7 @@ An author is given three things: the server's address, an account, and the serve
 
 ### Trust the certificate
 
-A server issues its own certificate unless the organization supplied one. Studio reports **The server at that address was not trusted.** and offers to trust it.
-
-Compare the fingerprint Studio shows with the one the operator sent, then accept it. Studio adds the authority to this account's trust store, and the operating system may ask for a password.
+A server issues its own authority unless the organization supplied a trusted certificate. Compare the fingerprint shown by Studio with the one from `nlteam status`, then accept it. Studio keeps that authority and refuses a different one later. The operating system may ask for permission while it is installed.
 
 </Step>
 
@@ -39,38 +37,55 @@ Compare the fingerprint Studio shows with the one the operator sent, then accept
 
 ### Sign in
 
-**Sign in** takes the username and password of an account on that server.
+Choose **Sign in with browser** when the server offers it. Studio opens the server's console, where the account signs in and approves the device. If the machine cannot open a browser, use the device flow and enter the code at `/console/device` on another device.
+
+Password sign-in remains for older Studio builds. A server may require two-step sign-in or SSO.
 
 </Step>
 
 </Steps>
 
-The server then appears under **Team** with its projects.
+The server then appears under **Team** with the projects the account may see. A project without a role for this account is not listed.
 
 ## Getting a project
 
-Open the server under **Team** and the **Projects** tab lists what it holds. Each project's page carries one action:
+Open the server and its **Projects** tab. A project can be **Get** (copy it to this machine) or **Open** (open a copy already on this machine).
 
-- **Get** copies the project to this machine. Studio asks where the copy goes.
-- **Open** opens a project this machine already holds. A project already on this machine is marked **On this machine**.
+A project taken this way stays connected to the server. The launcher marks it as a team project, and its server settings are kept outside the project.
 
-A project taken this way keeps its connection to the server, so versions recorded in it are sent there.
+## Working in Studio 2.0
 
-## Sending a project to a server
+Team is the authority for the current documents. Studio sends an edit, Team applies it with the same document kernel, numbers the result and tells every connected window. A window that was offline keeps its work and replays it on reconnect.
 
-A project created on this machine is sent to a server from the version rail in the workspace. A project created for a server is published as it is made, on the wizard's last step.
+The Team history rail shows versions, conflicts and reconnection. Offline edits that cannot be applied are listed as conflicts and the author chooses what to apply. Work in progress is never silently replaced by the server.
+
+The title bar shows the signed-in account, including while the server is away. The status bar shows the round trip to the server. A role that cannot edit says so before the editor accepts a change.
+
+Each connection agrees the document kernel first. If Studio and Team use different kernels, Team refuses document edits and events for that project, and Studio keeps working offline rather than writing a format the other side reads differently.
+
+## Review and collaboration
+
+Row comments, suggested edits, to-dos, reviews, asset and language requests, approvals and asset locks stay inside the project's membership. A comment follows the row it discusses. A to-do can be completed through a commit or a saved Team version.
+
+The web console can read the same threads, files and versions. It records work around the project; it does not become a second editor for project content.
 
 ## Signing out
 
-The **NarraLeaf Team** section of Studio's settings lists the servers this installation is signed in to and the account used for each. Removing a server there forgets its token and its authority. Projects already on this machine are untouched.
+Studio's **NarraLeaf Team** settings list the servers this installation is connected to and the account used for each. Removing a server forgets its token and authority. Copies already on this machine are untouched. The console also lists an account's devices and can end any one of them.
 
 ## When a server does not answer
 
 | What Studio reports | What it means |
 | --- | --- |
-| This server did not answer. | The address is wrong, or 41402 is not reachable from this machine. |
-| The server at that address is not a NarraLeaf Team server. | Something answered, and it was not a Team server. |
-| This server refused the account signed in here. | The account was disabled, or its tokens were refused. Ask an operator. |
+| This server did not answer. | The address is wrong, or 41402 is not reachable. |
+| The server at that address is not a NarraLeaf Team server. | Something answered, but it was not Team. |
+| This server refused the account signed in here. | The account was disabled, locked, or its tokens were revoked. |
 | This server cannot be asked from this installation. | The stored token is gone. Add the server again. |
+| The server's document kernel is different. | Studio and Team cannot safely edit this project's documents together. Update the newer side or keep working offline. |
+| Your role in this project is read-only. | The role allows reading or review, not project edits. Ask an owner for another role. |
 
-A project that opens but cannot send a version is usually a server whose address is not in the token. An operator checks that with `nlteam status` on the server.
+A project that opens but cannot send an edit usually has a role without that area, a kernel mismatch, or a stale server address. The console's project settings and `nlteam status` answer those cases.
+
+## Full reference
+
+The repository's [deployment documentation](https://github.com/NarraLeaf/NarraLeaf-Team/blob/main/docs/operations.md) covers addressing, trust, the protocol and every command.

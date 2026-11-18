@@ -1,11 +1,7 @@
 ﻿---
 title: "视频"
-description: 用于全屏视频播放的 `Video` 元素，涵盖预加载、显示隐藏、播放控制与跳转
+description: 用于全屏视频播放的 `Video` 元素，涵盖预加载、淡入淡出、播放控制与跳转
 ---
-<Callout type="warning">
-    此页面正在建设中
-</Callout>
-
 <Callout type="warning">
     测试版功能，可能发生变化
 </Callout>
@@ -63,11 +59,14 @@ video.preload();
 <Steps>
 <Step>
 
-显示视频
+显示视频。传入 `VideoFadeOptions` 可淡入；动作会等待淡入结束，并在视频能够呈现画面后才开始淡入
 
 ```typescript
 video.show();
+video.show({duration: 500, easing: "easeOut"});
 ```
+
+- `options?: VideoFadeOptions` - 以毫秒计的 `duration` 与可选的 `easing`。没有正数时长时立即显示
 </Step>
 </Steps>
 
@@ -76,7 +75,15 @@ video.show();
 <Steps>
 <Step>
 
-隐藏视频
+隐藏视频。传入 `VideoFadeOptions` 可让当前画面淡出后再离开舞台；动作会等待淡出结束
+
+```typescript
+video.hide({duration: 600});
+```
+
+- `options?: VideoFadeOptions` - 以毫秒计的 `duration` 与可选的 `easing`。没有正数时长时立即隐藏
+
+跳过或快进会直接进入淡入淡出的结束状态。回退越过一次淡变会放弃它，并恢复回退到的那一行记录的视频状态。自 `1.1.0` 起可用
 </Step>
 </Steps>
 

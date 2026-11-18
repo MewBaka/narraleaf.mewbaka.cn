@@ -1,11 +1,7 @@
 ﻿---
 title: "Video"
-description: The `Video` element for full-screen video playback, covering preload, show and hide, playback control, and seeking.
+description: The `Video` element for full-screen video playback, covering preload, fades, playback control, and seeking.
 ---
-<Callout type="warning">
-    This page is under construction.
-</Callout>
-
 <Callout type="warning">
     Beta feature, subject to change.
 </Callout>
@@ -65,11 +61,14 @@ video.preload();
 <Steps>
 <Step>
 
-Show the video.
+Show the video. Pass a `VideoFadeOptions` object to fade it in; the action waits for the fade to finish, and the fade starts once the clip can present a frame.
 
 ```typescript
 video.show();
+video.show({duration: 500, easing: "easeOut"});
 ```
+
+- `options?: VideoFadeOptions` - `duration` in milliseconds and an optional `easing`. With no positive duration, the clip appears at once.
 </Step>
 </Steps>
 
@@ -78,7 +77,15 @@ video.show();
 <Steps>
 <Step>
 
-Hide the video.
+Hide the video. Pass a `VideoFadeOptions` object to fade out the current frame before the clip leaves the stage; the action waits for the fade to finish.
+
+```typescript
+video.hide({duration: 600});
+```
+
+- `options?: VideoFadeOptions` - `duration` in milliseconds and an optional `easing`. With no positive duration, the clip disappears at once.
+
+A fade lands on its end state when skipped or fast-forwarded. Stepping back across a fade abandons it and restores the clip state recorded by the line stepped back to. Available since `1.1.0`.
 </Step>
 </Steps>
 

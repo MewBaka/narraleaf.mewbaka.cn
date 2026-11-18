@@ -55,6 +55,11 @@ type GameConfig = {
      */
     ratioUpdateInterval: number;
     /**
+     * Who decides what the player warms, when, and where the bytes come from.
+     * Unset, the built-in strategy is used.
+     */
+    preload?: PreloadStrategy;
+    /**
      * The game will preload the image with this delay between each preload task
      *
      * A single preload task may contain {@link GameConfig.preloadConcurrency} images
@@ -71,6 +76,21 @@ type GameConfig = {
      * @default true
      */
     waitForPreload: boolean;
+    /**
+     * Whether the gate waits for the opening frame or every image the scene registers.
+     * @default "firstFrame"
+     */
+    preloadGate: "firstFrame" | "scene";
+    /**
+     * How many fetched image bytes the cache may retain.
+     * @default 256 * 1024 * 1024
+     */
+    imageCacheBudgetBytes: number;
+    /**
+     * How many decoded bitmap bytes the cache may retain.
+     * @default 128 * 1024 * 1024
+     */
+    decodedImageBudgetBytes: number;
     /**
      * Preload all possible images in the scene
      *
@@ -316,3 +336,4 @@ type GameConfig = {
 ```
 
 - For `AudioBusDeclaration`, see [AudioBusDeclaration](/docs/narraleaf-react/core/types/AudioBusDeclaration) and [Audio Buses](/docs/narraleaf-react/core/game/audio-buses).
+- For the preload seam, caches and their budgets, see [Preloading](/docs/narraleaf-react/core/game/preload) and [PreloadStrategy](/docs/narraleaf-react/core/types/PreloadStrategy).

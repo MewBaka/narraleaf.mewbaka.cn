@@ -1,0 +1,14 @@
+---
+title: "VideoFadeOptions"
+description: Video.show 与 Video.hide 的时长与缓动
+---
+```typescript
+type VideoFadeOptions = {
+    duration?: number;
+    easing?: TransformDefinitions.EasingDefinition;
+};
+```
+
+传给 [`Video.show`](/zh/docs/narraleaf-react/core/elements/video#show) 或 [`Video.hide`](/zh/docs/narraleaf-react/core/elements/video#hide)。没有正数 `duration` 时，视频立即出现或消失
+
+`easing` 接受命名缓动或 cubic-bezier 数组；省略时使用线性缓动。视频能够呈现画面后才开始淡变，动作会等待淡变结束。自 `1.1.0` 起可用

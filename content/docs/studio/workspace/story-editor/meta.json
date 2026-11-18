@@ -1,4 +1,12 @@
 {
   "title": "Story Editor",
-  "pages": ["index"]
+  "pages": [
+    "index",
+    "rename-references",
+    "script-documents",
+    "scene-history",
+    "comments",
+    "stage-timeline",
+    "stage-placement"
+  ]
 }

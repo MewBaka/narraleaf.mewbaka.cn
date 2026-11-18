@@ -10,6 +10,15 @@ For complete changes, see the [CHANGELOG](https://github.com/NarraLeaf/narraleaf
 - [`LiveGame.fastForward`](/docs/narraleaf-react/core/game/live-game#fastforward)'s `reason` gained `"refused"`, and the result gained `refusal`. Only a story whose services call `ctx.skip.refuse()` can produce it, but an exhaustive `switch` over `reason` needs the extra arm to keep compiling
 - [`ServiceHandlerCtx`](/docs/narraleaf-react/core/types/ServiceHandlerCtx) gained `signal` and `skip`. Code that builds a context by hand - a test calling a handler directly - must supply them. `onAbort` is deprecated in favour of `signal`, and a listener registered after the run was cancelled now runs at once rather than never
 
+## 0.44.0
+
+- `textRevealDuration` moved from `GameConfig` to a player preference. A value left in `new Game({textRevealDuration})` is ignored. Set it through `game.preference.setPreference("textRevealDuration", value)`
+
+## 0.42.0
+
+- [`Sound.play()`](/docs/narraleaf-react/core/elements/sound#play) now resolves once the clip is playing instead of waiting for it to finish. Pass `{waitForEnd: true}` as its second argument where the story should wait
+- The image cache now returns object URLs instead of data URLs. `getImageDataUrl` was replaced by `getImageObjectUrl`; code that persisted a cached string or matched a `data:` prefix must be updated
+
 ## 0.39.2
 
 - The script error a host receives (`RuntimeScriptError`, reached through [`GameConfig.onError`](/docs/narraleaf-react/core/types/GameConfig)) now carries the sentence alone in `message`. It used to carry the offending action's id and type and that action's whole construction stack appended to it, which in a host that shows the message in a panel is several lines of bundle frames above the fold. The parts are now separate fields — `error.action` (its `id` and `type`), `error.actionStack`, and `error.composedMessage` for the one-string form. **A host that parsed the message string to split those out must read the fields instead.** Nothing that logs the error object loses anything: `error.stack` still carries the whole composition

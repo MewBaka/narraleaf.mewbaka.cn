@@ -3,10 +3,6 @@ title: "GameState"
 description: GameState properties and methods, including the audio manager, scene preloading, and suspending line advancement.
 ---
 <Callout type="warning">
-    This page is under construction.
-</Callout>
-
-<Callout type="warning">
     Beta feature, subject to change.
 </Callout>
 
@@ -28,8 +24,27 @@ void gameState.audioManager.preload(bgm);
 ```
 
 - `preload(sound: Sound): Promise<void>` - warm one source. Available since `0.17.0`. A source that fails to load is logged as a warning and loads on first play instead, so this never rejects. **Do not gate anything on the returned promise**: the audio context stays locked until a user gesture satisfies the browser's autoplay policy, so it can legitimately stay pending. See [Preloading](/docs/narraleaf-react/core/game/preload#sound-preloading).
+- `retainOnly(sounds: Sound[]): void` - keep this set of sounds warm and release every other cache reference. A playing clip stays held by its token until it ends. Available since `0.45.0`.
+- `getCacheStats()` - return the decoded clips, clips loading and decoded PCM bytes currently held. Available since `0.45.0`.
 
 ## Public Methods
+
+### getImageCache
+
+<Steps>
+<Step>
+
+Return the player's image cache, or `null` before it is mounted.
+
+```typescript
+const stats = gameState.getImageCache()?.getStats();
+```
+
+`getStats()` reports fetched image bytes, decoded bitmap bytes, pinned entries and the budgets in force. See [ImageCacheStats](/docs/narraleaf-react/core/types/ImageCacheStats).
+
+- `return: ImageCacheManager | null`
+</Step>
+</Steps>
 
 ### preloadScene
 

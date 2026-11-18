@@ -1,0 +1,30 @@
+---
+title: "CaptureImageOptions"
+description: Size, encoding, quality and background options for LiveGame.captureImage.
+---
+```typescript
+type CaptureImageOptions = {
+    maxEdge?: number;
+    type?: string;
+    quality?: number;
+    backgroundColor?: string;
+};
+```
+
+Passed to [`LiveGame.captureImage`](/docs/narraleaf-react/core/game/live-game#captureimage). The stage is drawn at the requested size and encoded once, instead of drawing at full size and resizing the result.
+
+## maxEdge
+
+The longest edge in pixels. The stage is never drawn larger than `capturePng` would draw it. Omitted, the picture is exactly the size `capturePng` returns.
+
+## type
+
+`image/png` by default; `image/jpeg` and `image/webp` are also accepted. A type the browser cannot encode falls back to PNG, following `HTMLCanvasElement.toDataURL`.
+
+## quality
+
+Encoder quality from 0 to 1 for JPEG and WebP. Defaults to the game's `screenshotQuality`.
+
+## backgroundColor
+
+Painted under the stage before it is drawn. JPEG has no alpha, so without a background its transparent pixels become black.

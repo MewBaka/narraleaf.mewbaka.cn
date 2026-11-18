@@ -57,7 +57,7 @@ Definitions live in the project's variable registry (`editor/variables.json`) an
 
 Values live in host-managed storage keyed by the entry's `storageKey`, and never inside the project folder. While you author, they sit in Studio's own user data under a per-project key; in a shipped game they sit in the game's user data. Copying a project to another machine does not carry them.
 
-`Get Persistent` and `Set Persistent` are latent, because the host read and write are asynchronous, which is also why a Blueprint Value, an inline story value and a branch condition do not offer them. `Get Persistent` falls back to the authored default when nothing has ever been stored under that key, and hands you a deep copy of it, so mutating what you read cannot edit the definition.
+`Get Persistent` and `Set Persistent` are latent, because the host read and write are asynchronous. `Get Persistent` is admitted to a Blueprint Value, where the value runtime awaits it like `Call Fn` and records the read; writing the variable re-runs the binding. `Set Persistent` remains barred from Blueprint Values, inline story values and branch conditions. `Get Persistent` falls back to the authored default when nothing has ever been stored under that key, and hands you a deep copy of it, so mutating what you read cannot edit the definition.
 
 <Callout type="warn">
 `storageKey` is minted once and never changes when you rename the variable — that is what keeps a player's stored value resolving after a rename. The flip side: deleting a persistent variable does **not** delete the value already stored under its key, and a replacement created with the same name gets a *new* key and reads the default. Rename; do not delete and re-create.
@@ -128,7 +128,7 @@ A `Get Var` or `Set Var` whose selected variable no longer exists — deleted, o
 A [Blueprint Value](/docs/studio/blueprint) is a `widgetValue` blueprint bound to a single widget property, and its palette is deliberately restricted to safe value-producing nodes. Four consequences for variables:
 
 - **It cannot declare `Var`.** The node is not in its palette, and the declared-variable scan skips `widgetValue` owners outright.
-- **It cannot read or write persistent variables.** `Get Persistent` and `Set Persistent` are latent, and a value binding has to produce a value in the tick it is asked for — there is nobody to hand a pending promise to.
+- **It cannot write persistent variables.** `Set Persistent` is latent and barred from a value binding. `Get Persistent` is allowed: the value runtime awaits the latent read and re-runs the binding when the variable is written.
 - **It can still read and write the variables it can see.** `Get Var` and `Set Var` are on the whitelist and resolve against the page's blueprint and App logic, which is the entire accessible set, since a value blueprint declares none of its own.
 - **It reads saved variables.** `Get Saved Var` is on the whitelist and `Set Saved Var` is not. The binding runs again whenever the variable is written, by a story row, another blueprint or a save being loaded. [Example: affection and multiple endings](/docs/studio/blueprint/affection-endings) shows a dialogue box following a saved variable this way.
 

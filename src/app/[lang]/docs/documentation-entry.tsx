@@ -16,18 +16,19 @@ import { alternatesFor, jsonLdScript, keywordsFor, socialMetadataFor } from '@/l
 import { breadcrumbJsonLd, type BreadcrumbEntry, techArticleJsonLd } from '@/lib/structured-data';
 import type { Metadata } from 'next';
 
-export type DocsProductSegment = 'narraleaf' | 'studio' | 'narraleaf-react';
+export type DocsProductSegment = 'narraleaf' | 'studio' | 'team' | 'narraleaf-react';
 
 /**
  * What each documentation tab is called in a result line.
  *
- * The site's three products are searched for by name, so the name belongs in
+ * The site's products are searched for by name, so the name belongs in
  * the title of every page that documents one: `Installation | NarraLeaf Studio`
  * competes for a query the site can win, where `Installation | NarraLeaf` does
- * not say which of the three it installs.
+ * not say which of them it installs.
  */
 const PRODUCT_NAMES: Record<DocsProductSegment, string> = {
   studio: 'NarraLeaf Studio',
+  team: 'NarraLeaf Team',
   narraleaf: 'NarraLeaf Desktop',
   'narraleaf-react': 'NarraLeaf-React',
 };
@@ -35,6 +36,7 @@ const PRODUCT_NAMES: Record<DocsProductSegment, string> = {
 /** The path a product tab's trail starts at, `narraleaf` redirecting to its library. */
 const PRODUCT_ROOTS: Record<DocsProductSegment, string> = {
   studio: `${docsRoute}/studio`,
+  team: `${docsRoute}/team`,
   narraleaf: `${docsRoute}/narraleaf/library`,
   'narraleaf-react': `${docsRoute}/narraleaf-react`,
 };

@@ -11,7 +11,7 @@ const localizedTabs = {
     {
       title: 'NarraLeaf Team',
       description: 'Self-hosted projects, roles, reviews and collaboration.',
-      path: 'studio/team',
+      path: 'team',
     },
     {
       title: 'NarraLeaf-React',
@@ -28,7 +28,7 @@ const localizedTabs = {
     {
       title: 'NarraLeaf Team',
       description: '自托管项目、角色、审阅与协作。',
-      path: 'studio/team',
+      path: 'team',
     },
     {
       title: 'NarraLeaf-React',
@@ -45,7 +45,7 @@ const localizedTabs = {
     {
       title: 'NarraLeaf Team',
       description: 'セルフホスト型のプロジェクト、役割、レビュー、共同作業。',
-      path: 'studio/team',
+      path: 'team',
     },
     {
       title: 'NarraLeaf-React',

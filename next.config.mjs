@@ -68,6 +68,17 @@ const config = {
   },
   async redirects() {
     const docsRedirects = [
+      // Team's pages lived under Studio's until they became a tab of their own.
+      {
+        source: '/docs/studio/team',
+        destination: '/docs/team',
+        permanent: true,
+      },
+      {
+        source: '/docs/studio/team/:path*',
+        destination: '/docs/team/:path*',
+        permanent: true,
+      },
       {
         source: '/docs/narraleaf/project',
         destination: '/project',

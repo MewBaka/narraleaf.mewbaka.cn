@@ -38,7 +38,7 @@ Copying a configuration puts the token on the system clipboard, where other prog
 
 **Pausing stops changes in one project.** While an agent is paused, every change it tries there is refused. Reads still work.
 
-**A busy project refuses changes.** No change is accepted while the project is frozen: a past version is open for viewing, the project was frozen by hand, a version-control merge is unfinished, Studio is in recovery mode, or another Studio window has taken the project over. Agent changes are also refused during a [Team](/docs/studio/team) live session, and while a Team project's documents are held by its server, so they cannot race the people or the document authority.
+**A busy project refuses changes.** No change is accepted while the project is frozen: a past version is open for viewing, the project was frozen by hand, a version-control merge is unfinished, Studio is in recovery mode, or another Studio window has taken the project over. Agent changes are also refused during a [Team](/docs/team) live session, and while a Team project's documents are held by its server, so they cannot race the people or the document authority.
 
 **Changes go through Studio.** An agent has no tool that writes files in the project folder. Each change is made through the same services as an edit by hand, so it appears in the editor, is one step of undo, and is checked the way an edit by hand is. A scene, page or blueprint that does not pass the check is not written.
 

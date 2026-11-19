@@ -3,6 +3,7 @@
   "description": "Studio、NarraLeaf Team、NarraLeaf-React を対象とした NarraLeaf Project のドキュメント。",
   "pages": [
     "studio",
+    "team",
     "narraleaf-react"
   ]
 }

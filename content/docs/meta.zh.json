@@ -1,5 +1,5 @@
 {
   "title": "文档",
   "description": "NarraLeaf Project 文档，覆盖 Studio、NarraLeaf Team 与 NarraLeaf-React。",
-  "pages": ["studio", "narraleaf-react"]
+  "pages": ["studio", "team", "narraleaf-react"]
 }

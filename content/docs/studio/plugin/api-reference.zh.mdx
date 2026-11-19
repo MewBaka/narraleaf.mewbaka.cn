@@ -308,9 +308,9 @@ execute: async ctx => {
 app.game.inlineTextEffects.register({ id, render, interactive? });
 ```
 
-为带行内文字效果的对白片段注册游戏侧渲染器。`id` 必须出现在 `contributes.inlineTextEffects` 中，并由 studio 入口注册。`interactive` 默认 `false`：带效果的文字让点击继续推进对白。需要点击打开术语解释或处理自己的点击时，设为 `true`。
+为带行内文字效果的对白片段注册游戏侧渲染器。`id` 必须出现在 `contributes.inlineTextEffects` 中，并由 studio 入口注册。`interactive` 默认 `false`：带效果的文字让点击继续推进对白。需要点击打开术语解释或处理自己的点击时，设为 `true`
 
-`render` 收到 `RuntimeInlineTextEffectRenderProps`：已排版的 `children`、已显示文字与完整文字、显示状态、是否含注音、作者设置的数值 `params`，以及对白样式。渲染 `children` 才能保留注音、竖排与纵中横。
+`render` 收到 `RuntimeInlineTextEffectRenderProps`：已排版的 `children`、已显示文字与完整文字、显示状态、是否含注音、作者设置的数值 `params`，以及对白样式。渲染 `children` 才能保留注音、竖排与纵中横
 
 ```tsx
 app.game.inlineTextEffects.register({

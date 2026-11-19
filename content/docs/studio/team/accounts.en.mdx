@@ -24,14 +24,14 @@ printf '%s' 'their password' | nlteam user create bob --root /srv/team
 From a machine signed in as an operator:
 
 ```sh
-nlteam login team.example.com:41402 ada < password.txt
-printf '%s' 'their password' | nlteam user create bob --server team.example.com:41402
+nlteam login team.example.com:54080 ada < password.txt
+printf '%s' 'their password' | nlteam user create bob --server team.example.com:54080
 ```
 
 Passwords come from standard input, never an argument. An operator can issue a sign-in token instead:
 
 ```sh
-nlteam token mint bob --server team.example.com:41402
+nlteam token mint bob --server team.example.com:54080
 ```
 
 ## Operators
@@ -39,8 +39,8 @@ nlteam token mint bob --server team.example.com:41402
 The `admin` group manages accounts, projects, settings, signing keys, storage and backups. `nlteam init` puts the first account in it.
 
 ```sh
-nlteam user grant-admin bob --server team.example.com:41402
-nlteam user revoke-admin bob --server team.example.com:41402
+nlteam user grant-admin bob --server team.example.com:54080
+nlteam user revoke-admin bob --server team.example.com:54080
 ```
 
 The console can edit, lock and delete accounts. The last operator cannot remove their own access.
@@ -77,14 +77,14 @@ A server can refuse the operation through an account policy, a document that is 
 Change the project role or remove the member. To stop the account everywhere:
 
 ```sh
-nlteam user disable ada --server team.example.com:41402
-nlteam user revoke-tokens ada --server team.example.com:41402
+nlteam user disable ada --server team.example.com:54080
+nlteam user revoke-tokens ada --server team.example.com:54080
 ```
 
 **`disable`** stops the account and refuses a new sign-in. **`revoke-tokens`** refuses every token already issued but lets the account sign in again with the same password. Both take effect on Studio's next call.
 
 <Callout type="warning">
-A project data connection already open is checked by the version-control server until its repository token expires, fifteen minutes by default. Ending it sooner means rotating the signing key, which signs everyone out.
+A project data connection already open is checked by the version-control server until its repository token expires, fifteen minutes by default. Ending it sooner means rotating the signing key and then retiring the old one, which signs everyone out.
 </Callout>
 
 A disabled account can be enabled again with `nlteam user enable ada`. The console can also lock an account temporarily or delete it.
@@ -92,10 +92,10 @@ A disabled account can be enabled again with `nlteam user enable ada`. The conso
 ## Listing what is there
 
 ```sh
-nlteam user list --server team.example.com:41402
-nlteam project list --server team.example.com:41402
-nlteam status --server team.example.com:41402
-nlteam audit --refused --server team.example.com:41402
+nlteam user list --server team.example.com:54080
+nlteam project list --server team.example.com:54080
+nlteam status --server team.example.com:54080
+nlteam audit --refused --server team.example.com:54080
 ```
 
 `audit` reads access decisions newest first. `--refused` prints refusals only. The console shows the same record with filters, beside account and storage administration.

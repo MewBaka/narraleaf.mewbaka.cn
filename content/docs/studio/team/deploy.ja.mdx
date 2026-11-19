@@ -12,12 +12,12 @@ Team サーバーは 1 台のマシンで動き、所有するすべてを 1 つ
 ```yaml
 services:
   team:
-    image: ghcr.io/narraleaf/team:1.0.0
+    image: ghcr.io/narraleaf/team:1.0.5
     restart: unless-stopped
     environment:
       NLTEAM_HOSTNAME: team.example.com
     ports:
-      - "41402:41402"
+      - "54080:54080"
       - "41337:41337/tcp"
       - "41337:41337/udp"
     volumes:
@@ -54,6 +54,8 @@ rm admin-password
 
 `init` は 1 回だけ動き、最初のアカウントを `admin` グループに入れます。サーバーにアカウントがあると拒否されます。パスワードは標準入力から読むため、プロセス一覧やシェル履歴に残りません。
 
+最初のアカウントはブラウザでも作成できます。サーバーにアカウントがない間は、ログ（`docker compose logs team`）に `/console/setup` のアドレスとセットアップコードが表示されます。
+
 </Step>
 
 <Step>
@@ -72,19 +74,19 @@ docker compose exec team nlteam status
 
 ### Web コンソールを開く
 
-`https://<サーバー>:41402/console/` を開きます。ブラウザが証明書を信頼している必要があります。Team 自身の認証局を使う場合は、ストレージルートを持つマシンで `tls/ca.crt` をインストールするか、`nlteam trust --install` を実行します。ブラウザがすでに信頼する認証局の証明書なら追加作業はありません。
+`https://<サーバー>:54080/console/` を開きます。ブラウザが証明書を信頼している必要があります。Team 自身の認証局を使う場合は、コンソールをブラウザで開く各マシンにその認証局をインストールします。ストレージルートの `tls/ca.crt` で、`nlteam trust` でも表示できます。`nlteam trust --install` がインストールするのはサーバーのマシン自身だけです。ブラウザがすでに信頼する認証局の証明書なら追加作業はありません。
 
 </Step>
 
 </Steps>
 
-作者に渡すアドレスはホストとポートで、`nlteam://team.example.com:41402` と書きます。`status` の `https://` URL はサインインのエンドポイントで、Studio の Add Server ダイアログは `nlteam://` 形式を受け取ります。
+作者に渡すアドレスはホストとポートで、`nlteam://team.example.com:54080` と書きます。`status` の `https://` URL はサインインのエンドポイントで、Studio の Add Server ダイアログは `nlteam://` 形式を受け取ります。
 
 ## ポート
 
 | ポート | 作者のマシンから到達可能か | 役割 |
 | --- | --- | --- |
-| 41402 | はい | サインイン、Studio セッション、Web コンソール、プロジェクト API |
+| 54080 | はい | サインイン、Studio セッション、Web コンソール、プロジェクト API |
 | 41337 | はい、TCP と UDP | プロジェクトデータ |
 | 41339 | いいえ | バージョン管理サーバーのヘルスチェック |
 | 41400 | いいえ | サーバーの署名キー |
@@ -129,6 +131,8 @@ Node.js 24 以降が必要で、64 ビット Linux、Windows、Apple Silicon で
 
 ## 更新
 
+`compose.yaml` のイメージタグを変えてから実行します。
+
 ```sh
 docker compose pull
 docker compose up -d
@@ -136,16 +140,35 @@ docker compose up -d
 
 データベースは起動時に移行され、認証局は保持されるため、再び信頼を求めることはありません。`latest` ではなく固定タグを使ってください。`latest` と `develop` は、再起動していないデプロイの下でも変わることがあります。
 
+<Callout type="warning">
+1.0.5 からサインインのポートは 54080 です。1.0.0 は 41402 でした。1.0.0 から更新するときは、公開ポートを `54080:54080` に変えて作者に新しいアドレスを伝えるか、`NLTEAM_AUTH_TLS_PORT: "41402"` と `41402:41402` で元のポートを使い続けます。
+</Callout>
+
 ## バックアップ
 
 `/var/lib/nlteam` または `--root` が指すディレクトリに、アカウント、プロジェクト、ドキュメントログ、署名キー、認証局、リポジトリ保管庫があります。
 
 ```sh
 nlteam backup --root /srv/team
-nlteam restore /srv/team/backups/nlteam-backup-YYYYMMDD-HHMMSS.tar.gz --root /srv/team
 ```
 
-バックアップはサーバー稼働中にも取得できます。`restore` はサーバー停止中に実行します。定期バックアップは設定に従って古いものを整理します。
+`backup` は `<root>/backups/nlteam-backup-YYYYMMDD-HHMMSS.tar.gz`（UTC）を書き出し、サーバー稼働中にも実行できます。コンテナでは `docker compose exec team nlteam backup` と書きます。コンソールのストレージページでもバックアップを取得でき、管理画面の `backup.every_hours`（既定はオフ）で定期バックアップを、`backup.keep`（既定は 7）で保持数を設定します。ルート配下のバックアップは保護対象と同じディスクにあるため、別の場所にもコピーしてください。
+
+復元の前にサーバーを停止します。すでにファイルがあるルートへ復元するには `--force` が必要で、元の内容は削除されず `<root>/before-restore-YYYYMMDD-HHMMSS/` に移されます。アーカイブはそのルート自身のバックアップでも構いません。
+
+```sh
+nlteam restore /srv/team/backups/nlteam-backup-YYYYMMDD-HHMMSS.tar.gz --root /srv/team --force
+```
+
+Docker では、同じボリュームを使う使い捨てコンテナで復元します。イメージのエントリポイントは `nlteam` なので、コマンドは `restore` から始めます。
+
+```sh
+docker compose stop team
+docker compose run --rm team restore /var/lib/nlteam/backups/nlteam-backup-YYYYMMDD-HHMMSS.tar.gz --force
+docker compose start team
+```
+
+復元したサーバーに問題がなければ、`before-restore-…` ディレクトリを削除します。
 
 ## 完全なリファレンス
 

@@ -12,12 +12,12 @@ Write a `compose.yaml`. Change `NLTEAM_HOSTNAME` to the name people use. It goes
 ```yaml
 services:
   team:
-    image: ghcr.io/narraleaf/team:1.0.0
+    image: ghcr.io/narraleaf/team:1.0.5
     restart: unless-stopped
     environment:
       NLTEAM_HOSTNAME: team.example.com
     ports:
-      - "41402:41402"
+      - "54080:54080"
       - "41337:41337/tcp"
       - "41337:41337/udp"
     volumes:
@@ -54,6 +54,8 @@ rm admin-password
 
 `init` runs once and puts the first account in the `admin` group. It is refused once the server has an account. The password comes from standard input, so it does not appear in the process list or shell history.
 
+The first account can also be made in a browser: while the server has no accounts, its log (`docker compose logs team`) shows a `/console/setup` address and a setup code.
+
 </Step>
 
 <Step>
@@ -72,19 +74,19 @@ The `sign in` line carries the endpoint address; another line carries the certif
 
 ### Open the web console
 
-Open `https://<server>:41402/console/`. The browser must trust the certificate. With Team's own authority, install `tls/ca.crt` or run `nlteam trust --install` on the machine holding the storage root. A certificate from an authority the browser already trusts needs no extra step.
+Open `https://<server>:54080/console/`. The browser must trust the certificate. With Team's own authority, install its certificate authority on each machine whose browser opens the console: `tls/ca.crt` under the storage root, which `nlteam trust` also prints. `nlteam trust --install` installs it on the server machine itself. A certificate from an authority the browser already trusts needs no extra step.
 
 </Step>
 
 </Steps>
 
-Authors receive the host and port written as `nlteam://team.example.com:41402`. `status` prints an `https://` URL for the sign-in endpoint; Studio's Add Server dialog accepts the `nlteam://` form.
+Authors receive the host and port written as `nlteam://team.example.com:54080`. `status` prints an `https://` URL for the sign-in endpoint; Studio's Add Server dialog accepts the `nlteam://` form.
 
 ## Ports
 
 | Port | Reachable from an author's machine | Carries |
 | --- | --- | --- |
-| 41402 | Yes | Sign-in, Studio sessions, the web console and the project API |
+| 54080 | Yes | Sign-in, Studio sessions, the web console and the project API |
 | 41337 | Yes, TCP and UDP | Project data |
 | 41339 | No | The version-control server's health check |
 | 41400 | No | The server's signing keys |
@@ -129,6 +131,8 @@ Both values or neither. The key must have no passphrase. Renewal is a restart. T
 
 ## Updating
 
+Change the image tag in `compose.yaml`, then:
+
 ```sh
 docker compose pull
 docker compose up -d
@@ -136,16 +140,35 @@ docker compose up -d
 
 The database migrates on start and the certificate authority is kept, so nobody trusts the server again. Pin the image tag rather than using `latest`; `latest` and `develop` can change under a deployment nobody restarted.
 
+<Callout type="warning">
+From 1.0.5 the sign-in port is 54080; 1.0.0 used 41402. When upgrading from 1.0.0, change the published port to `54080:54080` and give authors the new address, or keep the old one with `NLTEAM_AUTH_TLS_PORT: "41402"` and `41402:41402`.
+</Callout>
+
 ## Backups
 
 `/var/lib/nlteam`, or the directory `--root` names, holds accounts, projects, the document log, signing keys, the certificate authority and the repository store.
 
 ```sh
 nlteam backup --root /srv/team
-nlteam restore /srv/team/backups/nlteam-backup-YYYYMMDD-HHMMSS.tar.gz --root /srv/team
 ```
 
-A backup may be taken while the server runs. `restore` requires the server to be stopped. Scheduled backups are pruned according to the server's settings.
+`backup` writes `<root>/backups/nlteam-backup-YYYYMMDD-HHMMSS.tar.gz` (UTC) and may run while the server is up. In a container, run it as `docker compose exec team nlteam backup`. The console's storage page takes backups too, and its back office sets `backup.every_hours` (off by default) for scheduled backups and `backup.keep` (7 by default) for how many are kept. A backup under the root sits on the same disk as what it protects: copy it elsewhere.
+
+To restore, stop the server first. Into a root that already holds files, `restore` needs `--force`, and then moves what was there into `<root>/before-restore-YYYYMMDD-HHMMSS/` instead of deleting it. The archive may be one of the root's own backups.
+
+```sh
+nlteam restore /srv/team/backups/nlteam-backup-YYYYMMDD-HHMMSS.tar.gz --root /srv/team --force
+```
+
+With Docker, restore in a one-off container on the same volume. The image's entry point is `nlteam`, so the command starts at `restore`:
+
+```sh
+docker compose stop team
+docker compose run --rm team restore /var/lib/nlteam/backups/nlteam-backup-YYYYMMDD-HHMMSS.tar.gz --force
+docker compose start team
+```
+
+Delete the `before-restore-…` directory once the restored server checks out.
 
 ## Full reference
 

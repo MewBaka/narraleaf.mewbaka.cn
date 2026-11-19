@@ -24,14 +24,14 @@ printf '%s' 'their password' | nlteam user create bob --root /srv/team
 在已经以运维身份登录的机器上：
 
 ```sh
-nlteam login team.example.com:41402 ada < password.txt
-printf '%s' 'their password' | nlteam user create bob --server team.example.com:41402
+nlteam login team.example.com:54080 ada < password.txt
+printf '%s' 'their password' | nlteam user create bob --server team.example.com:54080
 ```
 
 密码从标准输入读取，不放在参数里。运维也可以直接签发登录令牌：
 
 ```sh
-nlteam token mint bob --server team.example.com:41402
+nlteam token mint bob --server team.example.com:54080
 ```
 
 ## 运维
@@ -39,8 +39,8 @@ nlteam token mint bob --server team.example.com:41402
 `admin` 组管理账号、项目、设置、签名密钥、存储和备份。`nlteam init` 会把第一个账号放进这个组。
 
 ```sh
-nlteam user grant-admin bob --server team.example.com:41402
-nlteam user revoke-admin bob --server team.example.com:41402
+nlteam user grant-admin bob --server team.example.com:54080
+nlteam user revoke-admin bob --server team.example.com:54080
 ```
 
 控制台可以编辑、锁定和删除账号。最后一名运维不能移除自己的访问权。
@@ -77,14 +77,14 @@ Studio 登录 Team 服务器后，**设置 → 传输**会提供**备份到 Team
 修改项目角色，或移除成员。要停止整个账号，使用：
 
 ```sh
-nlteam user disable ada --server team.example.com:41402
-nlteam user revoke-tokens ada --server team.example.com:41402
+nlteam user disable ada --server team.example.com:54080
+nlteam user revoke-tokens ada --server team.example.com:54080
 ```
 
 **`disable`** 停用账号，并拒绝再次登录。**`revoke-tokens`** 拒绝已经签发的全部令牌，但允许账号用同一密码重新登录。两者都在 Studio 的下一次调用生效。
 
 <Callout type="warning">
-已经建立的项目数据连接由版本控制服务器检查，直到仓库令牌过期；默认是十五分钟。要更快结束，需要轮换签名密钥，而这会让所有人重新登录。
+已经建立的项目数据连接由版本控制服务器检查，直到仓库令牌过期；默认是十五分钟。要更快结束，需要先轮换签名密钥，再撤下旧密钥，而这会让所有人重新登录。
 </Callout>
 
 被停用的账号可以用 `nlteam user enable ada` 恢复。控制台也可以临时锁定或删除账号。
@@ -92,10 +92,10 @@ nlteam user revoke-tokens ada --server team.example.com:41402
 ## 查看现有内容
 
 ```sh
-nlteam user list --server team.example.com:41402
-nlteam project list --server team.example.com:41402
-nlteam status --server team.example.com:41402
-nlteam audit --refused --server team.example.com:41402
+nlteam user list --server team.example.com:54080
+nlteam project list --server team.example.com:54080
+nlteam status --server team.example.com:54080
+nlteam audit --refused --server team.example.com:54080
 ```
 
 `audit` 从新到旧读取访问决定。`--refused` 只显示拒绝记录。控制台用筛选器显示同一份记录，并提供账号与存储管理。

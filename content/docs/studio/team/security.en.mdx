@@ -9,11 +9,11 @@ A Team server holds accounts, project documents, versions and the collaboration 
 
 Each project has members with one role: owner, editor, reviewer or viewer. A project the caller has no role in is, to them, not there: every method and topic about it answers "not found" rather than "you may not".
 
-Owners and editors may open the project repository. Reviewers and viewers may not; they read the project through Team. The version-control server cannot distinguish reading from writing, so a role that may not write is a role that may not open the repository.
+Owners, and editors who hold every area, may open the project repository. Reviewers, viewers and editors kept to some areas may not; they read the project through Team. The version-control server cannot distinguish reading from writing, so a role that may not write is a role that may not open the repository.
 
 Editors can be limited to story, characters, assets, UI, localization or game config. Team determines the area from the file an edit reaches, and anything unrecognised counts as game config. Restoring a version changes every area and needs all six.
 
-An operator is an owner of every project. A new project starts with its creator as owner and every other account as editor. A new account starts as an editor of every existing project, so upgrading from 0.1.0 behaves as the old server did until an owner narrows a project. Review sensitive projects after an upgrade.
+An operator is an owner of every project. By default a new project starts with its creator as owner and every other account as editor, and a new account starts as an editor of every existing project. The `project.default_access` setting changes that default to viewer or to no access. Upgrading from 0.1.0 behaves as the old server did until an owner narrows a project. Review sensitive projects after an upgrade.
 
 Only an owner or operator may take a project off the list. The repository remains in the store; the registry row, threads and comments attached to it are removed. Record the repository id before removal if the project may need to be registered again.
 

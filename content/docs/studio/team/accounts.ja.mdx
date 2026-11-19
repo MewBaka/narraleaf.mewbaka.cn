@@ -24,14 +24,14 @@ printf '%s' 'their password' | nlteam user create bob --root /srv/team
 管理者としてサインイン済みのマシンから:
 
 ```sh
-nlteam login team.example.com:41402 ada < password.txt
-printf '%s' 'their password' | nlteam user create bob --server team.example.com:41402
+nlteam login team.example.com:54080 ada < password.txt
+printf '%s' 'their password' | nlteam user create bob --server team.example.com:54080
 ```
 
 パスワードは標準入力から読み、引数には書きません。パスワードの代わりにサインイントークンを発行できます。
 
 ```sh
-nlteam token mint bob --server team.example.com:41402
+nlteam token mint bob --server team.example.com:54080
 ```
 
 ## 管理者
@@ -39,8 +39,8 @@ nlteam token mint bob --server team.example.com:41402
 `admin` グループはアカウント、プロジェクト、設定、署名キー、ストレージ、バックアップを管理します。`nlteam init` は最初のアカウントをこのグループに入れます。
 
 ```sh
-nlteam user grant-admin bob --server team.example.com:41402
-nlteam user revoke-admin bob --server team.example.com:41402
+nlteam user grant-admin bob --server team.example.com:54080
+nlteam user revoke-admin bob --server team.example.com:54080
 ```
 
 コンソールではアカウントの編集、ロック、削除ができます。最後の管理者は自分のアクセスを取り除けません。
@@ -77,14 +77,14 @@ Studio が Team サーバーにサインインしていると、**Settings → T
 プロジェクトの役割を変更するか、メンバーから外します。アカウント全体を止めるには:
 
 ```sh
-nlteam user disable ada --server team.example.com:41402
-nlteam user revoke-tokens ada --server team.example.com:41402
+nlteam user disable ada --server team.example.com:54080
+nlteam user revoke-tokens ada --server team.example.com:54080
 ```
 
 **`disable`** はアカウントを停止し、再サインインを拒否します。**`revoke-tokens`** は発行済みの全トークンを拒否しますが、同じパスワードで再びサインインできます。どちらも Studio の次の呼び出しから効きます。
 
 <Callout type="warning">
-すでに開いているプロジェクトデータ接続は、リポジトリトークンが期限切れになるまでバージョン管理サーバーが確認します。既定は 15 分です。それより早く終えるには署名キーをローテーションし、全員を再サインインさせます。
+すでに開いているプロジェクトデータ接続は、リポジトリトークンが期限切れになるまでバージョン管理サーバーが確認します。既定は 15 分です。それより早く終えるには署名キーをローテーションしてから古いキーを廃止します。これで全員が再サインインすることになります。
 </Callout>
 
 停止したアカウントは `nlteam user enable ada` で戻せます。コンソールでは一時的なロックや削除も行えます。
@@ -92,10 +92,10 @@ nlteam user revoke-tokens ada --server team.example.com:41402
 ## 現在の内容を一覧する
 
 ```sh
-nlteam user list --server team.example.com:41402
-nlteam project list --server team.example.com:41402
-nlteam status --server team.example.com:41402
-nlteam audit --refused --server team.example.com:41402
+nlteam user list --server team.example.com:54080
+nlteam project list --server team.example.com:54080
+nlteam status --server team.example.com:54080
+nlteam audit --refused --server team.example.com:54080
 ```
 
 `audit` はアクセス判断を新しい順に読みます。`--refused` は拒否だけを表示します。コンソールでも同じ記録をフィルター付きで表示し、アカウントとストレージの管理を行えます。

@@ -12,12 +12,12 @@ Team 服务器运行在一台机器上，它拥有的一切都保存在一个目
 ```yaml
 services:
   team:
-    image: ghcr.io/narraleaf/team:1.0.0
+    image: ghcr.io/narraleaf/team:1.0.5
     restart: unless-stopped
     environment:
       NLTEAM_HOSTNAME: team.example.com
     ports:
-      - "41402:41402"
+      - "54080:54080"
       - "41337:41337/tcp"
       - "41337:41337/udp"
     volumes:
@@ -54,6 +54,8 @@ rm admin-password
 
 `init` 只运行一次，把第一个账号放进 `admin` 组。服务器上已有账号后会拒绝。口令从标准输入读取，因此不会出现在进程列表或 shell 历史中。
 
+第一个账号也可以在浏览器中创建：服务器还没有账号时，日志（`docker compose logs team`）会给出 `/console/setup` 地址和设置码。
+
 </Step>
 
 <Step>
@@ -72,19 +74,19 @@ docker compose exec team nlteam status
 
 ### 打开 Web 控制台
 
-访问 `https://<服务器>:41402/console/`。浏览器必须信任证书。使用 Team 自己的证书颁发机构时，在持有存储根目录的机器上安装 `tls/ca.crt`，或运行 `nlteam trust --install`。使用浏览器已信任的机构签发的证书时不需要额外步骤。
+访问 `https://<服务器>:54080/console/`。浏览器必须信任证书。使用 Team 自己的证书颁发机构时，要在每台用浏览器打开控制台的机器上安装它：即存储根目录下的 `tls/ca.crt`，`nlteam trust` 也会打印它。`nlteam trust --install` 只会把它安装到服务器本机。使用浏览器已信任的机构签发的证书时不需要额外步骤。
 
 </Step>
 
 </Steps>
 
-交给作者的是主机名加端口，写作 `nlteam://team.example.com:41402`。`status` 给出的 `https://` URL 是登录端点；Studio 的添加服务器窗口接受 `nlteam://` 形式。
+交给作者的是主机名加端口，写作 `nlteam://team.example.com:54080`。`status` 给出的 `https://` URL 是登录端点；Studio 的添加服务器窗口接受 `nlteam://` 形式。
 
 ## 端口
 
 | 端口 | 作者的机器能否访问 | 承载 |
 | --- | --- | --- |
-| 41402 | 能 | 登录、Studio 会话、Web 控制台与项目 API |
+| 54080 | 能 | 登录、Studio 会话、Web 控制台与项目 API |
 | 41337 | 能，TCP 与 UDP | 项目数据 |
 | 41339 | 否 | 版本控制服务器的健康检查 |
 | 41400 | 否 | 服务器的签名密钥 |
@@ -129,6 +131,8 @@ nlteam status --root /srv/team
 
 ## 更新
 
+先修改 `compose.yaml` 中的镜像标签，然后：
+
 ```sh
 docker compose pull
 docker compose up -d
@@ -136,16 +140,35 @@ docker compose up -d
 
 数据库会在启动时迁移，证书颁发机构会保留，因此不需要重新信任服务器。请固定镜像标签，不要使用 `latest`；`latest` 与 `develop` 可能在没人重启的部署下变化。
 
+<Callout type="warning">
+从 1.0.5 起登录端口是 54080，1.0.0 使用 41402。从 1.0.0 升级时，把发布的端口改成 `54080:54080` 并把新地址告诉作者；或者设置 `NLTEAM_AUTH_TLS_PORT: "41402"` 并发布 `41402:41402`，保留原端口。
+</Callout>
+
 ## 备份
 
 `/var/lib/nlteam` 或 `--root` 指定的目录保存账号、项目、文档日志、签名密钥、证书颁发机构和仓库存储。
 
 ```sh
 nlteam backup --root /srv/team
-nlteam restore /srv/team/backups/nlteam-backup-YYYYMMDD-HHMMSS.tar.gz --root /srv/team
 ```
 
-服务器运行时也可以创建备份。`restore` 要求服务器已停止。定时备份会按设置清理旧文件。
+`backup` 写出 `<root>/backups/nlteam-backup-YYYYMMDD-HHMMSS.tar.gz`（UTC 时间），服务器运行时也可以执行。容器中写作 `docker compose exec team nlteam backup`。控制台的存储页面也能创建备份；后台的 `backup.every_hours`（默认关闭）设置定时备份，`backup.keep`（默认 7）设置保留份数。根目录下的备份与它保护的数据在同一块磁盘上，请另外复制一份。
+
+恢复前先停止服务器。根目录里已有文件时，`restore` 需要 `--force`，原有内容会移到 `<root>/before-restore-YYYYMMDD-HHMMSS/`，而不是被删除。备份文件可以就是该根目录自己的备份。
+
+```sh
+nlteam restore /srv/team/backups/nlteam-backup-YYYYMMDD-HHMMSS.tar.gz --root /srv/team --force
+```
+
+使用 Docker 时，在挂载同一个卷的一次性容器里恢复。镜像的入口是 `nlteam`，所以命令从 `restore` 开始：
+
+```sh
+docker compose stop team
+docker compose run --rm team restore /var/lib/nlteam/backups/nlteam-backup-YYYYMMDD-HHMMSS.tar.gz --force
+docker compose start team
+```
+
+确认恢复后的服务器正常后，删除 `before-restore-…` 目录。
 
 ## 完整参考
 

@@ -76,6 +76,11 @@ docker compose exec team nlteam status
 
 `https://<サーバー>:54080/console/` を開きます。ブラウザが証明書を信頼している必要があります。Team 自身の認証局を使う場合は、コンソールをブラウザで開く各マシンにその認証局をインストールします。ストレージルートの `tls/ca.crt` で、`nlteam trust` でも表示できます。`nlteam trust --install` がインストールするのはサーバーのマシン自身だけです。ブラウザがすでに信頼する認証局の証明書なら追加作業はありません。
 
+<Figure
+    src="/static/img/docs/team/en/console-setup.webp"
+    alt="新しいサーバーの /console/setup：nlteam up が表示したセットアップコードを入力し、管理者とチーム名を設定する"
+/>
+
 </Step>
 
 </Steps>

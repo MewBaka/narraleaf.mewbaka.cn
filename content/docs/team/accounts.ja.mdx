@@ -56,6 +56,11 @@ nlteam user revoke-admin bob --server team.example.com:54080
 | レビュー担当 | 閲覧、コメント、レビューへの参加。プロジェクト内容は編集しない |
 | 閲覧者 | 閲覧と、自分のアカウントで許可された共同作業の記録。プロジェクト内容は編集しない |
 
+<Figure
+    src="/static/img/docs/team/en/console-members.webp"
+    alt="コンソールのプロジェクト設定にあるメンバーと権限：各メンバーのテンプレート、ロール、編集できる領域"
+/>
+
 所有者または管理者は、コンソールのプロジェクト設定、または `projects.members.set` と `projects.members.remove` でメンバーを変更します。メンバー変更用の `nlteam` コマンドはまだありません。
 
 編集者はストーリー、キャラクター、アセット、UI、ローカライズ、ゲーム設定に制限できます。Team が認識しないパスはゲーム設定として扱うため、新しい種類のファイルは既定で保護されます。バージョンの復元は全領域に触れるため、6 つすべての権限が必要です。
@@ -65,6 +70,11 @@ nlteam user revoke-admin bob --server team.example.com:54080
 ## Studio 2.0 での表示
 
 アカウントが役割を持たないプロジェクトは表示されません。ランチャーはチームプロジェクトを示し、サーバー設定をプロジェクトの外に保存します。役割が読み取り専用の場合は Studio が明示し、ステータスバーがサーバーとの往復を表示します。
+
+<Figure
+    src="/static/img/docs/team/en/studio-account-menu.webp"
+    alt="タイトルバーのアカウントメニュー：サインイン中のアカウント、オンラインのメンバー、バージョン履歴と Team 管理への入口"
+/>
 
 ## サーバー上の Studio 設定
 
@@ -99,3 +109,8 @@ nlteam audit --refused --server team.example.com:54080
 ```
 
 `audit` はアクセス判断を新しい順に読みます。`--refused` は拒否だけを表示します。コンソールでも同じ記録をフィルター付きで表示し、アカウントとストレージの管理を行えます。
+
+<Figure
+    src="/static/img/docs/team/en/console-admin.webp"
+    alt="管理画面のアカウント一覧。絞り込み、作成、ロック、削除ができる"
+/>

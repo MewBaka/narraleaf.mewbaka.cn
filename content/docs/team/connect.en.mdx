@@ -15,6 +15,11 @@ An author is given the server's address, an account, and the certificate fingerp
 
 **Team** is one of the launcher entries. Servers this installation has connected to are listed there.
 
+<Figure
+    src="/static/img/docs/team/en/studio-team-empty.webp"
+    alt="The Team page of the launcher before any server is added"
+/>
+
 </Step>
 
 <Step>
@@ -22,6 +27,11 @@ An author is given the server's address, an account, and the certificate fingerp
 ### Add a server
 
 **Add a server** takes an address in the form `nlteam://team.example.com:54080`. A link such as `narraleaf://team/connect?server=https://team.example.com:54080` opens the same dialog with the address filled in. Port `41337` must also be reachable for project data.
+
+<Figure
+    src="/static/img/docs/team/en/studio-add-server.webp"
+    alt="The Add server window with an nlteam:// address filled in"
+/>
 
 </Step>
 
@@ -41,11 +51,21 @@ Choose **Sign in with browser** when the server offers it. Studio opens the serv
 
 Password sign-in remains for older Studio builds. A server may require two-step sign-in or SSO.
 
+<Figure
+    src="/static/img/docs/team/en/studio-sign-in.webp"
+    alt="Choosing how to sign in once the server is confirmed: the browser by default, with the device code, username and password, and access token under other methods"
+/>
+
 </Step>
 
 </Steps>
 
 The server then appears under **Team** with the projects the account may see. A project without a role for this account is not listed.
+
+<Figure
+    src="/static/img/docs/team/en/studio-team-server.webp"
+    alt="After signing in, the Team page shows the server, its address and the account, with to-dos, active projects and members"
+/>
 
 ## Getting a project
 
@@ -53,9 +73,19 @@ Open the server and its **Projects** tab. A project can be **Get** (copy it to t
 
 A project taken this way stays connected to the server. The launcher marks it as a team project, and its server settings are kept outside the project.
 
+<Figure
+    src="/static/img/docs/team/en/studio-launcher-team.webp"
+    alt="The launcher project list, with the team project marked as one"
+/>
+
 ## Working in Studio 2.0
 
 Team is the authority for the current documents. Studio sends an edit, Team applies it with the same document kernel, numbers the result and tells every connected window. A window that was offline keeps its work and replays it on reconnect.
+
+<Figure
+    src="/static/img/docs/team/en/studio-team-workspace.webp"
+    alt="A team project in the workspace: the history rail on the left says it is live, the title bar shows the account, and the status bar shows the server and the round trip"
+/>
 
 The Team history rail shows versions, conflicts and reconnection. Offline edits that cannot be applied are listed as conflicts and the author chooses what to apply. Work in progress is never silently replaced by the server.
 
@@ -67,11 +97,26 @@ Each connection agrees the document kernel first. If Studio and Team use differe
 
 Row comments, suggested edits, to-dos, reviews, asset and language requests, approvals and asset locks stay inside the project's membership. A comment follows the row it discusses. A to-do can be completed through a commit or a saved Team version.
 
+<Figure
+    src="/static/img/docs/team/en/studio-comments.webp"
+    alt="A comment thread on a story row with a reviewer's note and the author's reply; reply or suggest an edit below"
+/>
+
+<Figure
+    src="/static/img/docs/team/en/studio-team-dialog.webp"
+    alt="The NarraLeaf Team panel in the workspace: the server, the project name and the account, with requests for a review, a translation or voice, and project templates below"
+/>
+
 The web console can read the same threads, files and versions. It records work around the project; it does not become a second editor for project content.
 
 ## Signing out
 
 Studio's **NarraLeaf Team** settings list the servers this installation is connected to and the account used for each. Removing a server forgets its token and authority. Copies already on this machine are untouched. The console also lists an account's devices and can end any one of them.
+
+<Figure
+    src="/static/img/docs/team/en/studio-settings-team.webp"
+    alt="NarraLeaf Team in Settings: the servers added, the projects using each, and Sign out"
+/>
 
 ## When a server does not answer
 

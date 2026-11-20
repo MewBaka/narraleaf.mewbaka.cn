@@ -56,6 +56,11 @@ nlteam user revoke-admin bob --server team.example.com:54080
 | 审阅者 | 阅读、批注并参与审阅，不能修改项目内容 |
 | 查看者 | 阅读并记录自己账号允许的协作内容，不能修改项目内容 |
 
+<Figure
+    src="/static/img/docs/team/zh/console-members.webp"
+    alt="控制台项目设置中的成员与权限：每个成员的权限模板、角色与可修改区域"
+/>
+
 所有者或运维可以在控制台的项目设置中修改成员，也可以通过 `projects.members.set` 与 `projects.members.remove` 修改。`nlteam` 目前还没有修改成员的命令。
 
 编辑者可以限制在剧情、角色、资产、界面、本地化或游戏配置。Team 不认识的路径按游戏配置处理，因此新类型的文件默认受保护。恢复版本会改动所有区域，需要全部六项权限。
@@ -65,6 +70,11 @@ nlteam user revoke-admin bob --server team.example.com:54080
 ## Studio 2.0 显示什么
 
 账号没有角色的项目不会出现。启动器会标记团队项目，并把服务器设置保存在项目之外。角色为只读时 Studio 会明确显示，状态栏也会显示与服务器的往返状态。
+
+<Figure
+    src="/static/img/docs/team/zh/studio-account-menu.webp"
+    alt="标题栏的账号菜单：当前账号、在线成员，以及历史版本与管理 Team 入口"
+/>
 
 ## 服务器上的 Studio 设置
 
@@ -99,3 +109,8 @@ nlteam audit --refused --server team.example.com:54080
 ```
 
 `audit` 从新到旧读取访问决定。`--refused` 只显示拒绝记录。控制台用筛选器显示同一份记录，并提供账号与存储管理。
+
+<Figure
+    src="/static/img/docs/team/zh/console-admin.webp"
+    alt="管理后台的账号列表，可筛选、新建、锁定或删除账号"
+/>

@@ -76,6 +76,11 @@ docker compose exec team nlteam status
 
 访问 `https://<服务器>:54080/console/`。浏览器必须信任证书。使用 Team 自己的证书颁发机构时，要在每台用浏览器打开控制台的机器上安装它：即存储根目录下的 `tls/ca.crt`，`nlteam trust` 也会打印它。`nlteam trust --install` 只会把它安装到服务器本机。使用浏览器已信任的机构签发的证书时不需要额外步骤。
 
+<Figure
+    src="/static/img/docs/team/zh/console-setup.webp"
+    alt="新服务器的 /console/setup：输入 nlteam up 打印的设置码，然后创建管理员并设置团队名称"
+/>
+
 </Step>
 
 </Steps>

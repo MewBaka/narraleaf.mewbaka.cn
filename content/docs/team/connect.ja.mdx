@@ -15,6 +15,11 @@ description: Studio 2.0 で Team サーバーを追加し、証明書を信頼�
 
 **Team** はランチャーの項目の 1 つです。このインストールが接続したことのあるサーバーが一覧に表示されます。
 
+<Figure
+    src="/static/img/docs/team/en/studio-team-empty.webp"
+    alt="サーバーを追加する前のランチャーの Team ページ"
+/>
+
 </Step>
 
 <Step>
@@ -22,6 +27,11 @@ description: Studio 2.0 で Team サーバーを追加し、証明書を信頼�
 ### サーバーを追加する
 
 **Add a server**（サーバーを追加）には `nlteam://team.example.com:54080` の形式で入力します。`narraleaf://team/connect?server=https://team.example.com:54080` のようなリンクでも同じダイアログが開き、アドレスが入ります。プロジェクトデータには `41337` も到達できる必要があります。
+
+<Figure
+    src="/static/img/docs/team/en/studio-add-server.webp"
+    alt="nlteam:// 形式のアドレスを入力した「サーバーを追加」ウィンドウ"
+/>
 
 </Step>
 
@@ -41,11 +51,21 @@ description: Studio 2.0 で Team サーバーを追加し、証明書を信頼�
 
 古い Studio にはパスワードサインインも残っています。サーバーは 2 段階サインインや SSO を必須にできます。
 
+<Figure
+    src="/static/img/docs/team/en/studio-sign-in.webp"
+    alt="サーバーを確認したあとのサインイン方法の選択：既定はブラウザー、その他の方法にデバイスコード、ユーザー名とパスワード、アクセストークンがある"
+/>
+
 </Step>
 
 </Steps>
 
 その後、サーバーが **Team** の下に表示され、そのアカウントが見られるプロジェクトが並びます。役割を持たないプロジェクトは表示されません。
+
+<Figure
+    src="/static/img/docs/team/en/studio-team-server.webp"
+    alt="サインイン後の Team ページ：サーバー名、アドレス、アカウントと、ToDo・アクティブなプロジェクト・メンバーが表示される"
+/>
 
 ## プロジェクトを取得する
 
@@ -53,9 +73,19 @@ description: Studio 2.0 で Team サーバーを追加し、証明書を信頼�
 
 この方法で取得したプロジェクトはサーバーとの接続を保ちます。ランチャーはチームプロジェクトとして示し、サーバー設定はプロジェクトの外に保存します。
 
+<Figure
+    src="/static/img/docs/team/en/studio-launcher-team.webp"
+    alt="ランチャーのプロジェクト一覧。チームプロジェクトにはその印が付く"
+/>
+
 ## Studio 2.0 で作業する
 
 Team は現在のドキュメントの正本です。Studio が変更を送り、Team が同じドキュメントカーネルで適用して番号を付け、接続中のすべてのウィンドウへ通知します。オフラインだったウィンドウは作業を保持し、再接続時に再送します。
+
+<Figure
+    src="/static/img/docs/team/en/studio-team-workspace.webp"
+    alt="チームプロジェクトのワークスペース：左の履歴にリアルタイム共同作業中と表示され、タイトルバーにアカウント、ステータスバーにサーバーと往復時間が出る"
+/>
 
 Team 履歴レールはバージョン、競合、再接続を表示します。適用できないオフライン変更は競合として一覧され、作者が適用する内容を選びます。進行中の作業がサーバーに黙って置き換えられることはありません。
 
@@ -67,11 +97,26 @@ Team 履歴レールはバージョン、競合、再接続を表示します。
 
 行コメント、変更提案、ToDo、レビュー、アセットや言語のリクエスト、承認、アセットロックはプロジェクトのメンバー内に収まります。コメントは対象の行に付いていきます。ToDo はコミットまたは保存した Team バージョンで完了できます。
 
+<Figure
+    src="/static/img/docs/team/en/studio-comments.webp"
+    alt="ストーリー行のコメントスレッド。レビュアーの指摘と作者の返信があり、下で返信や修正の提案ができる"
+/>
+
+<Figure
+    src="/static/img/docs/team/en/studio-team-dialog.webp"
+    alt="ワークスペースの NarraLeaf Team パネル：接続先サーバー、プロジェクト名、アカウントと、レビュー依頼、翻訳や音声の割り当て、プロジェクトテンプレート"
+/>
+
 Web コンソールは同じスレッド、ファイル、バージョンを読めます。周辺の作業を記録するもので、プロジェクト内容を編集する第二の場所にはなりません。
 
 ## サインアウトする
 
 Studio の **NarraLeaf Team** 設定には、このインストールが接続したサーバーと使用中のアカウントが並びます。サーバーを削除するとトークンと認証局を忘れますが、このマシンにあるコピーは残ります。コンソールでもアカウントのデバイスを一覧し、任意のデバイスを終了できます。
+
+<Figure
+    src="/static/img/docs/team/en/studio-settings-team.webp"
+    alt="設定の NarraLeaf Team：追加したサーバー、それを使うプロジェクト、サインアウト"
+/>
 
 ## サーバーが応答しないとき
 

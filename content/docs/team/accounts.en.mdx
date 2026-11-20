@@ -56,6 +56,11 @@ Access is per project. Each member has one role:
 | Reviewer | Read, comment and take part in review; edit no project content. |
 | Viewer | Read and record the collaboration their account is allowed; edit no project content. |
 
+<Figure
+    src="/static/img/docs/team/en/console-members.webp"
+    alt="Members and permissions in the console's project settings: each member's template, role and editable areas"
+/>
+
 An owner or operator changes membership in the console's project settings or through `projects.members.set` and `projects.members.remove`. There is no `nlteam` command for membership yet.
 
 Editors can be limited to story, characters, assets, UI, localization or game config. Anything Team does not recognise counts as game config, so a new kind of file is guarded by default. Restoring a version touches every area and needs all six.
@@ -65,6 +70,11 @@ Permission templates provide a role and area set: owner, editor, writer, transla
 ## What Studio 2.0 shows
 
 A project the account has no role in is not listed. The launcher marks team projects and keeps their server settings outside the project. Studio tells the author when their role is read-only and shows the server round trip in the status bar.
+
+<Figure
+    src="/static/img/docs/team/en/studio-account-menu.webp"
+    alt="The account menu in the title bar: the signed-in account, who is online, and the way to the version history and Team settings"
+/>
 
 ## Studio settings on the server
 
@@ -99,3 +109,8 @@ nlteam audit --refused --server team.example.com:54080
 ```
 
 `audit` reads access decisions newest first. `--refused` prints refusals only. The console shows the same record with filters, beside account and storage administration.
+
+<Figure
+    src="/static/img/docs/team/en/console-admin.webp"
+    alt="The accounts list in Administration, where accounts are filtered, created, locked or deleted"
+/>

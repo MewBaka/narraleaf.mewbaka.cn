@@ -76,6 +76,11 @@ The `sign in` line carries the endpoint address; another line carries the certif
 
 Open `https://<server>:54080/console/`. The browser must trust the certificate. With Team's own authority, install its certificate authority on each machine whose browser opens the console: `tls/ca.crt` under the storage root, which `nlteam trust` also prints. `nlteam trust --install` installs it on the server machine itself. A certificate from an authority the browser already trusts needs no extra step.
 
+<Figure
+    src="/static/img/docs/team/en/console-setup.webp"
+    alt="A new server at /console/setup: type the setup code nlteam up printed, then create the administrator and name the team"
+/>
+
 </Step>
 
 </Steps>

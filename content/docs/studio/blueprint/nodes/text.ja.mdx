@@ -5,6 +5,11 @@ description: nl.text ウィジェットの Self ノード——内容、タイ�
 
 Text 分類は `nl.text` ウィジェットの Self ノード集合です。表示する文字列、表示に使う書体と字形の各種数値、そしてその上に重ねる静的エフェクトを扱います。これらのノードは `nl.text` 要素自身のブループリント（`widgetMain` または `componentWidgetMain`）のパレットにのみ現れ、いずれもその要素に対して作用します。`nl.text` を基にした 2 つのウィジェット、`nl.dialog.sentence` と `nl.nvl.texts` でも同じノードが提供されます。**別の**テキスト要素にアクセスするには、[Element](/ja/docs/studio/blueprint/nodes/element) 分類にある同名の `blueprint.element.text.*` ノードを使用してください——プロパティは同一で、対象を指定するための `element:nl.text` 入力が追加されているだけです。
 
+<Figure
+    src="/static/img/docs/studio/en/node-text.webp"
+    alt="テキストウィジェット自身のブループリントで開いたノード作成ポップアップの Text カテゴリ"
+/>
+
 ## 規約
 
 - **ターゲットピンはありません。** Self ノードには `Element` 入力がなく、ブループリントの実行元からターゲットを解決します。接続するものがない以上、誤った要素を指定してしまうこともありません。

@@ -5,6 +5,11 @@ description: The geometry and appearance surface every visual widget shares — 
 
 Every visual widget is a Displayable: it has a position, a size, a rotation, an opacity, and — for the widgets that define them — appearance variants. These nodes read and rewrite that shared surface from inside the widget's own blueprint, so the same node works on a Text, an Image, or a Container.
 
+<Figure
+    src="/static/img/docs/studio/en/node-displayable.webp"
+    alt="The Displayable category in the node creation popup, in a widget's own blueprint"
+/>
+
 ## Conventions
 
 - **Self nodes only.** Nothing in this category takes an `Element` input; the target is always the widget that owns the blueprint. The versions that act on a wired element live in [Element](/docs/studio/blueprint/nodes/element) as `Get Element Property`, `Set Element Variant`, and so on. `Stop Element Animation` is filed there too even though it takes no `Element` input — an `AnimationToken` already names one animation on one widget, so there is nothing left to target.

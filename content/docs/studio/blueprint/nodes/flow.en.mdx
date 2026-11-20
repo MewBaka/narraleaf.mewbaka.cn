@@ -5,6 +5,11 @@ description: Execution routing — branches, loops, sequencing, and the latent w
 
 Flow nodes decide where execution goes next. Every other node computes or changes something; these only steer the exec line through them. You reach for one the moment a graph has to ask a question, repeat itself, wait, or stop early.
 
+<Figure
+    src="/static/img/docs/studio/en/node-flow.webp"
+    alt="The Flow category in the node creation popup"
+/>
+
 ## Conventions
 
 - **Pin names.** `in` is the exec entry. `next`, `true`, `false`, `then`, `else`, `then0`…, `case0`…, `default`, `loop`, and `completed` are exec exits. Everything else on the card is a data pin.

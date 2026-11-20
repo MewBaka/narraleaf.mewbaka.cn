@@ -5,6 +5,11 @@ description: 接続された nl.text 要素の内容・タイポグラフィ・�
 
 `nl.text` と `nl.textInput` は別々のウィジェットですが、3つのノード名を共有しています。この衝突が一目でわかるように、両方のファミリーをこのページにまとめています。すべての Element ノードに共通する規則は [Element](/ja/docs/studio/blueprint/nodes/element) にあります。
 
+<Figure
+    src="/static/img/docs/studio/en/node-element-text.webp"
+    alt="Element リテラルをテキスト要素にバインドすると、Element カテゴリに Append Text、Clear Text、Get Text、テキストスタイルなどのノードが並ぶ"
+/>
+
 ## Text
 
 Text ノードは `element:nl.text` ピンを持つため、グラフが `nl.text` 要素をバインドしたときにのみパレットに提供されます。`Get Text` は画面に表示されている文字を読み取ります。`Set Text`、`Append Text`、`Clear Text`、`Set All Properties` が書き込んだ文字は、ページを開き直すまですべての言語で書き込んだとおりに表示され、**Translation key**（翻訳キー）や Blueprint Value より優先されます。規則は Self 形態と同じです。Self 形態は [Text](/ja/docs/studio/blueprint/nodes/text) にあります。

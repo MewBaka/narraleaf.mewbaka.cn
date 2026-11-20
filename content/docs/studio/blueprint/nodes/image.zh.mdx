@@ -5,6 +5,11 @@ description: 读取和改写 nl.image 控件的图片资源、填充模式、裁
 
 这些节点操作界面图片控件`nl.image`——标题画面上的插图、存档槽的缩略图、装饰边框。它们与舞台图片、角色立绘以及剧情演出中的任何资源无关；那些是剧情资源，不是界面控件
 
+<Figure
+    src="/static/img/docs/studio/zh/node-image.webp"
+    alt="图片控件自己蓝图中的创建浮窗，图片分类列出图片资源、显示方式与可见性的读写节点"
+/>
+
 ## 约定
 
 - **只有 Self 节点。** 本分类下没有任何节点带`Element`输入，目标永远是拥有该蓝图的`nl.image`。作用于连入元素的版本是 [Element](/zh/docs/studio/blueprint/nodes/element) 分类中的`blueprint.element.image.*`，各自带一个`element:nl.image`输入，且只有当前图中已存在兼容绑定时才会出现

@@ -5,6 +5,11 @@ description: The label, pointer, and interaction state of the button that owns t
 
 Self nodes for `nl.button`. Each one acts on the button whose blueprint it sits in, takes no `Element` input, and only appears in that button's own blueprint. To reach a different button, use its counterpart in [Element](/docs/studio/blueprint/nodes/element).
 
+<Figure
+    src="/static/img/docs/studio/en/node-button.webp"
+    alt="The Button category in the node creation popup, in a button's own blueprint"
+/>
+
 ## Conventions
 
 - **Reads are pure, writes are latent.** Every `Get` node here is `Pure`. Every `Set` node is `Latent`: the write goes through the host and resolves asynchronously, and the graph waits for it.

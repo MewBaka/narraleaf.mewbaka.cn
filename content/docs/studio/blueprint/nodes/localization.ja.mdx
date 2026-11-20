@@ -5,6 +5,11 @@ description: ゲームのプレイヤー向け言語を読み取り、切り替�
 
 この 6 つのノードは、ゲームが自分の言語を切り替え、翻訳キーを読み取る手段です：設定画面がプロジェクトのロケール一覧を表示し、プレイヤーが 1 つを選ぶと、その選択が記憶されます。言語、翻訳テーブル、翻訳キーは [Localization](/ja/docs/studio/workspace/localization) で設定します——ノードは、すでにそこにあるものを読み取るだけです。7 つ目のノード [`Format Text`](#format-text) はパレットに表示されなくなりましたが、すでにグラフにあるものはそのまま動きます。
 
+<Figure
+    src="/static/img/docs/studio/en/node-localization.webp"
+    alt="ノード作成ポップアップの Localization カテゴリ"
+/>
+
 ## 規約 [#conventions]
 
 - **1 つが pure で、残りは latent です。** `Translation Key Text` は読み取られた時点で値を計算するため、Blueprint Value と関数で使えます。ほかの 5 つは非同期に結果を返し、イベントグラフとマクログラフでのみ使えます。

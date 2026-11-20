@@ -5,6 +5,11 @@ description: Every tool Studio's MCP server offers, grouped by what it works on.
 
 Studio's MCP server has a built-in tool set, listed below, and plugins can add more; see [Plugin tools](#plugin-tools). Their descriptions are in English, because agents read them, and each one says when to use it. The title is how Studio names the call in the **Agent log** and the status bar.
 
+<Figure
+    src="/static/img/docs/studio/en/agent-log.webp"
+    alt="The Agent Log panel in the bottom dock, where each tool call takes a row; empty before any call"
+/>
+
 **Changes the project** marks the tools that are refused while **Allow agents to change projects** is off. In the open project they are also refused while the agent is paused, while the project is frozen, during a Team live session, and while a Team project's documents are held by its server. The other tools read; play-testing is among them, so an agent can check a game without permission to change it.
 
 Every tool that works on a project takes an optional `project`, the project folder's absolute path. It is needed only when more than one project is open.

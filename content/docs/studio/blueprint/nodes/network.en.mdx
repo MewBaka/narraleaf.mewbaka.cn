@@ -5,6 +5,11 @@ description: Making an HTTP request while the game runs, and reading what comes 
 
 Three nodes for reading something from outside the game at run time: an online notice board, patch notes, a leaderboard. `Fetch` makes the request and hands back a Response; `Read Response Text` and `Read Response JSON` turn that Response into a value.
 
+<Figure
+    src="/static/img/docs/studio/en/node-network.webp"
+    alt="The Network category in the node creation popup"
+/>
+
 These are not for assets. Images, audio and video are project content, they ship inside the game, and fetching one at run time would make the game depend on a server to look right.
 
 ## Conventions

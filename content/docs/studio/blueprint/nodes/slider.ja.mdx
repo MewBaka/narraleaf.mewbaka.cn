@@ -5,6 +5,11 @@ description: スライダー ウィジェットの実行時の値と範囲を読
 
 Slider ノードは、編集中のプライベートブループリントが属する `nl.slider` の実行時の値と範囲を読み書きします——たとえば `Init` 時に保存済みの音量を読み込む必要がある音量コントロールや、モードによって範囲が変わる難易度セレクターなどです。ドラッグイベント自体は [Events](/ja/docs/studio/blueprint/nodes/events) にあります。
 
+<Figure
+    src="/static/img/docs/studio/en/node-slider.webp"
+    alt="スライダー自身のブループリントで開いたノード作成ポップアップの Slider カテゴリ"
+/>
+
 ## 規約
 
 - **1つのノードを除き、すべてがマッピング済みの値を扱います。** `props.value` とその Blueprint Value、`dragStart` / `valueChanged` / `dragEnd` のペイロード、`Get Value`、`Set Slider Value` は、いずれも `min…max` の単位で値を運びます。`0…1` の比率は `Get Normalized Value` にしか存在しません——これを塗りつぶし幅に接続し、`Get Value` はプレイヤーが数値として読むものに接続してください。

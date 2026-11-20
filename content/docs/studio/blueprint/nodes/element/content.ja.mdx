@@ -5,6 +5,11 @@ description: リストの項目と選択、スライダーの値と範囲、画�
 
 自分自身の状態を持つ3つのウィジェット——List の項目、Slider の値、Image のアセット——に、ウィジェットの内部からではなく、ここでは接続された参照を通じて到達します。すべての Element ノードに共通する規則は [Element](/ja/docs/studio/blueprint/nodes/element) にあります。
 
+<Figure
+    src="/static/img/docs/studio/en/node-element-content.webp"
+    alt="Element リテラルをスライダーにバインドし、ノード作成ポップアップで「Slider」を検索すると、そのスライダーを読み書きするノードが並ぶ"
+/>
+
 ## List
 
 List ノードは `element:nl.list` 型の `list` ピンを取ります。これらは List インスタンスのランタイム items に作用し、その items はそのインスタンスの中にしか存在しません——完全にアンマウントされるとクリアされ、何もそれを復元しません。そのため変数や他のデータソースから自分で書き戻す必要があります。`itemsBinding` は、ランタイム items が何もないときの読み取りフォールバックとしてのみ参照されます。

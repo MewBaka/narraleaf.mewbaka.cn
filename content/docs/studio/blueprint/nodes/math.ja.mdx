@@ -5,6 +5,11 @@ description: 算術、丸め、乱数、ブール論理、比較——これら�
 
 Math は、値を保存するのではなく算出する場所です：算術、丸め、最小値と最大値、乱数、ブール論理、比較です。下流で数値や条件が必要になったときは、常にここのノードを使います——[Flow](/ja/docs/studio/blueprint/nodes/flow) の `If` 分岐、ウィジェットのサイズ、カウンターの次の値などです。Boolean と Compare の各ノードグループもこの分類に属しているため、この 3 つをまとめてこのページで説明します。
 
+<Figure
+    src="/static/img/docs/studio/en/node-math.webp"
+    alt="ノード作成ポップアップの Math カテゴリ"
+/>
+
 ## 規約
 
 - **このページのすべてのノードは `Pure` です。** どれも exec ピンを持ちません。それぞれ `result` が読み取られたときに計算され、Blueprint Value の中でも使用できます。

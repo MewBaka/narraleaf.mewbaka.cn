@@ -5,6 +5,11 @@ description: 读取和改写滑块控件的运行时数值与范围
 
 Slider 节点用于读取和改写当前私有蓝图所属 `nl.slider` 的运行时数值与范围——比如一个要在 `Init` 时载入已存音量的音量控件，或者一个范围随难度模式变化的选择器。拖拽事件本身在 [Events](/zh/docs/studio/blueprint/nodes/events)
 
+<Figure
+    src="/static/img/docs/studio/zh/node-slider.webp"
+    alt="滑块自己的蓝图中，创建浮窗里的滑块分类"
+/>
+
 ## 约定
 
 - **除了一个节点，其余全都在说映射值。** `props.value` 及其 Blueprint Value、`dragStart` / `valueChanged` / `dragEnd` 的载荷、`Get Value`（获取值）和 `Set Slider Value`（设置滑块值），携带的都是 `min…max` 单位下的值。`0…1` 的比值只存在于 `Get Normalized Value`（获取归一化值），别处没有——把它接到填充宽度上，而把 `Get Value` 接到玩家会当作数字读的地方

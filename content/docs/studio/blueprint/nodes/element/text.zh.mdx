@@ -5,6 +5,11 @@ description: 读写连入的 nl.text 元素的内容、排版与效果，以及�
 
 `nl.text` 和 `nl.textInput` 是两种不同的控件，却共用了三个节点名。把两族放在同一页，是为了让这次撞名一眼可见；所有 Element 节点共通的规则见 [Element](/zh/docs/studio/blueprint/nodes/element)
 
+<Figure
+    src="/static/img/docs/studio/zh/node-element-text.webp"
+    alt="Element 字面量绑定文本元素后，元素分类列出追加、清空、读取文本与文本样式等节点"
+/>
+
 ## Text
 
 Text 节点带 `element:nl.text` 引脚，所以只有当前图绑定了 `nl.text` 元素时创建浮窗才会列出它们。`Get Text` 读取屏幕上显示的文字。`Set Text`、`Append Text`、`Clear Text` 与 `Set All Properties` 写入的文字在所有语言中都按写入的内容显示，优先于**翻译键**和 Blueprint Value，直到页面重新打开；规则与 Self 形态相同。Self 形态见 [Text](/zh/docs/studio/blueprint/nodes/text)

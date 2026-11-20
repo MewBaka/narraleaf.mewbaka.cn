@@ -5,6 +5,11 @@ description: Self nodes for the nl.textInput widget — reading, replacing, and 
 
 The Text Input category is the Self node set of the `nl.textInput` widget. Three nodes, and they all touch the same thing: the field's runtime value. They appear only in the palette of an `nl.textInput` element's own blueprint (`widgetMain` or `componentWidgetMain`), and they act on that element. To reach a *different* field, use the `blueprint.element.textInput.*` node of the same name from the [Element](/docs/studio/blueprint/nodes/element) category, which takes an `element:nl.textInput` input.
 
+<Figure
+    src="/static/img/docs/studio/en/node-text-input.webp"
+    alt="The Text Input category in the node creation popup, in a text input's own blueprint"
+/>
+
 Three nodes is the whole surface because the runtime value carries nothing but the string. `placeholder`, `readOnly`, `disabled`, `inputMode` and `maxLength` stay authored props — a blueprint patch to any of them would be silently dropped, so no node offers one. To react to typing, handle the widget's `Value Changed` and `Submit` events from the [Events](/docs/studio/blueprint/nodes/events) category.
 
 ## Conventions

@@ -5,6 +5,11 @@ description: プレイヤーがどの種類のデバイスを使っているか�
 
 グラフの実行時点でのプレイヤー入力を読み取る、5 つの pure ノードです。使っているデバイス、入力アクションが押され続けているかどうか、そしてゲームパッドのボタンとスティックを読み取ります。ブループリント値ではいずれも提供されません。
 
+<Figure
+    src="/static/img/docs/studio/en/node-input.webp"
+    alt="ノード作成ポップアップの Input カテゴリ"
+/>
+
 いずれもイベントヘッドではありません。入力に**反応**するには、[Events](/ja/docs/studio/blueprint/nodes/events) 内のキーボード、ゲームパッド、ポインターのヘッド、あるいは `Is Action Held` が読み取る入力アクションに対応する [`On Action`](/ja/docs/studio/blueprint/nodes/events#on-action) ヘッドを使ってください。このページのノードが答えるのは「今この瞬間、何が真か」です。
 
 ## Get Input Device

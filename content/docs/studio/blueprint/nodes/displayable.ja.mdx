@@ -5,6 +5,11 @@ description: あらゆるビジュアルウィジェットが共有するジオ�
 
 あらゆるビジュアルウィジェットは Displayable です。位置、サイズ、回転、不透明度を持ち、それらを定義しているウィジェットについては Appearance Variant も持ちます。これらのノードは、ウィジェット自身のブループリントの内部からこの共有インターフェースを読み書きするため、同じノードが Text、Image、Container のいずれに対しても機能します。
 
+<Figure
+    src="/static/img/docs/studio/en/node-displayable.webp"
+    alt="ウィジェット自身のブループリントで開いたノード作成ポップアップの Displayable カテゴリ"
+/>
+
 ## 規約
 
 - **Self ノードのみ。** このカテゴリのノードはいずれも`Element`入力を取りません——対象は常にブループリントを所有するウィジェットです。配線された要素に作用するバージョンは、[Element](/ja/docs/studio/blueprint/nodes/element)に`Get Element Property`、`Set Element Variant`などとして存在します。`Stop Element Animation`も`Element`入力を取らないにもかかわらずそちらに分類されています——`AnimationToken`がすでに1つのウィジェット上の1つのアニメーションを指名しているため、他に対象を指定する必要がないからです。

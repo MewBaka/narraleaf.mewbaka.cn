@@ -5,6 +5,11 @@ description: 执行线路的分流、循环与排队，以及那个会挂起整�
 
 Flow 节点决定执行接下来去哪里。其它节点都在计算或改变什么，只有这一类节点单纯地为执行线路指路。一张图需要提问、需要重复、需要等待或需要提前收尾时，你要找的就是它们
 
+<Figure
+    src="/static/img/docs/studio/zh/node-flow.webp"
+    alt="创建浮窗中的流程分类"
+/>
+
 ## 约定
 
 - **引脚命名。** `in`是执行入口。`next`、`true`、`false`、`then`、`else`、`then0`…、`case0`…、`default`、`loop`、`completed`是执行出口，卡片上其余引脚都是数据引脚

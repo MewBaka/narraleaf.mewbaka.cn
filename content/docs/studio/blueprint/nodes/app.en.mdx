@@ -5,6 +5,11 @@ description: Surface navigation, the application window, and what a Page knows a
 
 App nodes are where a blueprint reaches the application it is running inside: open a Surface, stack one over it, size the window, follow a link, quit. The Surface model itself — the stack, the layers, the game stage — is described in [Surfaces](/docs/studio/blueprint/surfaces).
 
+<Figure
+    src="/static/img/docs/studio/en/node-app.webp"
+    alt="The App category in the node creation popup"
+/>
+
 ## Conventions
 
 - **Three of them are tail nodes.** `Go Page`, `Replace Page` and `Quit Application` have no `next` pin at all. What follows is a different Surface, or no application — there is nothing left of this graph to run.

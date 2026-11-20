@@ -5,6 +5,11 @@ description: Frame がどの Page を表示するか、そしてその Page に�
 
 `nl.frame` の Self ノードです。Frame はある Page 上の矩形領域で、その内部に別の Page を描画します。そのため、これらのノードは実行中のグラフがプレイヤーの現在の Page を離れることなく画面の中身を切り替える手段になります——タブ切り替え、設定パネル、ルーターなどです。各ノードは自分が属するブループリントの Frame に対して働き、`Element` 入力を取らず、その Frame 自身のブループリントにのみ現れます。別の Frame を操作するには、[Element](/ja/docs/studio/blueprint/nodes/element) にある対応するノードを使ってください。
 
+<Figure
+    src="/static/img/docs/studio/en/node-frame.webp"
+    alt="フレーム自身のブループリントで開いたノード作成ポップアップ。Frame カテゴリに対象ページ・params・可視状態の取得と設定のノードが並ぶ"
+/>
+
 ## 規約
 
 - **読み取りは pure、書き込みは latent です。** このページの `Get` ノードはすべて `Pure` です。`Set` ノードはすべて `Latent` で、書き込みはホストを経由して非同期に解決されます。

@@ -5,6 +5,11 @@ description: 播放、暂停、停止与跳转视频控件，读取播放位置�
 
 十四个节点，对应页面上的一个 `nl.video` 元素：开始、暂停、停止视频与移动播放位置，读取播放到哪里，并在游戏运行时修改音量、静音、循环与速度。故事行播放的视频属于故事，这些节点不作用于它。要在视频播完时运行一张图，使用 [`Playback Ended`](/zh/docs/studio/blueprint/nodes/events#playback-ended)（播放结束）。
 
+<Figure
+    src="/static/img/docs/studio/zh/node-video.webp"
+    alt="视频控件自己蓝图中的创建浮窗，视频分类列出读取播放位置、时长、音量以及播放、暂停等节点"
+/>
+
 ## 约定 [#conventions]
 
 - **只用于视频控件的蓝图。** 这些节点的作用范围是 `nl.video`，只在视频控件自己的蓝图中提供。要在其他图中操作视频，例如视频旁边的跳过按钮，使用 [Element](/zh/docs/studio/blueprint/nodes/element/widget#video) 分类中的对应版本，它们带有 `video` 输入

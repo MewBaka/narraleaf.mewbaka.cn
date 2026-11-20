@@ -5,6 +5,11 @@ description: Runtime item content, selection, scrolling, and per-item context fo
 
 List nodes drive the runtime content, selection, and scroll position of the list widget whose private blueprint you are editing. Reach for them when the rows are decided while the game runs — save slots, a backlog, a settings menu — instead of being authored once in the inspector. Reshaping arrays and objects before you hand them over stays in [Data](/docs/studio/blueprint/nodes/data).
 
+<Figure
+    src="/static/img/docs/studio/en/node-list.webp"
+    alt="The List category in the node creation popup, in a list's own blueprint"
+/>
+
 ## Conventions
 
 - **The runtime item array is what the List renders.** `Set List Content` writes an instance-level runtime array; `Append`, `Insert`, `Remove`, `Clear` and `Refresh` update that same store. Items are stored JSON-safe, so anything that does not survive a JSON round trip is dropped on the way in.

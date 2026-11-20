@@ -5,6 +5,11 @@ description: 启动一张图的事件 Head、它们各自携带的 payload，以
 
 事件 Head 是一张图的起点。它没有执行入口——运行时从 Head 进入这张图，执行链从`then`开始。本页其余内容都由这一点展开：Head 的数据输出就是这次事件的 payload，而你能用到哪些 Head，取决于蓝图挂在什么宿主上
 
+<Figure
+    src="/static/img/docs/studio/zh/node-events.webp"
+    alt="创建浮窗中的事件分类"
+/>
+
 ## 约定
 
 - **Head 没有执行入口。** 没有任何东西可以连进去。一张图里可以放多个 Head，各自的事件到达时各跑各的执行链。监听同一事件的所有 Head，不论在一张图还是多张图里，都在事件到达时同时开始，彼此不等待，其中一个出错也不会让其余的停下。游戏等待某个事件时（例如启动时等待 [`On Game Ready`](#on-game-ready)），等待的是全部 Head

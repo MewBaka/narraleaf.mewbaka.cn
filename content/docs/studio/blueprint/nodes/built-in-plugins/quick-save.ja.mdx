@@ -5,6 +5,11 @@ description: 実行中のゲームを予約済みのセーブスロット 1 つ�
 
 Quick Save プラグインは、スロット 1 つのクイックセーブとクイックロードを追加します。クイックメニューによくある一対のボタンです。このプラグインは出荷時に有効です。パレットでは、3 つのノードは **Game**（ゲーム）カテゴリにあり、コアの[セーブ用ノード](/ja/docs/studio/blueprint/nodes/game#セーブ)と並んでいます。
 
+<Figure
+    src="/static/img/docs/studio/en/node-quick-save.webp"
+    alt="ノード作成ポップアップで「Quick」を検索すると、Game の下に Has Quick Save、Quick Read、Quick Save の 3 つが出る"
+/>
+
 ## クイックセーブのスロット [#the-quick-save-slot]
 
 - **スロットは 1 つです。** 3 つのノードはすべて、id が `narraleaf.quick-save.slot` のセーブを対象にします。`Quick Save` のたびに上書きされるため、プレイヤーが持てるクイックセーブは常に 1 つです。

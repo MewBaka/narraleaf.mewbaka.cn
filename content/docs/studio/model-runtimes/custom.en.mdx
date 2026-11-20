@@ -5,6 +5,11 @@ description: The module contract a drawing runtime has to satisfy, and how Studi
 
 Studio's model characters are not tied to Live2D or Spine. Any renderer that can draw into a container can serve as a runtime — an existing renderer, a particle system, a sprite-sheet player, a WebGL scene. Installed as a **Custom runtime**, it behaves like the two named products in every other respect.
 
+<Figure
+    src="/static/img/docs/studio/en/runtimes.webp"
+    alt="The Project panel's Runtimes page lists the drawing runtimes the project can use and whether each is installed"
+/>
+
 ## What Studio requires of a module
 
 One folder under `runtimes/puppet/`, containing an `index.js` that is a browser-loadable **ES module** and yields an object satisfying the engine's `PuppetBackend`:

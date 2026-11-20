@@ -5,6 +5,11 @@ description: Playing, pausing, stopping and seeking a video widget, reading wher
 
 Fourteen nodes for a `nl.video` element on a page: start, pause, stop and move its clip, read where the clip is, and change its volume, mute, loop and speed while the game runs. A video a story row plays is part of the story and is not reached by these nodes. To run a graph when the clip finishes, use [`Playback Ended`](/docs/studio/blueprint/nodes/events#playback-ended).
 
+<Figure
+    src="/static/img/docs/studio/en/node-video.webp"
+    alt="The node creation popup in a video widget's own blueprint: the Video category lists nodes that read the position, duration and volume and that play or pause"
+/>
+
 ## Conventions
 
 - **Video blueprints only.** These are scoped to `nl.video`, so they are offered in a video's own blueprint and nowhere else. To reach a video from another graph, such as a skip button beside it, use the [Element](/docs/studio/blueprint/nodes/element/widget#video) versions, which carry a `video` input.

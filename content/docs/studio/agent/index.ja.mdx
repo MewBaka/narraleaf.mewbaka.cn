@@ -5,6 +5,11 @@ description: MCP を通じて AI エージェントに Studio で開いている
 
 Studio は、自分のコンピューター上で MCP（Model Context Protocol）のエンドポイントを提供できます。MCP に対応したエージェントは、これを通じて Studio で開いているプロジェクトを編集できます。Claude Code、Claude Desktop、opencode、Codex、Cursor、Gemini CLI などが対応しています。
 
+<Figure
+    src="/static/img/docs/studio/en/agent-connect.webp"
+    alt="Settings の Agent access。接続の許可、プロジェクト変更の許可、フルアクセスの 3 つのスイッチと MCP エンドポイントのアドレス"
+/>
+
 エージェントの変更は、手作業の編集と同じサービスを通ります。反映された時点でキャンバスに表示され、同じ自動保存で保存され、プロジェクトを変更する呼び出しは 1 回ごとに 1 ステップの取り消しになります。エージェントはいつでも一時停止でき、その変更を取り消すことも、並行して編集することもできます。
 
 <Callout type="info">

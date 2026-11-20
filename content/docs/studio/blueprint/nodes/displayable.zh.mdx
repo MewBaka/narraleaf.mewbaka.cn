@@ -5,6 +5,11 @@ description: 每个可视控件共有的几何与外观接口——属性、Appe
 
 每个可视控件都是一个 Displayable：它有位置、尺寸、旋转、不透明度，定义了 Appearance Variant 的控件还有变体。这些节点在控件自己的蓝图里读写这套共有接口，因此同一个节点对 Text、Image 或 Container 一样有效
 
+<Figure
+    src="/static/img/docs/studio/zh/node-displayable.webp"
+    alt="控件自己的蓝图中，创建浮窗里的可显示对象分类"
+/>
+
 ## 约定
 
 - **只有 Self 节点。** 本分类下没有任何节点带`Element`输入，目标永远是拥有该蓝图的控件。作用于连入元素的版本放在 [Element](/zh/docs/studio/blueprint/nodes/element) 分类，叫`Get Element Property`、`Set Element Variant`等。`Stop Element Animation`也归在那里，尽管它没有`Element`输入——一个`AnimationToken`已经指明了某个控件上的某个动画，没有别的目标可指

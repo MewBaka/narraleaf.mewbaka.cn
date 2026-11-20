@@ -5,6 +5,11 @@ description: Self nodes for the nl.text widget — reading and writing content, 
 
 The Text category is the Self node set of the `nl.text` widget: the string it shows, the typeface and metrics it shows it in, and the static effects layered on top. These nodes appear only in the palette of an `nl.text` element's own blueprint (`widgetMain` or `componentWidgetMain`), and every one of them acts on that element. The two widgets built on `nl.text`, `nl.dialog.sentence` and `nl.nvl.texts`, offer them too. To reach a *different* text element, use the `blueprint.element.text.*` node of the same name from the [Element](/docs/studio/blueprint/nodes/element) category — the same properties, plus an `element:nl.text` input to aim it.
 
+<Figure
+    src="/static/img/docs/studio/en/node-text.webp"
+    alt="The Text category in the node creation popup, in a text widget's own blueprint"
+/>
+
 ## Conventions
 
 - **No target pin.** A Self node has no `Element` input; it resolves its target from the blueprint's execution owner. There is nothing to wire, and nothing to aim at the wrong element.

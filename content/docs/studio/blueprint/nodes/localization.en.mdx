@@ -5,6 +5,11 @@ description: Reading and switching the game's player-facing language, and readin
 
 These six nodes are how a game changes its own language and reads its translation keys: a settings screen lists the project's locales, the player picks one, and the choice is remembered. The languages, the translation tables, and the translation keys are set up in [Localization](/docs/studio/workspace/localization) — the nodes only read what is already there. A seventh node, [`Format Text`](#format-text), is no longer offered in the palette; graphs that hold one keep running.
 
+<Figure
+    src="/static/img/docs/studio/en/node-localization.webp"
+    alt="The Localization category in the node creation popup"
+/>
+
 ## Conventions
 
 - **One is pure, the rest are latent.** `Translation Key Text` computes its value where it is read, so it works in a Blueprint Value and in a function. The other five return asynchronously and run in event and macro graphs only.

@@ -5,6 +5,11 @@ description: 读取和切换游戏面向玩家的语言，并读取翻译键
 
 这六个节点是游戏切换自己语言、读取翻译键的方式：设置界面列出项目配置的语言，玩家挑一个，这个选择会被记住。语言、翻译表和翻译键都在 [Localization](/zh/docs/studio/workspace/localization) 里配置——节点只读取那里已有的东西。第七个节点 [`Format Text`](#format-text) 已不在创建浮窗中提供，已有图里的这个节点照常运行
 
+<Figure
+    src="/static/img/docs/studio/zh/node-localization.webp"
+    alt="创建浮窗中的本地化分类"
+/>
+
 ## 约定 [#conventions]
 
 - **一个是 pure，其余都是 latent。** `Translation Key Text` 在被读取时计算结果，所以能用于 Blueprint Value 和函数。另外五个异步返回，只能用于事件图和宏图

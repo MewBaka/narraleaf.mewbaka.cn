@@ -5,6 +5,11 @@ description: 動画ウィジェットの再生、一時停止、停止、再生�
 
 ページ上の `nl.video` 要素のための 14 個のノードです。クリップの再生、一時停止、停止、再生位置の移動、どこまで再生したかの読み取りと、ゲームの実行中に音量、消音、ループ、速さを変更する操作が含まれます。ストーリーの行が再生する動画はストーリーに属し、これらのノードの対象ではありません。クリップが終わったときにグラフを実行するには、[`Playback Ended`](/ja/docs/studio/blueprint/nodes/events#playback-ended)（再生終了）を使います。
 
+<Figure
+    src="/static/img/docs/studio/en/node-video.webp"
+    alt="ビデオウィジェット自身のブループリントで開いたノード作成ポップアップ。Video カテゴリに再生位置・長さ・音量の取得や再生・一時停止のノードが並ぶ"
+/>
+
 ## 規約 [#conventions]
 
 - **動画ウィジェットのブループリント専用です。** これらは `nl.video` にスコープされているため、動画ウィジェット自身のブループリントにのみ提供されます。動画の横に置いたスキップボタンなど、別のグラフから動画を操作するには、`video` 入力を持つ [Element](/ja/docs/studio/blueprint/nodes/element/widget#video) のバージョンを使います。

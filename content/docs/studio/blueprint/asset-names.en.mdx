@@ -5,6 +5,11 @@ description: Which asset names a game package carries, and the project check tha
 
 A production build carries every asset whose name is written in the project: picked in an asset picker on a story row, a node card or a widget property, or held in a variable or a list row that was set from one. An asset that the game chooses by a name it puts together while it runs is not in the package, and whatever should show or play it shows or plays nothing in the released game. Dev Mode reads the whole asset library, so there the asset still appears.
 
+<Figure
+    src="/static/img/docs/studio/en/asset-names-rule.webp"
+    alt="In the Project panel's check rules, Asset name assembled at run time defaults to Error, and its tooltip explains the game package does not carry such assets"
+/>
+
 The `blueprint/assembled-asset-name` project check reports every such use before a build does.
 
 ## Names that reach the package

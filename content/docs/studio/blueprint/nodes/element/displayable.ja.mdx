@@ -5,6 +5,11 @@ description: 接続された要素のジオメトリ・不透明度・Variant・
 
 あらゆるウィジェット型に適用される2つのファミリー——Displayable のジオメトリと外観に関するノード、そして各組み込みウィジェットが繰り返し持つ `visible` / `enabled` の対です。すべての Element ノードを規定する規則——パレットがいつそれを提供するか、ターゲットが欠けているときにどう失敗するか——は [Element](/ja/docs/studio/blueprint/nodes/element) にあります。
 
+<Figure
+    src="/static/img/docs/studio/en/node-element-displayable.webp"
+    alt="Element リテラルをコンテナにバインドすると、Element カテゴリにそのジオメトリ・表示状態・プロパティアニメーション・可視状態のノードが並ぶ"
+/>
+
 ## Displayable
 
 これらは汎用の `element` ピンを取るため、1つのウィジェット型ではなく、任意の displayable な要素への参照を受け付けます。座標は Surface のデザイン座標です——インスペクタが示すのと同じ数値です。不透明度は単一の有効値です——Appearance Variant の `transformOpacity` はそこに解決され、`nl.image` Variant で変更された `fillOpacity` もそこに解決され、`Get Element Property`、`Set Element Property`、`Animate Element Property` はすべてこの同じ1つの数値に触れます。

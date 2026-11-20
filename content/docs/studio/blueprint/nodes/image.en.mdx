@@ -5,6 +5,11 @@ description: Reading and rewriting an nl.image widget's asset, fill mode, crop r
 
 These nodes drive the interface image widget `nl.image` — the picture in a title screen, a save slot thumbnail, a decorative frame. They have nothing to do with stage images, character sprites, or anything a story shows during a playthrough; those are story assets, not UI widgets.
 
+<Figure
+    src="/static/img/docs/studio/en/node-image.webp"
+    alt="The node creation popup in an image widget's own blueprint: the Image category lists the read and write nodes for its asset, display mode and visibility"
+/>
+
 ## Conventions
 
 - **Self nodes only.** Nothing here takes an `Element` input; the target is always the `nl.image` that owns the blueprint. The versions that act on a wired element are `blueprint.element.image.*` in [Element](/docs/studio/blueprint/nodes/element), each with an `element:nl.image` input, and they appear only once the graph already holds a compatible binding.

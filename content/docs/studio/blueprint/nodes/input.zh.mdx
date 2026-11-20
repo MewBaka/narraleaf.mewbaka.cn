@@ -5,6 +5,11 @@ description: 玩家在用哪一类设备、某个输入意图此刻是不是被�
 
 五个 pure 节点，读的是**图跑到那一刻**玩家的输入状态：正在用的设备、输入意图是否被按住，以及手柄的按键与摇杆。它们都不在蓝图值中提供。
 
+<Figure
+    src="/static/img/docs/studio/zh/node-input.webp"
+    alt="创建浮窗中的输入分类"
+/>
+
 它们都不是事件头。要**响应**输入，用 [Events](/zh/docs/studio/blueprint/nodes/events) 里的键盘、手柄与指针头，或者用 [`On Action`](/zh/docs/studio/blueprint/nodes/events#on-action) 头，它对应 `Is Action Held` 读取的那套输入意图。本页的节点回答的是「此刻是什么」。
 
 ## Get Input Device

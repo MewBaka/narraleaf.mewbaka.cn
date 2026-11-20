@@ -5,6 +5,11 @@ description: Geometry, opacity, Variants and property animation on a wired eleme
 
 Two families that apply to every widget type: the Displayable geometry and appearance nodes, and the `visible` / `enabled` pair each built-in widget repeats. The rules that govern all Element nodes — when the palette offers one, and how a missing target fails — are in [Element](/docs/studio/blueprint/nodes/element).
 
+<Figure
+    src="/static/img/docs/studio/en/node-element-displayable.webp"
+    alt="With an Element literal bound to a container, the Element category lists its geometry, display, property animation and visibility nodes"
+/>
+
 ## Displayable
 
 These take the generic `element` pin, so they accept a reference to any displayable element instead of one widget type. Coordinates are the Surface's design coordinates — the same numbers the inspector shows. Opacity is a single effective value: an Appearance Variant's `transformOpacity` resolves into it, an `nl.image` Variant's changed `fillOpacity` resolves into it, and `Get Element Property`, `Set Element Property` and `Animate Element Property` all touch that one number.

@@ -5,6 +5,11 @@ description: Surface のナビゲーション、アプリケーションウィ�
 
 App ノードは、ブループリントが自身の実行先であるアプリケーションに手を伸ばす場所です——Surface を開く、その上に重ねる、ウィンドウのサイズを変える、リンクをたどる、終了する。Surface モデルそのもの——スタック、レイヤー、ゲームステージ——は[Surfaces](/ja/docs/studio/blueprint/surfaces)で説明されています。
 
+<Figure
+    src="/static/img/docs/studio/en/node-app.webp"
+    alt="ノード作成ポップアップの App カテゴリ"
+/>
+
 ## 規約
 
 - **そのうち3つは末端ノードです。** `Go Page`、`Replace Page`、`Quit Application`には`next`ピンがまったく存在しません。その後に続くのは別の Surface か、あるいはアプリケーションそのものが存在しない状態であり——このグラフに実行すべきものは何も残っていません。

@@ -5,6 +5,11 @@ description: 声明变量、读取变量、写入变量，以及访问 Persisten
 
 一张图要碰变量，只能经由这些节点。有哪些作用域、各自活多久、什么能被存档带走，都在[变量](/zh/docs/studio/blueprint/variables)一页；这一页讲的是签名
 
+<Figure
+    src="/static/img/docs/studio/zh/node-variables.webp"
+    alt="创建浮窗中的变量分类"
+/>
+
 ## 约定
 
 - **`Get Var`和`Set Var`的`value`引脚类型由所选变量投影而来。** 引脚声明成`any`，但在卡片上它会取你在`Variable`里选中的那个变量的类型，编辑器的引脚标签、连线预览和 graph validation 都用这份投影结果

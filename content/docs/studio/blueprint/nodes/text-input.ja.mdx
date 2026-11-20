@@ -5,6 +5,11 @@ description: nl.textInput ウィジェットの Self ノード——プレイヤ
 
 Text Input 分類は `nl.textInput` ウィジェットの Self ノード集合です。ノードは3つで、いずれも同じもの、すなわちフィールドの実行時の値を扱います。これらは `nl.textInput` 要素自身のブループリント（`widgetMain` または `componentWidgetMain`）のパレットにのみ現れ、その要素に対して作用します。**別の**フィールドにアクセスするには、[Element](/ja/docs/studio/blueprint/nodes/element) 分類にある同名の `blueprint.element.textInput.*` ノードを使用してください。これは `element:nl.textInput` 入力を取ります。
 
+<Figure
+    src="/static/img/docs/studio/en/node-text-input.webp"
+    alt="テキスト入力自身のブループリントで開いたノード作成ポップアップの Text Input カテゴリ"
+/>
+
 ノードが3つしかないのは、実行時の値がこの文字列以外に何も運ばないためです。`placeholder`、`readOnly`、`disabled`、`inputMode`、`maxLength` は作者が設定する props のままであり——これらへのブループリントによるパッチは静かに破棄されるため、対応するノードは一切提供されません。入力への反応は、[Events](/ja/docs/studio/blueprint/nodes/events) 分類にあるこのウィジェットの `Value Changed` と `Submit` イベントで処理してください。
 
 ## 規約

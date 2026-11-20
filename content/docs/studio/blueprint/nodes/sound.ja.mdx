@@ -5,6 +5,11 @@ description: ブループリントからのクリップの再生、以後のす�
 
 ブループリントで決める**インターフェース**の音のための9つのノードです。条件によって鳴るかどうかが変わる音（CG が解放されているときだけ鳴るクリック音など）、ホバーやクリックに結び付かない音（Page が開いている間鳴らすアンビエンスなど）、ページが開いている間に変わるページの音楽（音楽鑑賞で押された曲など）が該当します。いつも鳴るホバー音やクリック音にはブループリントは要りません。Properties の [Sound](/ja/docs/studio/workspace/ui-editor#sound)（効果音）で要素に設定します。ページ自身の音楽も Properties の [Music](/ja/docs/studio/workspace/ui-editor#page-music)（音楽）で設定します。ストーリーが再生する音楽や効果音はストーリーに属し、そちらでは `/bgm` 行や `/sound` 行として記述します。
 
+<Figure
+    src="/static/img/docs/studio/en/node-sound.webp"
+    alt="ノード作成ポップアップの Sound カテゴリ"
+/>
+
 ## 規約
 
 - **9つすべてが latent です。** そのため Blueprint Value のバックエンドにすることはできません。Story Action ブループリントにはゲームのホストがないため、そこでも提供されません。

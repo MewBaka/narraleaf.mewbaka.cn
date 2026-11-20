@@ -5,6 +5,11 @@ description: The derived form of every widget method — how an Element node dif
 
 An Element node is the derived form of a widget method: instead of acting on the widget that owns the blueprint, it acts on an element you name explicitly and wire into it. The Self form of the same method takes no target pin and stays in its own widget's category; this category is where every targeted form ends up, whichever widget it came from. You reach for one the moment a graph has to touch something other than itself — a button that clears a text field, an `Init` graph that lays out three sibling images.
 
+<Figure
+    src="/static/img/docs/studio/en/node-element-global.webp"
+    alt="The Element category in the node creation popup: with no widget bound in the graph yet, only these two nodes"
+/>
+
 None of them appear in the [palette](/docs/studio/blueprint) on their own. An Element node is offered only once the graph already holds a binding node for a compatible widget type: an `Element` literal, or one of the `Element Flush` / `Element Click` event heads from [Events](/docs/studio/blueprint/nodes/events). Place the binding first.
 
 The category is 137 nodes: the `Element` reference node at the bottom of this page, and 136 across four more.

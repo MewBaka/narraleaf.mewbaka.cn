@@ -5,6 +5,11 @@ description: 绘制运行时需要满足的模块契约，以及 Studio 如何�
 
 Studio 的模型角色不限定于 Live2D 或 Spine。任何能够向容器内绘制的渲染器均可作为运行时使用，例如已有的渲染器、粒子系统、精灵表播放器或 WebGL 场景。以 **自定义运行时** 安装后，其行为与两个具名产品完全一致
 
+<Figure
+    src="/static/img/docs/studio/zh/runtimes.webp"
+    alt="项目面板的运行时页列出项目可用的绘制运行时及其安装状态"
+/>
+
 ## 模块要求
 
 `runtimes/puppet/` 下的一个目录，内含一个 `index.js`，该文件须为浏览器可加载的 **ES 模块**，并产出满足引擎 `PuppetBackend` 的对象：

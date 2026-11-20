@@ -5,6 +5,11 @@ description: What is stacked on screen while the game runs. Where pages, Game UI
 
 While the game runs, what is on screen is stacked in layers. From the bottom up they are the stage, Game UI, pages and layers, and each one covers the ones beneath it.
 
+<Figure
+    src="/static/img/docs/studio/en/dev-mode.webp"
+    alt="The game running in the Dev Mode window: the title page fills the screen, with the menu buttons over the background"
+/>
+
 <ScreenStack lang="en" caption="The order never changes. The stage and Game UI exist only while a game is in progress.">
   <ScreenLayer kind="layer" note="Shown over the current screen, above every page">Confirm, prompts</ScreenLayer>
   <ScreenLayer kind="page" note="One at a time">Title, Config, Save, Log</ScreenLayer>

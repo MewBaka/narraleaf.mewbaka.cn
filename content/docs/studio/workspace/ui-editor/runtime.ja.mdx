@@ -5,6 +5,11 @@ description: ゲームの実行中に画面に重なっているもの。ペー�
 
 ゲームの実行中、画面の内容は層になって重なっています。下から順に舞台、ゲーム UI、ページ、レイヤーで、上の層が下の層を覆います。
 
+<Figure
+    src="/static/img/docs/studio/en/dev-mode.webp"
+    alt="Dev Mode ウィンドウで動くゲーム。タイトルページが画面全体を占め、メニューボタンが背景の上に重なっている"
+/>
+
 <ScreenStack lang="ja" caption="重なる順序は常に同じです。舞台とゲーム UI はゲームの進行中にだけ存在します">
   <ScreenLayer kind="layer" note="現在の画面の上に重なり、すべてのページより上にある">確認、通知ダイアログ</ScreenLayer>
   <ScreenLayer kind="page" note="一度に 1 つだけ表示される">タイトル、設定、セーブ、ログ</ScreenLayer>

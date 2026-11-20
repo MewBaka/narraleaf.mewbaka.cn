@@ -5,6 +5,11 @@ description: Nodes that drive the running game — start and quit it, advance di
 
 The Game category is the seam between a blueprint and the running story. Everything here talks to the live NarraLeaf runtime: the playthrough itself, the dialog on screen, the player's preferences, the project's local saves, and the dialogue history. A title screen, a config screen, a save/load grid and a backlog are all built out of this page.
 
+<Figure
+    src="/static/img/docs/studio/en/node-game.webp"
+    alt="The Game category in the node creation popup"
+/>
+
 <Callout type="warn">
 Every node here needs the running game. The editor canvas has none: a Game node placed there fails with `This node runs only in a running game. Open Dev Mode to run it.`, and a Blueprint Value that reads one previews as empty. Verify all of it in Dev Mode.
 </Callout>

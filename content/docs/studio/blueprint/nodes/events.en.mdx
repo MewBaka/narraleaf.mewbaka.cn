@@ -5,6 +5,11 @@ description: Event heads that start a graph, the payload each one carries, and t
 
 An event head is where a graph begins. It has no execution input — the runtime enters the graph at the head and the chain runs from `then`. Everything else on this page hangs off that: a head's data outputs are the event's payload, and which heads you are even offered depends on where the blueprint lives.
 
+<Figure
+    src="/static/img/docs/studio/en/node-events.webp"
+    alt="The Events category in the node creation popup"
+/>
+
 ## Conventions
 
 - **A head has no exec input.** There is nothing to wire into it. A graph may hold several heads, and each one runs its own chain when its event arrives. Every head listening for the same event, in one graph or in several, starts when the event arrives; none waits for another to finish, and one that fails does not stop the rest. Where the game waits for an event, as start-up waits for [`On Game Ready`](#on-game-ready), it waits for all of them.

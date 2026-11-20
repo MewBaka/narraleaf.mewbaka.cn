@@ -5,6 +5,11 @@ description: Reading and writing the runtime value and range of a slider widget.
 
 Slider nodes read and write the runtime value and range of the `nl.slider` whose private blueprint you are editing — a volume control that has to load a saved level on `Init`, a difficulty picker whose range changes with the mode. The drag events themselves live in [Events](/docs/studio/blueprint/nodes/events).
 
+<Figure
+    src="/static/img/docs/studio/en/node-slider.webp"
+    alt="The Slider category in the node creation popup, in a slider's own blueprint"
+/>
+
 ## Conventions
 
 - **Everything but one node speaks the mapped value.** `props.value` and its Blueprint Value, the `dragStart` / `valueChanged` / `dragEnd` payloads, `Get Value`, and `Set Slider Value` all carry the value in `min…max` units. The `0…1` ratio exists on `Get Normalized Value` and nowhere else — wire that one to a fill width, and `Get Value` to anything the player reads as a number.

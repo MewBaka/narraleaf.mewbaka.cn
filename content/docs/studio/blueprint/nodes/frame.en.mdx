@@ -5,6 +5,11 @@ description: Which Page a Frame shows, and the params handed to that Page.
 
 Self nodes for `nl.frame`. A Frame is a rectangle on one Page that renders another Page inside itself, so these nodes are how a running graph swaps what is on screen without leaving the Page the player is on — a tab strip, a settings pane, a router. Each one acts on the Frame whose blueprint it sits in, takes no `Element` input, and only appears in that Frame's own blueprint. To reach a different Frame, use its counterpart in [Element](/docs/studio/blueprint/nodes/element).
 
+<Figure
+    src="/static/img/docs/studio/en/node-frame.webp"
+    alt="The node creation popup in a frame's own blueprint: the Frame category lists nodes that get and set its target page, params and visibility"
+/>
+
 ## Conventions
 
 - **Reads are pure, writes are latent.** Every `Get` node here is `Pure`. Every `Set` node is `Latent`: the write goes through the host and resolves asynchronously.

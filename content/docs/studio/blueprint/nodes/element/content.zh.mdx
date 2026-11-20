@@ -5,6 +5,11 @@ description: 列表内容、选中项、滚动位置与条目字段、滑块数�
 
 三种自己持有状态的控件——List 的条目、Slider 的值、Image 的资源——在这里通过连入的引用操作，而不是从控件内部操作。所有 Element 节点共通的规则见 [Element](/zh/docs/studio/blueprint/nodes/element)
 
+<Figure
+    src="/static/img/docs/studio/zh/node-element-content.webp"
+    alt="Element 字面量绑定滑块后，在创建浮窗中搜索「滑块」，列出作用于该滑块的读写节点"
+/>
+
 ## List
 
 List 节点带 `list` 引脚，类型是 `element:nl.list`。它们操作的是 List 实例的运行时 items，而这些 items 只存在于该实例中：完全卸载后就没了，也不会自动恢复，需要作者自己从变量或其它数据源重新写入。`itemsBinding` 只在没有运行时 items 时作为读取 fallback

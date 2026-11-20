@@ -5,6 +5,11 @@ description: Surface 导航、应用窗口，以及一个 Page 对自身的认�
 
 App 节点是蓝图伸手够到它所运行的那个应用的地方：打开一个 Surface、在它上面再压一层、调整窗口大小、跳转一个链接、退出应用。Surface 模型本身——栈、层叠、游戏舞台——在 [Surfaces](/zh/docs/studio/blueprint/surfaces) 中说明
 
+<Figure
+    src="/static/img/docs/studio/zh/node-app.webp"
+    alt="创建浮窗中的应用分类"
+/>
+
 ## 约定
 
 - **其中三个是尾节点。** `Go Page`、`Replace Page` 和 `Quit Application` 根本没有 `next` 引脚。它们之后是另一个 Surface，或者根本没有应用了——这张图没有剩下什么可以继续跑

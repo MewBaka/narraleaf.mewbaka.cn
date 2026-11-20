@@ -5,6 +5,11 @@ description: 通过 MCP 让 AI Agent 编辑 Studio 中打开的项目，每一�
 
 Studio 可以在本机提供 MCP（Model Context Protocol）端点。支持 MCP 的 Agent 由此可以编辑 Studio 中打开的项目，包括 Claude Code、Claude Desktop、opencode、Codex、Cursor、Gemini CLI 等
 
+<Figure
+    src="/static/img/docs/studio/zh/agent-connect.webp"
+    alt="设置中的 Agent 接入：允许连接、允许修改项目与完全访问三个开关，以及 MCP 端点地址"
+/>
+
 Agent 的修改与手动编辑经过同一套服务：落地时即显示在画布上，由同一套自动保存写入磁盘，每次修改项目的调用记为一步撤销。作者可以随时暂停 Agent、撤销它的修改，或与它同时编辑
 
 <Callout type="info">

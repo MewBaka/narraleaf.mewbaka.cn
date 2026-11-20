@@ -5,6 +5,11 @@ description: The nodes that declare a variable, read it, write it, and reach the
 
 These nodes are the only way a graph touches a variable. Which scopes exist, how long each one lives, and what survives a save is covered on [Variables](/docs/studio/blueprint/variables); this page is the signatures.
 
+<Figure
+    src="/static/img/docs/studio/en/node-variables.webp"
+    alt="The Variables category in the node creation popup"
+/>
+
 ## Conventions
 
 - **`Get Var` and `Set Var` project their `value` pin type from the selected variable.** The pin is declared `any`, but on the card it takes the type of whatever you picked in `Variable`, and the editor uses that projected type for the pin label, the connection preview, and validation.

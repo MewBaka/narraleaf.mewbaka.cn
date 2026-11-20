@@ -5,6 +5,11 @@ description: Gallery 插件的节点，读取游戏鉴赏界面的内容（CG、
 
 Gallery 插件用于游戏的鉴赏界面：CG 画廊、场景回想、音乐鉴赏和语音鉴赏。你在 Studio 的画廊编辑器里列出这些界面要放的内容，本页的节点把这份清单和玩家已解锁的部分合在一起，以行的形式给出，列表控件可以直接画出来。该插件出厂为禁用，参见[内置插件](/zh/docs/studio/blueprint/nodes/built-in-plugins#switching-a-plugin-on)
 
+<Figure
+    src="/static/img/docs/studio/zh/node-gallery.webp"
+    alt="启用 Gallery 插件后，创建浮窗中出现的画廊分类"
+/>
+
 用**骨架**模板创建的项目，其鉴赏界面就是用这些节点搭的：每一栏一个 `Get Gallery`，进度那一行用 `Get Gallery Progress`，CG 查看器用 `Get Gallery Variants` 和 `Get Gallery Variant At`
 
 ## 目录 [#the-catalog]

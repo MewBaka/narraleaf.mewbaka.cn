@@ -5,6 +5,11 @@ description: 游戏运行时屏幕上叠放的内容：页面、游戏 UI 与叠
 
 游戏运行时，屏幕上的内容分层叠放。从下到上依次是游戏画面、游戏 UI、页面和叠加页面，上层盖住下层
 
+<Figure
+    src="/static/img/docs/studio/zh/dev-mode.webp"
+    alt="开发模式窗口中运行的游戏：标题页面铺满画面，菜单按钮叠放在背景之上"
+/>
+
 <ScreenStack lang="zh" caption="叠放次序固定不变。游戏画面与游戏 UI 只在游戏进行中出现">
   <ScreenLayer kind="layer" note="叠加在当前屏幕之上，位于所有页面上方">确认、提示</ScreenLayer>
   <ScreenLayer kind="page" note="同一时间只显示一个">标题、设置、存档、记录</ScreenLayer>

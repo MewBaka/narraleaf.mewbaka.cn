@@ -5,6 +5,11 @@ description: List items and selection, slider value and range, image asset, fit 
 
 Three widgets that carry state of their own — a List's items, a Slider's value, an Image's asset — reached here through a wired reference instead of from inside the widget. The rules common to every Element node are in [Element](/docs/studio/blueprint/nodes/element).
 
+<Figure
+    src="/static/img/docs/studio/en/node-element-content.webp"
+    alt="With an Element literal bound to a slider, searching 'Slider' in the node creation popup lists the read and write nodes for that slider"
+/>
+
 ## List
 
 List nodes take a `list` pin typed `element:nl.list`. They act on the List instance's runtime items, and those items live only in that instance: a full unmount clears them and nothing restores them, so write them back from a variable or another data source yourself. `itemsBinding` is consulted only as a read fallback when there are no runtime items.

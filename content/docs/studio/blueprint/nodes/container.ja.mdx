@@ -5,6 +5,11 @@ description: ブループリントが属するコンテナのコンテンツク�
 
 `nl.container`の Self ノード群です。各ノードは自身のブループリントが属するコンテナに対して作用し、`Element`入力を取らず、そのコンテナ自身のブループリントにのみ現れます。別のコンテナを操作するには、[Element](/ja/docs/studio/blueprint/nodes/element)にある対応するノードを使ってください。
 
+<Figure
+    src="/static/img/docs/studio/en/node-container.webp"
+    alt="コンテナ自身のブループリントで開いたノード作成ポップアップの Container カテゴリ"
+/>
+
 ## 規約
 
 - **読み取りは純粋、書き込みは latent です。** このページの`Get`ノードはすべて`Pure`です。`Set`ノードはすべて`Latent`です。書き込みはホストを経由して非同期に解決され、グラフはそれを待ってから先に進みます。

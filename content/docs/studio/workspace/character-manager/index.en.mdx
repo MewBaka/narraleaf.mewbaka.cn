@@ -32,7 +32,18 @@ A layered character stacks image layers on a shared canvas. Layers are grouped o
 
 A character has one canonical name and any number of **aliases**. Story rows may name either, so an alias can carry a short form, a translated name, or a nickname the cast uses. Renaming the canonical name does not break rows that use an alias.
 
-The dialogue avatar is separate from the stage sprite. It can use its own image, or a portrait cropped from one of the character's poses. **Auto-frame avatar** places the crop around the detected head; the crop can then be moved and sized by hand. **Auto-frame all dialog avatars** in the character list does the same for every character. The story outline also draws this avatar beside a scene's cast.
+The dialogue avatar is separate from the stage sprite. It can use its own image, or a portrait cropped from one of the character's poses. **Auto-frame avatar** places the crop around the detected head; the crop can then be moved and sized by hand. **Auto-frame all dialog avatars** in the character list does the same for every character. Adding or replacing art in the character editor frames the avatars whose pictures changed; a crop adjusted by hand and a separately set avatar image are kept. The story outline also draws this avatar beside a scene's cast.
+
+## Entrance defaults
+
+Entrance defaults set how large a character's sprite is drawn and where it stands when the character enters. Zoom, position and the other channels an entrance row does not state fall back to them; a channel the row states overrides only that channel.
+
+Adding or replacing art in the character editor sets the entrance defaults:
+
+- When another character's sprite has the same pixel size, that character's zoom and baseline are shared, so the difference in their heights is kept.
+- Otherwise the sprite is framed on the figure inside the picture, with head detection telling a full-length figure from a bust: the top of the head sits a small margin under the top of the stage; a full-length figure with transparent space under it shows its top 80% or so; a figure that reaches the picture's bottom edge (cropped by the artist) has that edge on the stage's bottom edge; a bust stands whole on the bottom edge.
+
+Only values Studio calculated are replaced; entrance defaults adjusted by hand are kept. The preview places and scales the sprite by dragging, and a block marks where the dialogue box sits. **Apply standard framing** frames the current art again; **Match "name"** in the menu shares the defaults of a character whose sprite is the same size.
 
 ## Runtime-drawn characters
 

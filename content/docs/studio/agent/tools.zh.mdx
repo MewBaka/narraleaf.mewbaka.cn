@@ -58,6 +58,8 @@ Studio 的 MCP 服务器自带一组工具，列于下文，插件还可以添�
 
 每次角色编辑记为一步撤销。把其他类型的角色改为分层立绘，或把分层立绘改回姿态，会丢弃角色现有的外观，因此 `character_upsert`、`character_layered_set` 和 `character_layers_import` 在调用未传入 `confirmSwitch: true` 时会拒绝，拒绝消息中列出选用了这些外观的故事行。Live2D 和 Spine 角色只能读取，需在 Studio 的角色编辑器中设置
 
+角色首次获得立绘且没有 `entranceTransform` 时，`character_upsert` 和分层立绘工具会沿用立绘尺寸相同的角色的登场默认值，没有这样的角色时按测量到的人物取景，规则与角色面板相同。已有登场默认值的角色在更换立绘后保留原值并给出警告。传入 `entranceTransform: "framed"` 按角色自身的人物重新取景，`"standing"` 让整张图片站在舞台底边上
+
 对白头像是对话框和对话记录中台词旁显示的面部图像。`character_upsert` 接受 `defaultAvatar`，在没有更具体的头像时显示，以及 `avatars`：每个姿态一张图片，分层立绘角色则按 `avatarAxes` 所列各轴的标签组合各一张，例如无论服装如何，每种表情一张。两者都未设置时，作者打开角色面板时 Studio 会从立绘中裁出头像。Live2D 或 Spine 角色只有默认头像
 
 ## 故事

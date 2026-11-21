@@ -58,6 +58,8 @@ Every tool that works on a project takes an optional `project`, the project fold
 
 Each character edit is one step of undo. Turning a character of another kind into a layered one, or a layered one back into poses, discards its looks, so `character_upsert`, `character_layered_set` and `character_layers_import` refuse it until the call passes `confirmSwitch: true`. The refusal lists the story rows that chose one of the looks. Live2D and Spine characters are read only; they are set up in Studio's character editor.
 
+When a character gets art for the first time and has no `entranceTransform`, `character_upsert` and the layered character tools share the entrance defaults of a character whose sprite is the same size, or frame the measured figure when there is none, by the same rules as the Characters panel. A character that already has entrance defaults keeps them when its art is replaced, and the answer warns. Pass `entranceTransform: "framed"` to frame the character on its own figure again, or `"standing"` to stand the whole picture on the bottom of the stage.
+
 The avatar is the face beside a line in the dialogue box and the backlog. `character_upsert` takes a `defaultAvatar`, shown wherever nothing more specific is, and `avatars`, one image per pose, or for a layered character one per combination of the axes named in `avatarAxes`, such as one per expression whatever the outfit. Without them, Studio cuts avatars from the sprites when you open the Characters panel. A Live2D or Spine character has the default avatar only.
 
 ## Story

@@ -1,0 +1,65 @@
+---
+title: Custom commands
+description: Save a few directive rows as one command with parameters, call it in the story editor like a built-in command, and share it between projects.
+---
+
+A custom command saves a few directive rows under one name. Once saved, you type it in the story editor like a built-in command, for example `@Shake Anyo strength=10`.
+
+<Figure
+    src="/static/img/docs/studio/en/custom-commands.webp"
+    alt="The custom command editor: an info card lists the name, description and parameters, and three numbered transform rows below follow the story editor's layout"
+/>
+
+## Create a command
+
+There are two ways:
+
+- Open the **…** menu in the left sidebar, choose **Custom Commands**, then select **New command**.
+- In the story editor, select a few rows, right-click and choose **Save as custom command**. The original rows stay as they are.
+
+The command opens in a tab. Fill in the **Name** and **Description** on the info card at the top; the description is shown in the command menu. A name cannot contain spaces, quotes or `/ @ # < > =`, cannot start with a digit, and cannot match a built-in command or another command in the project.
+
+The rows below are written the same way as in the story editor. Select a row to edit it in place, and select or start typing on the last row to add one.
+
+## Declare parameters
+
+Write `<name>` where a value goes to declare a parameter:
+
+| Spelling | Meaning |
+| --- | --- |
+| `xoffset=<strength>` | The value given in the call |
+| `xoffset=-<strength>` | The negative of the value given |
+| `d=<time=0.1>` | A parameter with a default, which a call can leave out |
+
+A parameter takes the type of the place it is written in: a number keeps its unit and range, an option keeps its choices, and a character place takes characters only. One parameter can be used on several rows. The info card lists each parameter's type and whether it is required or has a default.
+
+## Call a command
+
+Type `@` in a story row. The **Custom** category of the command menu lists every custom command in the project. After you pick one, Studio prompts for its parameters in order.
+
+- A parameter without a default is required. A row that leaves one out is shown as a draft.
+- Editing a command changes how every row that calls it plays.
+- Renaming a command leaves the rows that call it working.
+
+## Allowed commands
+
+A custom command can hold stage, sound, wait and variable commands, and can call other custom commands. Dialogue, jumps and flow commands are not allowed.
+
+## Share
+
+From the command's tab, or the right-click menu in the list:
+
+- **Copy as text** puts the command on the clipboard, ready to paste into a chat or a document.
+- **Export to file** saves the command as a file.
+
+Both carry the other custom commands it calls. In another project, select **Import commands** at the top of the list and choose **From clipboard** or **From file**. A name that is already taken gets a number, and calls inside the imported commands follow the new name.
+
+Sharing does not go through the cloud; the text or file holds everything.
+
+## Calls that cannot play
+
+A calling row plays nothing, and the **project check** reports it, when:
+
+- the command was deleted
+- a required parameter is missing
+- the command calls itself, directly or through another command

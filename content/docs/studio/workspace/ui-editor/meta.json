@@ -2,6 +2,7 @@
   "title": "UI Editor",
   "pages": [
     "index",
+    "design-import",
     "runtime"
   ]
 }

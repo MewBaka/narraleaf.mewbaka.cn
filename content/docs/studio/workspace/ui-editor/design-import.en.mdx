@@ -1,0 +1,99 @@
+---
+title: Importing designs
+description: Bring screens drawn in Figma, Photoshop or as images into the UI editor as pages or Game UI, with buttons and dialogue already wired.
+---
+
+A screen drawn in another tool becomes a page in the UI editor. In the **Interfaces** panel, click **Import design** and choose a Figma export, a PSD, or one or more images.
+
+| Source | What arrives |
+| --- | --- |
+| **Figma** | Frames exported with the [NarraLeaf Studio Export](https://www.figma.com/community/plugin/1707010640966969953) plugin. Frames, groups and rectangles become containers, auto layout becomes a stack where a stack can express it, text stays text, and vectors and masks arrive as pictures. |
+| **PSD** | Groups become containers and each layer becomes an image where Photoshop drew it. Clipped layers and layers with blend modes are merged into the layer they belong to. Hidden layers are left out. |
+| **Images** | All the chosen images arrive on one page. Images the size of the largest one line up with it; smaller ones are placed in the centre, to be moved into place. |
+
+Each page is scaled to the project resolution, and its pictures go into a new folder in the image assets. After the import, Studio lists everything it simplified, naming the layers involved, such as PSD layer styles, which are not imported.
+
+Text drawn into a picture cannot be translated. Keep button words as text on top of the picture.
+
+## The Figma plugin
+
+Install **NarraLeaf Studio Export** from the [Figma Community](https://www.figma.com/community/plugin/1707010640966969953). It works in the browser and in the desktop app, and has no network access: nothing leaves your computer except the file you download.
+
+<Steps>
+<Step>
+
+### Choose the frames
+
+Select the frames to export, or any layer inside them. With nothing selected, the plugin lists every top-level frame on the page.
+
+</Step>
+<Step>
+
+### Export
+
+Right-click and choose **Plugins › NarraLeaf Studio Export › Export and check…**, tick the frames and click **Export**. You get one `.narraleaf-figma.json` file with every picture inside it.
+
+</Step>
+<Step>
+
+### Import
+
+In Studio, click **Import design** in the **Interfaces** panel and choose the file. The import dialog lists the frames and whether each arrives as a page or as Game UI.
+
+</Step>
+</Steps>
+
+| Figma | Studio |
+| --- | --- |
+| Frame, component, instance, section, group | Container, keeping fills, strokes, corner radii, shadows and clipping |
+| Auto layout | Stack container, or exact positions when a stack cannot express it |
+| Rectangle filled with an image | Image |
+| Text | Text. Fonts are matched against the project's font assets by family name; letter spacing is dropped, and mixed styles take the first run's style |
+| Vector, boolean shape, mask, blend mode | A 2x picture placed exactly over the layer |
+| Hidden layer | Left out |
+
+Add `[raster]` to a layer's name to export any layer as a picture.
+
+## Buttons with states
+
+Draw a button once per state and it arrives as one working button.
+
+- **PSD or Figma:** put the states in one group and name them `normal`, `hover`, `pressed` and `disabled`. One text layer beside them becomes the label.
+- **Figma components:** an instance of a component set with a state property (`State = Default / Hover / Pressed / Disabled`) becomes a button.
+- **Images:** files named `start.png`, `start_hover.png` and `start_pressed.png` become one button.
+
+## Game screens
+
+A design of the running game can come in as Game UI instead of a page. Name the frame's top-level groups for the Game UI they are: `dialog`, `choice`, `quick menu` or `notification`. The import dialog then offers **Game UI** for that frame and names the project's Game UI it replaces; one undo puts them back. Layers outside those groups, such as the background and sprites, are left out.
+
+| Part | How it is read |
+| --- | --- |
+| **Dialogue box** | A text named `line` becomes the sentence, a text named `name` shows the speaker's name, and a layer named `avatar` shows the speaker's avatar. When the name sits in a group of its own, the group shows only while a character speaks. Without these names, the largest text becomes the line and the text above it the name. |
+| **Choice** | The first option drawn becomes the row of the choice list, its text the option's words, and the gap to the second option the spacing. |
+| **Quick menu** | Buttons named `auto`, `skip`, `log`, `save`, `load`, `config` and `hide` do those jobs. Log, Save, Load and Config open the project's page of that name. A state named `on` is the look Auto and Skip keep while they run. |
+| **Notification** | The first message drawn becomes the row of the notification list. |
+
+### Marking layers in Figma
+
+Instead of renaming layers by hand, mark them with the plugin. Select layers, right-click, and choose one of the plugin's commands under **Plugins › NarraLeaf Studio Export**:
+
+- **Mark as Game UI**: Dialogue box, Choices, Quick menu, Notifications
+- **Mark dialogue part**: Line, Speaker name, Avatar
+- **Mark quick-menu button**: Auto, Skip, Log, Save, Load, Config, Hide
+- **Clear mark**
+
+The menu entries read in Chinese and English, because Figma menus cannot follow the app's language. The **Mark as…** list at the top of the plugin panel does the same without closing the panel.
+
+A mark wins over the layer's name. A layer Figma named, such as `Group 12`, is renamed for its job; a name you chose is kept with the job in front, such as `Dialogue box · Bottom panel`. Clearing a mark gives the old name back if the layer was not renamed since. A frame holds one of each Game UI part and one line, name and avatar, so marking a second layer takes the mark off the first.
+
+### The checklist
+
+Before you export, the plugin panel shows under each game screen what Studio will make of it:
+
+- which layer fills each Game UI part
+- which layers are the line, the name and the avatar, and whether each was marked, named or guessed from its position
+- whether Auto and Skip have an `on` look
+- how many options a choice list found
+- what is missing, and which layers are left out
+
+Click a line to select that layer on the canvas. The checklist runs the same reading as Studio's import, so it says what the import will do. Whether the project has a Log, Save, Load or Config page is only known in Studio, which reports it after the import.

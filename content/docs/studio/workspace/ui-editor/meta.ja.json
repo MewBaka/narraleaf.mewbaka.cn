@@ -2,6 +2,7 @@
   "title": "UI エディタ",
   "pages": [
     "index",
+    "design-import",
     "runtime"
   ]
 }

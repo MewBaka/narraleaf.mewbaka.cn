@@ -2,6 +2,7 @@
   "title": "界面编辑器",
   "pages": [
     "index",
+    "design-import",
     "runtime"
   ]
 }

@@ -28,6 +28,38 @@ A pose can also be a **PNG frame sequence**: several PNG files played in order a
 
 A layered character stacks image layers on a shared canvas. Layers are grouped on axes, and a pose selects one option per axis, so a single pose can change several layers together.
 
+## Adding poses in bulk
+
+The **Poses** heading of a preset character has two buttons to the left of **+**:
+
+- **Add poses from images**: tick several images in the library, and each becomes a pose. The picker's import button brings images from disk into the library first.
+- **Add poses from a folder**: choose the library folder the sprites are kept in, at the top of the dialog. Studio lists the images in it, subfolders included, whose names start with one of the character's prefixes. **All images** searches the whole image library instead. A folder named after the character is chosen to begin with, and the last choice is remembered per character. The prefix is the character's name by default, so Miki finds `Miki_Seifuku_Frown.png` and `miki-casual smile.png` but not `Mikiko_Wave.png`.
+
+Both open a list first, one row per image with the pose name it will get. The images have to be in the library already; nothing is imported from disk here. A row can be unticked or given another name, and nothing is written until **Add** is pressed.
+
+### Automatic naming
+
+A pose name comes from the image's name: the extension and the matching prefix are taken off, the rest is cut at the separators, and the pieces are joined with the joiner.
+
+| File | Prefixes | Pose name |
+| --- | --- | --- |
+| `Miki_Seifuku_Frown.png` | `Miki` | Seifuku Frown |
+| `miki-casual smile.png` | `Miki` | casual smile |
+| `Miki_Casual_Smile.png` | `Miki`, `Miki_Casual` | Smile |
+
+The rule is edited above the list and remembered per character:
+
+- **Prefixes**: as many as needed. A match ignores case and must be followed by a separator or the end of the name; where several prefixes match, the longest wins.
+- **Separators**: the characters a name is cut at, `_` and `-` by default. Whitespace always cuts.
+- **Join with**: space (the default), underscore, hyphen, or nothing.
+
+A name already taken by a pose, or by an earlier row, gets a number: `Smile 2`. A pose name with a space in it is quoted with single quotes in a story row: `/char Miki 'Seifuku Frown'`.
+
+### Images already added, and undo
+
+- An image a pose of this character already shows says **Added** and starts unticked. Running it again after adding a few sprites to the folder offers only the new ones.
+- All the poses an addition made go in one step of undo. Studio then frames the dialog avatars on its own, which is a step of its own and is undone first.
+
 ## Names, aliases, and avatars
 
 A character has one canonical name and any number of **aliases**. Story rows may name either, so an alias can carry a short form, a translated name, or a nickname the cast uses. Renaming the canonical name does not break rows that use an alias.
